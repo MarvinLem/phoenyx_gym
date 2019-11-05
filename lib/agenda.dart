@@ -38,10 +38,11 @@ class Agenda extends StatelessWidget {
                       child: Center(
                           child: new Text(
                         "1",
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.center, style: TextStyle(color: Colors.white)
                       ))),
                   decoration: BoxDecoration(
                       border: Border.all(color: Color(0xFFD34B4B)),
+                      color: Color(0xFFD34B4B),
                       shape: BoxShape.circle),
                   constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
                   margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
