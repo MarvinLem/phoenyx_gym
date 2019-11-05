@@ -1,21 +1,23 @@
-#!/usr/bin/env bash
-# place this script in project/android/app/
-cd ..
-# fail if any command fails
-set -e
-# debug log
-set -x
+v#!/usr/bin/env bash
+ #Place this script in project/android/app/
 
-cd ..
-# choose a different release channel if you want - https://github.com/flutter/flutter/wiki/Flutter-build-release-channels
-# stable - recommended for production
+ cd ..
 
-git clone -b stable https://github.com/flutter/flutter.git
-export PATH=`pwd`/flutter/bin:$PATH
+ # fail if any command fails
+ set -e
+ # debug log
+ set -x
 
-flutter channel stable
-flutter doctor
-flutter build apk --release
+ cd ..
+ git clone -b master https://github.com/flutter/flutter.git
+ export PATH=`pwd`/flutter/bin:$PATH
 
-# copy the APK where AppCenter will find it
-mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-release.apk $_<
+ flutter channel stable
+ flutter doctor
+
+ echo "Installed flutter to `pwd`/flutter"
+
+ flutter build apk --release
+
+ #copy the APK where AppCenter will find it
+ mkdir -p android/app/build/outputs/apk/; mv build/app/outputs/apk/release/app-release.apk $_
