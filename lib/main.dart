@@ -1,6 +1,3 @@
-import 'package:appcenter/appcenter.dart';
-import 'package:appcenter_analytics/appcenter_analytics.dart';
-import 'package:appcenter_crashes/appcenter_crashes.dart';
 import 'package:flutter/material.dart';
 
 import './training.dart';
