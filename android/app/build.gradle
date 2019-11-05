@@ -48,7 +48,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile rootProject.file("app/android.keystore")
+            storeFile rootProject.file("android.keystore")
             storePassword System.getenv("test1234")
             keyAlias System.getenv("phoenyx")
             keyPassword System.getenv("test1234")
