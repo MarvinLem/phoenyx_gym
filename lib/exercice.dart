@@ -113,8 +113,8 @@ class Exercice extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("Training"),
-                child: Text('Enregister le programme',
+                onPressed: () => pageSelected("createExercice"),
+                child: Text('Retourner à la liste des exercices',
                     style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(15),
