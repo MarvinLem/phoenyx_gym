@@ -12,16 +12,16 @@ class Bottom extends StatelessWidget {
       type: BottomNavigationBarType.fixed ,
       items: [
         BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: new Text('Accueil')
+        ),
+        BottomNavigationBarItem(
             icon: Icon(Icons.fitness_center),
             title: new Text('Entrainement')
         ),
         BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             title: new Text('Agenda')
-        ),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.ac_unit),
-            title: new Text('Performances')
         ),
         BottomNavigationBarItem(
             icon: Icon(Icons.person),

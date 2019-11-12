@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import './home.dart';
 import './training.dart';
 import './getTraining.dart';
 import './getAgenda.dart';
@@ -41,8 +41,9 @@ class HomeScreenState extends State<HomeScreen> {
     setState(() {
       selectedIndex = index;
     });
-
-    if (selectedIndex == 0) {
+    if (selectedIndex == 0){
+      return Home(pageSelected: pageSelected);
+    } else if(selectedIndex == 1) {
       if(pageName == "createTraining"){
         return CreateTraining(pageSelected: pageSelected);
       } else if(pageName == "editTraining") {
@@ -64,7 +65,7 @@ class HomeScreenState extends State<HomeScreen> {
       } else {
         return Training(pageSelected: pageSelected);
       }
-    } else if(selectedIndex == 1){
+    } else if(selectedIndex == 2){
       if(pageName == "getAgenda"){
         return GetAgenda(pageSelected: pageSelected);
       } else if(pageName == "editAgenda"){
@@ -98,6 +99,7 @@ class MyApp extends StatelessWidget {
         title: 'Phoenix Gym',
         theme: appTheme(),
         routes: {
+          '/home': (context) => Home(),
           '/training': (context) => Training(),
           '/agenda': (context) => Agenda(),
           '/profil': (context) => Profil(),

@@ -106,7 +106,7 @@ class Profil extends StatelessWidget {
           Container(
               child: RaisedButton(
                 onPressed: () => pageSelected("editProfil"),
-                child: Text('Voir ses performances', style: TextStyle(fontSize: 18)),
+                child: Text('Modifier le profil', style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(15),
                 color: Color(0xFFD34B4B),
