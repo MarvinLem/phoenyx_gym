@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Days {
+class Program {
+  int session = 3;
   bool monday = false;
   bool tuesday = false;
   bool wednesday = false;
@@ -26,7 +27,7 @@ class CreateTrainingState extends State<CreateTraining> {
 
   CreateTrainingState({this.pageSelected});
 
-  var days = new Days();
+  var program = new Program();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class CreateTrainingState extends State<CreateTraining> {
                   Row(
                     children: [
                       Container(
-                        child: Text("3",
+                        child: Text(program.session.toString(),
                             style:
                             TextStyle(fontSize: 26, color: Colors.black87),
                             textAlign: TextAlign.left),
@@ -161,17 +162,17 @@ class CreateTrainingState extends State<CreateTraining> {
           Container(
             child: InkWell(
                 onTap: () => setState(() {
-                  if(days.monday){days.monday = false;} else {days.monday = true;}
+                  if(program.monday){program.monday = false;} else {program.monday = true;}
                 }),
                 child: Center(
                     child: new Text(
                         "L",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: days.monday ? Colors.white : Colors.black87)
+                        style: TextStyle(color: program.monday ? Colors.white : Color(0xFFD34B4B))
                     ))),
             decoration: BoxDecoration(
                 border: Border.all(color: Color(0xFFD34B4B)),
-                color: days.monday ? Color(0xFFD34B4B) : Colors.transparent,
+                color: program.monday ? Color(0xFFD34B4B) : Colors.transparent,
                 shape: BoxShape.circle),
             constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
             margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -181,17 +182,17 @@ class CreateTrainingState extends State<CreateTraining> {
           Container(
             child: InkWell(
                 onTap: () => setState(() {
-                  if(days.tuesday){days.tuesday = false;} else {days.tuesday = true;}
+                  if(program.tuesday){program.tuesday = false;} else {program.tuesday = true;}
                 }),
                 child: Center(
                     child: new Text(
                         "M",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: days.tuesday ? Colors.white : Colors.black87)
+                        style: TextStyle(color: program.tuesday ? Colors.white : Color(0xFFD34B4B))
                     ))),
             decoration: BoxDecoration(
                 border: Border.all(color: Color(0xFFD34B4B)),
-                color: days.tuesday ? Color(0xFFD34B4B) : Colors.transparent,
+                color: program.tuesday ? Color(0xFFD34B4B) : Colors.transparent,
                 shape: BoxShape.circle),
             constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
             margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -201,17 +202,17 @@ class CreateTrainingState extends State<CreateTraining> {
           Container(
             child: InkWell(
                 onTap: () => setState(() {
-                  if(days.wednesday){days.wednesday = false;} else {days.wednesday = true;}
+                  if(program.wednesday){program.wednesday = false;} else {program.wednesday = true;}
                 }),
                 child: Center(
                     child: new Text(
                         "M",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: days.wednesday ? Colors.white : Colors.black87)
+                        style: TextStyle(color: program.wednesday ? Colors.white : Color(0xFFD34B4B))
                     ))),
             decoration: BoxDecoration(
                 border: Border.all(color: Color(0xFFD34B4B)),
-                color: days.wednesday ? Color(0xFFD34B4B) : Colors.transparent,
+                color: program.wednesday ? Color(0xFFD34B4B) : Colors.transparent,
                 shape: BoxShape.circle),
             constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
             margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -221,17 +222,17 @@ class CreateTrainingState extends State<CreateTraining> {
           Container(
             child: InkWell(
                 onTap: () => setState(() {
-                  if(days.thursday){days.thursday = false;} else {days.thursday = true;}
+                  if(program.thursday){program.thursday = false;} else {program.thursday = true;}
                 }),
                 child: Center(
                     child: new Text(
                         "J",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: days.thursday ? Colors.white : Colors.black87)
+                        style: TextStyle(color: program.thursday ? Colors.white : Color(0xFFD34B4B))
                     ))),
             decoration: BoxDecoration(
                 border: Border.all(color: Color(0xFFD34B4B)),
-                color: days.thursday ? Color(0xFFD34B4B) : Colors.transparent,
+                color: program.thursday ? Color(0xFFD34B4B) : Colors.transparent,
                 shape: BoxShape.circle),
             constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
             margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -241,17 +242,17 @@ class CreateTrainingState extends State<CreateTraining> {
           Container(
             child: InkWell(
                 onTap: () => setState(() {
-                  if(days.friday){days.friday = false;} else {days.friday = true;}
+                  if(program.friday){program.friday = false;} else {program.friday = true;}
                 }),
                 child: Center(
                     child: new Text(
                         "V",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: days.friday ? Colors.white : Colors.black87)
+                        style: TextStyle(color: program.friday ? Colors.white : Color(0xFFD34B4B))
                     ))),
             decoration: BoxDecoration(
                 border: Border.all(color: Color(0xFFD34B4B)),
-                color: days.friday ? Color(0xFFD34B4B) : Colors.transparent,
+                color: program.friday ? Color(0xFFD34B4B) : Colors.transparent,
                 shape: BoxShape.circle),
             constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
             margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -261,17 +262,17 @@ class CreateTrainingState extends State<CreateTraining> {
           Container(
             child: InkWell(
                 onTap: () => setState(() {
-                  if(days.saturday){days.saturday = false;} else {days.saturday = true;}
+                  if(program.saturday){program.saturday = false;} else {program.saturday = true;}
                 }),
                 child: Center(
                     child: new Text(
                         "S",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: days.saturday ? Colors.white : Colors.black87)
+                        style: TextStyle(color: program.saturday ? Colors.white : Color(0xFFD34B4B))
                     ))),
             decoration: BoxDecoration(
                 border: Border.all(color: Color(0xFFD34B4B)),
-                color: days.saturday ? Color(0xFFD34B4B) : Colors.transparent,
+                color: program.saturday ? Color(0xFFD34B4B) : Colors.transparent,
                 shape: BoxShape.circle),
             constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
             margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -281,17 +282,17 @@ class CreateTrainingState extends State<CreateTraining> {
           Container(
             child: InkWell(
                 onTap: () => setState(() {
-                  if(days.sunday){days.sunday = false;} else {days.sunday = true;}
+                  if(program.sunday){program.sunday = false;} else {program.sunday = true;}
                 }),
                 child: Center(
                     child: new Text(
                         "D",
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: days.sunday ? Colors.white : Colors.black87)
+                        style: TextStyle(color: program.sunday ? Colors.white : Color(0xFFD34B4B))
                     ))),
             decoration: BoxDecoration(
                 border: Border.all(color: Color(0xFFD34B4B)),
-                color: days.sunday ? Color(0xFFD34B4B) : Colors.transparent,
+                color: program.sunday ? Color(0xFFD34B4B) : Colors.transparent,
                 shape: BoxShape.circle),
             constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
             margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
