@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './endFeedback.dart';
 
 class BeginFeedback extends StatelessWidget {
   final Function pageSelected;
@@ -7,7 +8,11 @@ class BeginFeedback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return Scaffold(
+        appBar: AppBar(
+        title: Text('Phoenyx Gym'),
+    ),
+    body: ListView(children: [
       Row(
         children: [
           Container(
@@ -211,7 +216,7 @@ class BeginFeedback extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("endFeedback"),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EndFeedback())),
                 child:
                     Text('Valider le feedback', style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
@@ -225,6 +230,6 @@ class BeginFeedback extends StatelessWidget {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-    ]);
+    ]));
   }
 }

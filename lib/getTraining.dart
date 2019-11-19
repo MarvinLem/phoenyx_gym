@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './beginTraining.dart';
+import './editTraining.dart';
 
 class GetTraining extends StatelessWidget {
   final Function pageSelected;
@@ -7,7 +9,11 @@ class GetTraining extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return Scaffold(
+        appBar: AppBar(
+        title: Text('Phoenyx Gym'),
+    ),
+    body: ListView(children: [
       Row(children: [
         Container(
             child: new Text("Nom du programme".toUpperCase(),
@@ -169,7 +175,10 @@ class GetTraining extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("beginTraining"),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BeginTraining()),
+                ),
                 child: Text('Commencer la scéance', style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(15),
@@ -185,7 +194,10 @@ class GetTraining extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("editTraining"),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EditTraining()),
+                ),
                 child: Text('Modifier la séance', style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(15),
@@ -197,6 +209,6 @@ class GetTraining extends StatelessWidget {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       )
-    ]);
+    ]));
   }
 }

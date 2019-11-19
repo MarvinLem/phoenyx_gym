@@ -7,7 +7,11 @@ class GetAgenda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Phoenyx Gym'),
+        ),
+        body: ListView(children: [
       Row(children: [
         Container(
             child: new Text("Entrainement 15 octobre".toUpperCase(),
@@ -220,7 +224,7 @@ class GetAgenda extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("agenda"),
+                onPressed: () => Navigator.pop(context),
                 child: Text('Retourner au calendrier',
                     style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
@@ -234,6 +238,6 @@ class GetAgenda extends StatelessWidget {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-    ]);
+    ]));
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './createTraining.dart';
+import './getTraining.dart';
 
 class Training extends StatelessWidget {
   final Function pageSelected;
@@ -28,7 +30,7 @@ class Training extends StatelessWidget {
             child: new Container(
                 constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width-40, minHeight: 120.0),
                 child: new FlatButton(
-                    onPressed: () => pageSelected("createTraining"),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreateTraining())),
                     child: new Text("Creer votre programme".toUpperCase(),
                         style: TextStyle(
                             fontSize: 18,
@@ -73,7 +75,7 @@ class Training extends StatelessWidget {
             child: new Container(
               constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width-40, minHeight: 120.0),
               child: new FlatButton(
-                  onPressed: () => pageSelected("getTraining"),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => GetTraining())),
                   child: new Column(
                       children: [
                         new Text("Debutant".toUpperCase(),

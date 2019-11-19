@@ -1,13 +1,36 @@
 import 'package:flutter/material.dart';
 
-class EditAgenda extends StatelessWidget {
+class Seance {
+  double start = 17.00;
+  double end = 18.00;
+  DateTime date = DateTime(2019,11,19);
+}
+
+class EditAgenda extends StatefulWidget {
   final Function pageSelected;
 
   EditAgenda({this.pageSelected});
 
   @override
+  State<StatefulWidget> createState() {
+    return EditAgendaState(pageSelected: pageSelected);
+  }
+}
+
+class EditAgendaState extends State<EditAgenda> {
+  final Function pageSelected;
+
+  EditAgendaState({this.pageSelected});
+
+  var seance = new Seance();
+
+  @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return Scaffold(
+    appBar: AppBar(
+      title: Text('Phoenyx Gym'),
+    ),
+    body: ListView(children: [
       Row(children: [
         Container(
             child: new Text("Changement d'horaire".toUpperCase(),
@@ -87,9 +110,17 @@ class EditAgenda extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: new Icon(Icons.arrow_drop_up,
-                            color: Color(0xFFD34B4B)),
-                      ),
+                          child: GestureDetector(
+                            onTap: () => setState(() {
+                              if(seance.start == 23.75){
+                                seance.start = 0;
+                              } else {
+                                seance.start += 0.25;
+                              }
+                            }),
+                            child: new Icon(Icons.arrow_drop_up,
+                                size: 50, color: Color(0xFFD34B4B)),
+                          )),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -97,7 +128,7 @@ class EditAgenda extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: Text("17 : 00",
+                        child: Text(seance.start.toString().replaceAll(".25", ":15").replaceAll(".5", ":30").replaceAll(".75", ":45").replaceAll(".0", ":00"),
                             style:
                                 TextStyle(fontSize: 26, color: Colors.black87),
                             textAlign: TextAlign.left),
@@ -109,9 +140,17 @@ class EditAgenda extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: new Icon(Icons.arrow_drop_down,
-                            color: Color(0xFFD34B4B)),
-                      ),
+                          child: GestureDetector(
+                            onTap: () => setState(() {
+                              if(seance.start == 0){
+                                seance.start = 23.75;
+                              } else {
+                                seance.start -= 0.25;
+                              }
+                            }),
+                            child: new Icon(Icons.arrow_drop_down,
+                                size: 50, color: Color(0xFFD34B4B)),
+                          )),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -145,9 +184,17 @@ class EditAgenda extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: new Icon(Icons.arrow_drop_up,
-                            color: Color(0xFFD34B4B)),
-                      ),
+                          child: GestureDetector(
+                            onTap: () => setState(() {
+                              if(seance.end == 23.75){
+                                seance.end = 0;
+                              } else {
+                                seance.end += 0.25;
+                              }
+                            }),
+                            child: new Icon(Icons.arrow_drop_up,
+                                size: 50, color: Color(0xFFD34B4B)),
+                          )),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +202,7 @@ class EditAgenda extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: Text("18 : 00",
+                        child: Text(seance.end.toString().replaceAll(".25", ":15").replaceAll(".5", ":30").replaceAll(".75", ":45").replaceAll(".0", ":00"),
                             style:
                                 TextStyle(fontSize: 26, color: Colors.black87),
                             textAlign: TextAlign.left),
@@ -167,9 +214,17 @@ class EditAgenda extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: new Icon(Icons.arrow_drop_down,
-                            color: Color(0xFFD34B4B)),
-                      ),
+                          child: GestureDetector(
+                            onTap: () => setState(() {
+                              if(seance.end == 0){
+                                seance.end = 23.75;
+                              } else {
+                                seance.end -= 0.25;
+                              }
+                            }),
+                            child: new Icon(Icons.arrow_drop_down,
+                                size: 50, color: Color(0xFFD34B4B)),
+                          )),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -202,7 +257,7 @@ class EditAgenda extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    child: Text("15/10/2018",
+                    child: Text(seance.date.toString().substring(0,10),
                         style: TextStyle(fontSize: 24, color: Colors.black87),
                         textAlign: TextAlign.left),
                     margin: new EdgeInsets.only(top: 20)
@@ -219,7 +274,7 @@ class EditAgenda extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("agenda"),
+                onPressed: () => Navigator.pop(context),
                 child: Text('Confirmer les changements',
                     style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
@@ -233,6 +288,6 @@ class EditAgenda extends StatelessWidget {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-    ]);
+    ]));
   }
 }

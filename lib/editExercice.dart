@@ -7,7 +7,11 @@ class EditExercice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return Scaffold(
+        appBar: AppBar(
+        title: Text('Phoenyx Gym'),
+    ),
+    body: ListView(children: [
       Row(children: [
         Container(
             child: new Text("Nom du programme".toUpperCase(),
@@ -242,7 +246,7 @@ class EditExercice extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("editTraining"),
+                onPressed: () => Navigator.pop(context),
                 child: Text('Confirmer les changements',
                     style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
@@ -256,6 +260,6 @@ class EditExercice extends StatelessWidget {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-    ]);
+    ]));
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './createExercice.dart';
+import './editExercice.dart';
 
 class EditTraining extends StatelessWidget {
   final Function pageSelected;
@@ -7,7 +9,11 @@ class EditTraining extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return Scaffold(
+        appBar: AppBar(
+        title: Text('Phoenyx Gym'),
+    ),
+    body: ListView(children: [
       Row(children: [
         Container(
             child: new Text("Nom du programme".toUpperCase(),
@@ -74,7 +80,7 @@ class EditTraining extends StatelessWidget {
                   children: [
                     Container(
                       child: InkWell(
-                          onTap: () => pageSelected("editExercice"),
+                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditExercice())),
                           child: Text("Modifier l'exercice",
                               style: TextStyle(fontSize: 14, decoration: TextDecoration.underline)),
                     ), margin: new EdgeInsets.only(top: 2, bottom: 5)),
@@ -107,7 +113,7 @@ class EditTraining extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    child: InkWell(onTap: () => pageSelected("createExercice"),child: Text("Ajouter un nouvel exercice",
+                    child: InkWell(onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CreateExercice())),child: Text("Ajouter un nouvel exercice",
                         style: TextStyle(fontSize: 18, color: Colors.black87),
                         textAlign: TextAlign.left)),
                     alignment: Alignment.topLeft,
@@ -125,7 +131,7 @@ class EditTraining extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("Training"),
+                onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
                 child: Text('Enregister le programme',
                     style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
@@ -139,6 +145,6 @@ class EditTraining extends StatelessWidget {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-    ]);
+    ]));
   }
 }

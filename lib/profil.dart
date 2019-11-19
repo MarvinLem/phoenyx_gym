@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
+import './editProfil.dart';
 
-class Profil extends StatelessWidget {
+class User {
+  int height;
+  int weight;
+  DateTime birthday;
+  String sexe;
+
+  User({this.height, this.weight, this.birthday, this.sexe});
+}
+
+class Profil extends StatefulWidget {
   final Function pageSelected;
 
   Profil({this.pageSelected});
+
+  @override
+  State<StatefulWidget> createState() {
+    return ProfilState(pageSelected: pageSelected);
+  }
+}
+
+class ProfilState extends State<Profil> {
+  final Function pageSelected;
+
+  ProfilState({this.pageSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +126,12 @@ class Profil extends StatelessWidget {
         children: [
           Container(
               child: RaisedButton(
-                onPressed: () => pageSelected("editProfil"),
+                onPressed: () {
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EditProfil()),
+                  );
+                },
                 child: Text('Modifier le profil', style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(15),

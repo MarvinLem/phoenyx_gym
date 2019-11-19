@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './getAgenda.dart';
+import './editAgenda.dart';
 
 class Agenda extends StatelessWidget {
   final Function pageSelected;
@@ -34,7 +36,10 @@ class Agenda extends StatelessWidget {
               Column(children: [
                 Container(
                   child: InkWell(
-                      onTap: () => pageSelected("getAgenda"),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => GetAgenda()),
+                      ),
                       child: Center(
                           child: new Text(
                         "1",
@@ -256,7 +261,12 @@ class Agenda extends StatelessWidget {
                   margin: new EdgeInsets.only(top: 20.0)),
               Container(
                   child: InkWell(
-                      onTap: () => pageSelected("editAgenda"),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EditAgenda()),
+                        );
+                      },
                       child: Text("Changer l'horaire",
                           style: TextStyle(
                               fontSize: 14,
@@ -296,7 +306,12 @@ class Agenda extends StatelessWidget {
                   margin: new EdgeInsets.only(top: 20.0)),
               Container(
                   child: InkWell(
-                      onTap: () => pageSelected("editAgenda"),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EditAgenda()),
+                        );
+                      },
                       child: Text("Changer l'horaire",
                           style: TextStyle(
                               fontSize: 14,

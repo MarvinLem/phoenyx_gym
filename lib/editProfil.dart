@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
+import './profil.dart';
+import './custom_icons_icons.dart';
 
-class EditProfil extends StatelessWidget {
+class EditProfil extends StatefulWidget {
   final Function pageSelected;
 
   EditProfil({this.pageSelected});
 
   @override
+  State<StatefulWidget> createState() {
+    return EditProfilState(pageSelected: pageSelected);
+  }
+}
+
+class EditProfilState extends State<EditProfil> {
+  final Function pageSelected;
+
+  EditProfilState({this.pageSelected});
+
+  var user = User();
+  final _formKey = GlobalKey<FormState>();
+
+  @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Phoenyx Gym'),
+        ),
+        body: ListView(children: [
       Row(
         children: [
           Container(
@@ -36,11 +56,18 @@ class EditProfil extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
       ),
       Form(
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     icon: Icon(Icons.cake),
                     hintText: 'Entrez votre date de naissance',
@@ -51,7 +78,14 @@ class EditProfil extends StatelessWidget {
             ),
             Container(
               child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
+                    icon: Icon(Icons.straighten),
                     hintText: 'Entrez votre taille (en cm)',
                     labelText: 'Taille',
                   ),
@@ -60,7 +94,14 @@ class EditProfil extends StatelessWidget {
             ),
             Container(
               child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
+                    icon: Icon(CustomIcons.balance_scale),
                     hintText: 'Entrez votre poids (en kg)',
                     labelText: 'Poids',
                   ),
@@ -74,7 +115,13 @@ class EditProfil extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("Profil"),
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    Scaffold.of(context).showSnackBar(
+                        SnackBar(content: Text('Les données ont été changées')));
+                        Navigator.pop(context);
+                  }
+                },
                 child: Text('Sauvegarder les modifications',
                     style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
@@ -88,6 +135,6 @@ class EditProfil extends StatelessWidget {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-    ]);
+    ]));
   }
 }

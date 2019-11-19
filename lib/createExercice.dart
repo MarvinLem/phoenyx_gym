@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './exercice.dart';
 
 class CreateExercice extends StatelessWidget {
   final Function pageSelected;
@@ -7,7 +8,11 @@ class CreateExercice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return Scaffold(
+        appBar: AppBar(
+        title: Text('Phoenyx Gym'),
+    ),
+    body: ListView(children: [
       Row(children: [
         Container(
             child: new Text("Nom du programme".toUpperCase(),
@@ -55,7 +60,7 @@ class CreateExercice extends StatelessWidget {
           children: [
             Container(
               child: InkWell(
-                  onTap: () => pageSelected("Exercice"),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Exercice())),
                   child: Text("Pompes",
                       style: TextStyle(fontSize: 18, color: Colors.black87),
                       textAlign: TextAlign.center)),
@@ -161,7 +166,7 @@ class CreateExercice extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("editTraining"),
+                onPressed: () => Navigator.pop(context),
                 child:
                     Text('Ajouter 0 exercices', style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
@@ -175,6 +180,6 @@ class CreateExercice extends StatelessWidget {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-    ]);
+    ]));
   }
 }
