@@ -10,7 +10,7 @@ class CreateExercice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        title: Text('Phoenyx Gym'),
+        title: Text('Phoenix Gym'),
     ),
     body: ListView(children: [
       Row(children: [

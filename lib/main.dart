@@ -55,7 +55,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(title: Text("Phoenyx Gym")),
+      appBar: AppBar(title: Text("Phoenix Gym")),
       body: onItemTapped(selectedIndex),
       bottomNavigationBar: Bottom(onItemTapped: onItemTapped, selectedIndex: selectedIndex),
     );

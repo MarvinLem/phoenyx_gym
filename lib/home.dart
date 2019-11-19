@@ -11,7 +11,7 @@ class Home extends StatelessWidget {
       Container(
         child: Column(children: [
           Container(
-            child: new Text("Phoenyx Gym".toUpperCase(),
+            child: new Text("Phoenix Gym".toUpperCase(),
                 style: TextStyle(
                     fontFamily: 'Edo',
                     fontSize: 48,

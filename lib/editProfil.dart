@@ -25,7 +25,7 @@ class EditProfilState extends State<EditProfil> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Phoenyx Gym'),
+          title: Text('Phoenix Gym'),
         ),
         body: ListView(children: [
       Row(
