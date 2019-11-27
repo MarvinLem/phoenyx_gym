@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
 import './exercice.dart';
 
-class CreateExercice extends StatelessWidget {
+class ExerciceList {
+  bool pompes = false;
+  bool squat = false;
+  bool abdos = false;
+}
+
+class CreateExercice extends StatefulWidget {
   final Function pageSelected;
 
   CreateExercice({this.pageSelected});
+
+  @override
+  State<StatefulWidget> createState() {
+    return CreateExerciceState(pageSelected: pageSelected);
+  }
+}
+
+class CreateExerciceState extends State<CreateExercice> {
+  final Function pageSelected;
+
+  CreateExerciceState({this.pageSelected});
+
+  var exerciceList = new ExerciceList();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +92,15 @@ class CreateExercice extends StatelessWidget {
         Column(
           children: [
             Container(
-                child: new Icon(Icons.add_circle, color: Color(0xFFD34B4B)),
+                child: GestureDetector(
+                    onTap: () => setState(() {
+                      if (exerciceList.pompes) {
+                        exerciceList.pompes = false;
+                      } else {
+                        exerciceList.pompes = true;
+                      }
+                    }),
+                    child: exerciceList.pompes ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
                 margin: new EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
           ],
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,7 +141,15 @@ class CreateExercice extends StatelessWidget {
         Column(
           children: [
             Container(
-                child: new Icon(Icons.add_circle, color: Color(0xFFD34B4B)),
+                child: GestureDetector(
+                    onTap: () => setState(() {
+                      if (exerciceList.squat) {
+                        exerciceList.squat = false;
+                      } else {
+                        exerciceList.squat = true;
+                      }
+                    }),
+                    child: exerciceList.squat ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
                 margin: new EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
           ],
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -155,7 +190,15 @@ class CreateExercice extends StatelessWidget {
         Column(
           children: [
             Container(
-                child: new Icon(Icons.add_circle, color: Color(0xFFD34B4B)),
+                child: GestureDetector(
+                    onTap: () => setState(() {
+                      if (exerciceList.abdos) {
+                        exerciceList.abdos = false;
+                      } else {
+                        exerciceList.abdos = true;
+                      }
+                    }),
+                    child: exerciceList.abdos ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
                 margin: new EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
           ],
           crossAxisAlignment: CrossAxisAlignment.center,

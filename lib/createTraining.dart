@@ -65,7 +65,7 @@ class CreateTrainingState extends State<CreateTraining> {
                   Row(
                     children: [
                       Container(
-                          child: InkWell(
+                          child: GestureDetector(
                         onTap: () => setState(() {
                           program.session += 1;
                         }),
@@ -91,7 +91,7 @@ class CreateTrainingState extends State<CreateTraining> {
                   Row(
                     children: [
                       Container(
-                          child: InkWell(
+                          child: GestureDetector(
                         onTap: () => setState(() {
                           if(program.session>1){
                             program.session -= 1;
@@ -132,7 +132,7 @@ class CreateTrainingState extends State<CreateTraining> {
                   Row(
                     children: [
                       Container(
-                        child: InkWell(
+                        child: GestureDetector(
                           onTap: () => setState(() {
                               program.duration += 1;
                           }),
@@ -158,7 +158,7 @@ class CreateTrainingState extends State<CreateTraining> {
                   Row(
                     children: [
                       Container(
-                        child: InkWell(
+                        child: GestureDetector(
                             onTap: () => setState(() {
                               if(program.duration>1){
                                 program.duration -= 1;
@@ -196,7 +196,7 @@ class CreateTrainingState extends State<CreateTraining> {
         children: [
           Column(children: [
             Container(
-              child: InkWell(
+              child: GestureDetector(
                   onTap: () => setState(() {
                         if (program.monday) {
                           program.monday = false;
@@ -222,7 +222,7 @@ class CreateTrainingState extends State<CreateTraining> {
           ]),
           Column(children: [
             Container(
-              child: InkWell(
+              child: GestureDetector(
                   onTap: () => setState(() {
                         if (program.tuesday) {
                           program.tuesday = false;
@@ -248,7 +248,7 @@ class CreateTrainingState extends State<CreateTraining> {
           ]),
           Column(children: [
             Container(
-              child: InkWell(
+              child: GestureDetector(
                   onTap: () => setState(() {
                         if (program.wednesday) {
                           program.wednesday = false;
@@ -275,7 +275,7 @@ class CreateTrainingState extends State<CreateTraining> {
           ]),
           Column(children: [
             Container(
-              child: InkWell(
+              child: GestureDetector(
                   onTap: () => setState(() {
                         if (program.thursday) {
                           program.thursday = false;
@@ -301,7 +301,7 @@ class CreateTrainingState extends State<CreateTraining> {
           ]),
           Column(children: [
             Container(
-              child: InkWell(
+              child: GestureDetector(
                   onTap: () => setState(() {
                         if (program.friday) {
                           program.friday = false;
@@ -327,7 +327,7 @@ class CreateTrainingState extends State<CreateTraining> {
           ]),
           Column(children: [
             Container(
-              child: InkWell(
+              child: GestureDetector(
                   onTap: () => setState(() {
                         if (program.saturday) {
                           program.saturday = false;
@@ -353,7 +353,7 @@ class CreateTrainingState extends State<CreateTraining> {
           ]),
           Column(children: [
             Container(
-              child: InkWell(
+              child: GestureDetector(
                   onTap: () => setState(() {
                         if (program.sunday) {
                           program.sunday = false;

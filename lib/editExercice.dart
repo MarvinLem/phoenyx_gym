@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
 
-class EditExercice extends StatelessWidget {
+class ExerciceOptions{
+  double rest = 2.0;
+  int sets = 3;
+  int repetitions = 10;
+}
+
+class EditExercice extends StatefulWidget {
   final Function pageSelected;
 
   EditExercice({this.pageSelected});
+
+  @override
+  State<StatefulWidget> createState() {
+    return EditExerciceState(pageSelected: pageSelected);
+  }
+}
+
+class EditExerciceState extends State<EditExercice> {
+  final Function pageSelected;
+
+  EditExerciceState({this.pageSelected});
+
+  var exercice = new ExerciceOptions();
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +108,13 @@ class EditExercice extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: new Icon(Icons.arrow_drop_up,
-                            color: Color(0xFFD34B4B)),
-                      ),
+                          child: GestureDetector(
+                            onTap: () => setState(() {
+                              exercice.sets += 1;
+                            }),
+                            child: new Icon(Icons.arrow_drop_up,
+                                size: 50, color: Color(0xFFD34B4B)),
+                          )),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -99,7 +122,7 @@ class EditExercice extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: Text("3 séries",
+                        child: Text(exercice.sets.toString() + " séries",
                             style:
                                 TextStyle(fontSize: 18, color: Colors.black87),
                             textAlign: TextAlign.left),
@@ -111,9 +134,15 @@ class EditExercice extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: new Icon(Icons.arrow_drop_down,
-                            color: Color(0xFFD34B4B)),
-                      ),
+                          child: GestureDetector(
+                            onTap: () => setState(() {
+                              if(exercice.sets>1){
+                                exercice.sets -= 1;
+                              }
+                            }),
+                            child: new Icon(Icons.arrow_drop_down,
+                                size: 50, color: Color(0xFFD34B4B)),
+                          )),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -148,9 +177,13 @@ class EditExercice extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: new Icon(Icons.arrow_drop_up,
-                            color: Color(0xFFD34B4B)),
-                      ),
+                          child: GestureDetector(
+                            onTap: () => setState(() {
+                                exercice.repetitions += 1;
+                            }),
+                            child: new Icon(Icons.arrow_drop_up,
+                                size: 50, color: Color(0xFFD34B4B)),
+                          )),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -158,7 +191,7 @@ class EditExercice extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: Text("15 répétitions",
+                        child: Text(exercice.repetitions.toString() + " répétitions",
                             style:
                             TextStyle(fontSize: 18, color: Colors.black87),
                             textAlign: TextAlign.left),
@@ -170,9 +203,15 @@ class EditExercice extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: new Icon(Icons.arrow_drop_down,
-                            color: Color(0xFFD34B4B)),
-                      ),
+                          child: GestureDetector(
+                            onTap: () => setState(() {
+                              if(exercice.repetitions>1){
+                                exercice.repetitions -= 1;
+                              }
+                            }),
+                            child: new Icon(Icons.arrow_drop_down,
+                                size: 50, color: Color(0xFFD34B4B)),
+                          )),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -207,9 +246,17 @@ class EditExercice extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: new Icon(Icons.arrow_drop_up,
-                            color: Color(0xFFD34B4B)),
-                      ),
+                          child: GestureDetector(
+                            onTap: () => setState(() {
+                              if(exercice.rest == 10){
+                                exercice.rest = 0;
+                              } else {
+                                exercice.rest += 0.25;
+                              }
+                            }),
+                            child: new Icon(Icons.arrow_drop_up,
+                                size: 50, color: Color(0xFFD34B4B)),
+                          )),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -217,7 +264,7 @@ class EditExercice extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: Text("2 : 00",
+                        child: Text(exercice.rest.toString().replaceAll(".25", ":15").replaceAll(".5", ":30").replaceAll(".75", ":45").replaceAll(".0", ":00"),
                             style:
                             TextStyle(fontSize: 18, color: Colors.black87),
                             textAlign: TextAlign.left),
@@ -229,9 +276,17 @@ class EditExercice extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        child: new Icon(Icons.arrow_drop_down,
-                            color: Color(0xFFD34B4B)),
-                      ),
+                          child: GestureDetector(
+                            onTap: () => setState(() {
+                              if(exercice.rest == 0){
+                                exercice.rest = 10;
+                              } else {
+                                exercice.rest -= 0.25;
+                              }
+                            }),
+                            child: new Icon(Icons.arrow_drop_down,
+                                size: 50, color: Color(0xFFD34B4B)),
+                          )),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
