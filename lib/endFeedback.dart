@@ -49,7 +49,7 @@ class EndFeedback extends StatelessWidget {
                 Container(
                   decoration: new BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Color(0xFFD34B4B)),
+                    border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                     image: DecorationImage(
                       image: ExactAssetImage('assets/images/push-ups.png'),
                       fit: BoxFit.none,
@@ -115,7 +115,7 @@ class EndFeedback extends StatelessWidget {
                 Container(
                   decoration: new BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Color(0xFFD34B4B)),
+                    border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                     image: DecorationImage(
                       image: ExactAssetImage('assets/images/weightlifting.png'),
                       fit: BoxFit.none,
@@ -181,7 +181,7 @@ class EndFeedback extends StatelessWidget {
                 Container(
                   decoration: new BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Color(0xFFD34B4B)),
+                    border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                     image: DecorationImage(
                       image: ExactAssetImage('assets/images/abs-workout.png'),
                       fit: BoxFit.none,
@@ -270,7 +270,7 @@ class EndFeedback extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             alignment: Alignment.center,
-            margin: new EdgeInsets.only(top: 5.0, bottom: 10),
+            margin: new EdgeInsets.only(top: 5.0, bottom: 30),
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,

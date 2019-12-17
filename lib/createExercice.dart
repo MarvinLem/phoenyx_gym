@@ -5,6 +5,7 @@ class ExerciceList {
   bool pompes = false;
   bool squat = false;
   bool abdos = false;
+  int count = 0;
 }
 
 class CreateExercice extends StatefulWidget {
@@ -64,7 +65,7 @@ class CreateExerciceState extends State<CreateExercice> {
             Container(
               decoration: new BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Color(0xFFD34B4B)),
+                border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                 image: DecorationImage(
                   image: ExactAssetImage('assets/images/push-ups.png'),
                   fit: BoxFit.none,
@@ -96,8 +97,10 @@ class CreateExerciceState extends State<CreateExercice> {
                     onTap: () => setState(() {
                       if (exerciceList.pompes) {
                         exerciceList.pompes = false;
+                        exerciceList.count -= 1;
                       } else {
                         exerciceList.pompes = true;
+                        exerciceList.count += 1;
                       }
                     }),
                     child: exerciceList.pompes ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
@@ -113,7 +116,7 @@ class CreateExerciceState extends State<CreateExercice> {
             Container(
               decoration: new BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Color(0xFFD34B4B)),
+                border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                 image: DecorationImage(
                   image: ExactAssetImage('assets/images/weightlifting.png'),
                   fit: BoxFit.none,
@@ -145,8 +148,10 @@ class CreateExerciceState extends State<CreateExercice> {
                     onTap: () => setState(() {
                       if (exerciceList.squat) {
                         exerciceList.squat = false;
+                        exerciceList.count -= 1;
                       } else {
                         exerciceList.squat = true;
+                        exerciceList.count += 1;
                       }
                     }),
                     child: exerciceList.squat ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
@@ -162,7 +167,7 @@ class CreateExerciceState extends State<CreateExercice> {
             Container(
               decoration: new BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Color(0xFFD34B4B)),
+                border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                 image: DecorationImage(
                   image: ExactAssetImage('assets/images/abs-workout.png'),
                   fit: BoxFit.none,
@@ -194,8 +199,10 @@ class CreateExerciceState extends State<CreateExercice> {
                     onTap: () => setState(() {
                       if (exerciceList.abdos) {
                         exerciceList.abdos = false;
+                        exerciceList.count -= 1;
                       } else {
                         exerciceList.abdos = true;
+                        exerciceList.count += 1;
                       }
                     }),
                     child: exerciceList.abdos ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
@@ -209,16 +216,16 @@ class CreateExerciceState extends State<CreateExercice> {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: exerciceList.count == 0 ? null : () => Navigator.pop(context),
                 child:
-                    Text('Ajouter 0 exercices', style: TextStyle(fontSize: 18)),
+                    Text('Ajouter '+ exerciceList.count.toString() + ' exercices', style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(15),
                 color: Color(0xFFD34B4B),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             alignment: Alignment.center,
-            margin: new EdgeInsets.only(top: 10.0, bottom: 10),
+            margin: new EdgeInsets.only(top: 10.0, bottom: 30),
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,

@@ -130,7 +130,7 @@ class EditProfilState extends State<EditProfil> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             alignment: Alignment.center,
-            margin: new EdgeInsets.only(top: 30.0, bottom: 10),
+            margin: new EdgeInsets.only(top: 30.0, bottom: 30),
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,

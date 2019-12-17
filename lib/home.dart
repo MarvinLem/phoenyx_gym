@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './getTraining.dart';
 
 class Home extends StatelessWidget {
   final Function pageSelected;
@@ -35,46 +36,90 @@ class Home extends StatelessWidget {
                   Row(children: [
                     Column(children: [
                       Container(
-                      child: new Text(
-                          "13",
+                      child: Column(children: [
+                        Row(children:[
+                          new Text(
+                          "Wed",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 30,
+                            fontSize: 14,
                             color: Color(0xFFD34B4B),
                           )
-                        ),
+                        )]),
+                        Row(children:[
+                          new Text(
+                              "15",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xFFD34B4B),
+                              )
+                          )]),
+                        Row(children:[
+                          new Text(
+                              "Mars",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFFD34B4B),
+                              )
+                          )])
+                      ]),
                         decoration: BoxDecoration(
                             border: Border.all(color: Color(0xFFD34B4B)),
                             shape: BoxShape.circle),
                         constraints:
-                            BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-                        margin: new EdgeInsets.only(top: 15),
-                        padding: new EdgeInsets.all(15),
+                            BoxConstraints(minWidth: 36.0, minHeight: 36.0),
+                        margin: new EdgeInsets.only(top: 5),
+                        padding: new EdgeInsets.all(17),
                       ),
                     ]),
                     Column(children: [
                       Row(children: [
                         Container(
-                            child: Text("Lundi 15/10 - 17h -> 18h",
-                                style: TextStyle(fontSize: 16, color: Colors.black87)),
-                            margin: new EdgeInsets.only(left: 20, top: 20.0)),
+                            child: Text("Nom du programme",
+                                style: TextStyle(fontSize: 14, color: Colors.black87)),
+                            margin: new EdgeInsets.only(left: 8, top: 5)),
                       ]),
                       Row(children: [
                         Container(
                             child: Text("Entrainements pectoraux",
-                                style: TextStyle(fontSize: 16, color: Colors.black87)),
-                            margin: new EdgeInsets.only(left: 20, top: 10.0))
+                                style: TextStyle(fontSize: 14, color: Colors.black87)),
+                            margin: new EdgeInsets.only(left: 8, top: 10.0))
+                      ]),
+                      Row(children: [
+                        Container(
+                            child: Text("17:00 -> 18:00",
+                                style: TextStyle(fontSize: 14, color: Colors.black87)),
+                            margin: new EdgeInsets.only(left: 8, top: 10.0)),
                       ])
+                    ],crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center ),
+                    Column(children: [
+                      Row(children: [
+                      InkWell(
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => GetTraining())),
+                        child: Container(
+                            margin: new EdgeInsets.only(left: 14, top: 6),
+                            constraints: new BoxConstraints(minWidth: 70, minHeight: 70),
+                            decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black87,
+                            image: DecorationImage(
+                            image: ExactAssetImage('assets/images/chest_training.png'),
+                            fit: BoxFit.cover,
+                          ),),
+                        ))]),
                     ],crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center )
+                        mainAxisAlignment: MainAxisAlignment.start ),
                 ],
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start
               )], crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start),
               constraints: BoxConstraints(
-                  minWidth: MediaQuery.of(context).size.width - 40,maxWidth: MediaQuery.of(context).size.width - 40),
-              padding: new EdgeInsets.all(20),
+                  minWidth: MediaQuery.of(context).size.width - 30,maxWidth: MediaQuery.of(context).size.width - 30),
+              padding: new EdgeInsets.all(15),
               decoration: new BoxDecoration(
                   color: Color(0xFFFFFFFF),
                   borderRadius: BorderRadius.circular(10.0)))

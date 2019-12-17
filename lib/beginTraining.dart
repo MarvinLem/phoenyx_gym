@@ -36,13 +36,13 @@ class BeginTraining extends StatelessWidget {
               Container(
                 decoration: new BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: Color(0xFFD34B4B)),
+                  border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                   image: DecorationImage(
                     image: ExactAssetImage('assets/images/push-ups.png'),
                     fit: BoxFit.scaleDown,
                   ),
                 ),
-                margin: new EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 padding: new EdgeInsets.symmetric(horizontal: 35, vertical: 35),
               )
             ],
@@ -63,13 +63,13 @@ class BeginTraining extends StatelessWidget {
               Container(
                 decoration: new BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: Color(0xFFD34B4B)),
+                  border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                   image: DecorationImage(
                     image: ExactAssetImage('assets/images/push-ups.png'),
                     fit: BoxFit.scaleDown,
                   ),
                 ),
-                margin: new EdgeInsets.symmetric(horizontal: 15, vertical: 35),
+                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 35),
                 padding: new EdgeInsets.symmetric(horizontal: 45, vertical: 45),
               )
             ],
@@ -90,13 +90,13 @@ class BeginTraining extends StatelessWidget {
               Container(
                 decoration: new BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: Color(0xFFD34B4B)),
+                  border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                   image: DecorationImage(
                     image: ExactAssetImage('assets/images/push-ups.png'),
                     fit: BoxFit.scaleDown,
                   ),
                 ),
-                margin: new EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 20),
                 padding: new EdgeInsets.symmetric(horizontal: 35, vertical: 35),
               )
             ],
@@ -183,7 +183,7 @@ class BeginTraining extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             alignment: Alignment.center,
-            margin: new EdgeInsets.only(top: 10.0, bottom: 10),
+            margin: new EdgeInsets.only(top: 10.0, bottom: 30),
           ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,

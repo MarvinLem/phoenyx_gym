@@ -35,6 +35,7 @@ class Training extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 18,
                             color: Colors.white,
+                            letterSpacing: 1,
                             fontWeight: FontWeight.bold)),
                     color: Color(0xFF3F3F3F),
                     shape: RoundedRectangleBorder(
@@ -81,11 +82,12 @@ class Training extends StatelessWidget {
                         new Text("Debutant".toUpperCase(),
                             style: TextStyle(
                                 fontSize: 18,
+                                letterSpacing: 1,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                             textAlign: TextAlign.left),
-                        new Text("Entrainement pectoraux".toUpperCase(),
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+                        new Text("Entrainement pectoraux",
+                            style: TextStyle(fontSize: 16, letterSpacing: 1,color: Colors.white),
                             textAlign: TextAlign.left),
                       ],
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,11 +127,12 @@ class Training extends StatelessWidget {
               new Text("Debutant".toUpperCase(),
                   style: TextStyle(
                       fontSize: 18,
+                      letterSpacing: 1,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.left),
-              new Text("Entrainement jambes".toUpperCase(),
-                  style: TextStyle(fontSize: 16, color: Colors.white)),
+              new Text("Entrainement jambes",
+                  style: TextStyle(fontSize: 16, letterSpacing: 1,color: Colors.white)),
             ], crossAxisAlignment: CrossAxisAlignment.start),
             margin: new EdgeInsets.symmetric(
               horizontal: 20,

@@ -46,7 +46,7 @@ class HomeScreenState extends State<HomeScreen> {
     } else if(selectedIndex == 1) {
         return Training(pageSelected: pageSelected);
     } else if(selectedIndex == 2){
-        return Agenda(pageSelected: pageSelected);
+        return Agenda();
     } else if(selectedIndex == 3){
         return Profil(pageSelected: pageSelected);
     }
