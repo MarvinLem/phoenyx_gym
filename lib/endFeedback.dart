@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import './getTraining.dart';
 
 class EndFeedback extends StatelessWidget {
   final Function pageSelected;

@@ -1,20 +1,8 @@
 import 'package:flutter/material.dart';
 import './home.dart';
 import './training.dart';
-import './getTraining.dart';
-import './getAgenda.dart';
-import './exercice.dart';
-import './createTraining.dart';
-import './createExercice.dart';
-import './editTraining.dart';
-import './editExercice.dart';
-import './editAgenda.dart';
-import './beginTraining.dart';
-import './beginFeedback.dart';
-import './endFeedback.dart';
 import './agenda.dart';
 import './profil.dart';
-import './editProfil.dart';
 import './bottom.dart';
 import './style.dart';
 

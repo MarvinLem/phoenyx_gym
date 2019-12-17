@@ -35,11 +35,25 @@ class AgendaState extends State<Agenda> {
               SizedBox(
                   width: 340,
                   child: Container(
-                      child: Text("Octobre 2018", textAlign: TextAlign.center),
+                      child: Row(children: [
+                        Container(
+                          child: GestureDetector(
+                            child: new Icon(Icons.arrow_left,
+                                size: 30, color: Color(0xFFD34B4B)),
+                          ),
+                        ),
+                        Text("Octobre 2018", textAlign: TextAlign.center),
+                        Container(
+                          child: GestureDetector(
+                            child: new Icon(Icons.arrow_right,
+                                size: 30, color: Color(0xFFD34B4B)),
+                          ),
+                        ),
+                      ], mainAxisAlignment: MainAxisAlignment.center),
                       margin: new EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
                       padding: new EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                          horizontal: 20, vertical: 8),
                       decoration: BoxDecoration(
                           border: Border.all(color: Color(0xFFD34B4B))))),
               Row(children: [
