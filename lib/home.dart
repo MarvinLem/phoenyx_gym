@@ -69,28 +69,28 @@ class Home extends StatelessWidget {
                             border: Border.all(color: Color(0xFFD34B4B)),
                             shape: BoxShape.circle),
                         constraints:
-                            BoxConstraints(minWidth: 36.0, minHeight: 36.0),
+                            BoxConstraints(minWidth: 33.0, minHeight: 33.0),
                         margin: new EdgeInsets.only(top: 5),
-                        padding: new EdgeInsets.all(17),
+                        padding: new EdgeInsets.all(15),
                       ),
                     ]),
                     Column(children: [
                       Row(children: [
                         Container(
                             child: Text("Nom du programme",
-                                style: TextStyle(fontSize: 14, color: Colors.black87)),
+                                style: TextStyle(fontSize: 12, color: Colors.black87)),
                             margin: new EdgeInsets.only(left: 8, top: 5)),
                       ]),
                       Row(children: [
                         Container(
                             child: Text("Entrainements pectoraux",
-                                style: TextStyle(fontSize: 14, color: Colors.black87)),
+                                style: TextStyle(fontSize: 12, color: Colors.black87)),
                             margin: new EdgeInsets.only(left: 8, top: 10.0))
                       ]),
                       Row(children: [
                         Container(
                             child: Text("17:00 -> 18:00",
-                                style: TextStyle(fontSize: 14, color: Colors.black87)),
+                                style: TextStyle(fontSize: 12, color: Colors.black87)),
                             margin: new EdgeInsets.only(left: 8, top: 10.0)),
                       ])
                     ],crossAxisAlignment: CrossAxisAlignment.start,

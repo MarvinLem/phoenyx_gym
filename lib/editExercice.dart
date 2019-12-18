@@ -95,7 +95,7 @@ class EditExerciceState extends State<EditExercice> {
                             Container(
                                 child: Text("Nombre de séries:",
                                     style: TextStyle(
-                                        fontSize: 18, color: Colors.black87),
+                                        fontSize: 16, color: Colors.black87),
                                     textAlign: TextAlign.left)),
                           ],
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,7 +113,7 @@ class EditExerciceState extends State<EditExercice> {
                         }
                       }),
                       child: new Icon(Icons.chevron_left,
-                          size: 40, color: Color(0xFFD34B4B)),
+                          size: 30, color: Color(0xFFD34B4B)),
                     )),
                   ],
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -123,7 +123,7 @@ class EditExerciceState extends State<EditExercice> {
                   children: [
                     Container(
                       child: Text(exercice.sets.toString() + " séries",
-                          style: TextStyle(fontSize: 18, color: Colors.black87),
+                          style: TextStyle(fontSize: 16, color: Colors.black87),
                           textAlign: TextAlign.left),
                     ),
                   ],
@@ -138,7 +138,7 @@ class EditExerciceState extends State<EditExercice> {
                         exercice.sets += 1;
                       }),
                       child: new Icon(Icons.chevron_right,
-                          size: 40, color: Color(0xFFD34B4B)),
+                          size: 30, color: Color(0xFFD34B4B)),
                     )),
                   ],
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,7 +156,7 @@ class EditExerciceState extends State<EditExercice> {
                             Container(
                                 child: Text("Nombre de répétitions:",
                                     style: TextStyle(
-                                        fontSize: 18, color: Colors.black87),
+                                        fontSize: 16, color: Colors.black87),
                                     textAlign: TextAlign.left))
                           ],
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -174,7 +174,7 @@ class EditExerciceState extends State<EditExercice> {
                         }
                       }),
                       child: new Icon(Icons.chevron_left,
-                          size: 40, color: Color(0xFFD34B4B)),
+                          size: 30, color: Color(0xFFD34B4B)),
                     )),
                   ],
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -185,7 +185,7 @@ class EditExerciceState extends State<EditExercice> {
                     Container(
                       child: Text(
                           exercice.repetitions.toString() + " répétitions",
-                          style: TextStyle(fontSize: 18, color: Colors.black87),
+                          style: TextStyle(fontSize: 16, color: Colors.black87),
                           textAlign: TextAlign.left),
                     ),
                   ],
@@ -200,7 +200,7 @@ class EditExerciceState extends State<EditExercice> {
                         exercice.repetitions += 1;
                       }),
                       child: new Icon(Icons.chevron_right,
-                          size: 40, color: Color(0xFFD34B4B)),
+                          size: 30, color: Color(0xFFD34B4B)),
                     )),
                   ],
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -218,7 +218,7 @@ class EditExerciceState extends State<EditExercice> {
                             Container(
                                 child: Text("Temps de repos:",
                                     style: TextStyle(
-                                        fontSize: 18, color: Colors.black87),
+                                        fontSize: 16, color: Colors.black87),
                                     textAlign: TextAlign.left))
                           ],
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -238,7 +238,7 @@ class EditExerciceState extends State<EditExercice> {
                         }
                       }),
                       child: new Icon(Icons.chevron_left,
-                          size: 40, color: Color(0xFFD34B4B)),
+                          size: 30, color: Color(0xFFD34B4B)),
                     )),
                   ],
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -254,7 +254,7 @@ class EditExerciceState extends State<EditExercice> {
                               .replaceAll(".5", ":30")
                               .replaceAll(".75", ":45")
                               .replaceAll(".0", ":00"),
-                          style: TextStyle(fontSize: 18, color: Colors.black87),
+                          style: TextStyle(fontSize: 16, color: Colors.black87),
                           textAlign: TextAlign.left),
                     ),
                   ],
@@ -273,7 +273,7 @@ class EditExerciceState extends State<EditExercice> {
                         }
                       }),
                       child: new Icon(Icons.chevron_right,
-                          size: 40, color: Color(0xFFD34B4B)),
+                          size: 30, color: Color(0xFFD34B4B)),
                     )),
                   ],
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -295,7 +295,7 @@ class EditExerciceState extends State<EditExercice> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50))),
                 alignment: Alignment.center,
-                margin: new EdgeInsets.only(top: 40.0, bottom: 30),
+                margin: new EdgeInsets.only(top: 30.0, bottom: 30),
               ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
