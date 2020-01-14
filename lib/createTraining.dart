@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import './editTraining.dart';
 
+import './database/trainingDatabase.dart';
+
 class Program {
+  String name = "Nouveau programme";
   int session = 3;
   int duration = 5;
   bool monday = false;
@@ -15,196 +18,226 @@ class Program {
 }
 
 class Days extends StatefulWidget {
+  final index;
+  Days(this.index);
   @override
   State<StatefulWidget> createState() {
-    return DaysState();
+    return DaysState(index);
   }
 }
 
 class DaysState extends State<Days> {
+  final index;
+  DaysState(this.index);
   var program = new Program();
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
+        (index != null)
+            ? Column(children: [
+                Container(
+                  child: Center(
+                      child: new Text((index + 1).toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: program.monday
+                                  ? Colors.white
+                                  : Color(0xFFD34B4B),
+                              fontSize: 16))),
+                  decoration: BoxDecoration(
+                      color: Colors.transparent, shape: BoxShape.circle),
+                  constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                  margin: new EdgeInsets.only(top: 5, bottom: 5, right: 10),
+                ),
+              ])
+            : Container(),
         Column(children: [
-          Container(
-            child: GestureDetector(
-                onTap: () => setState(() {
-                      if (program.monday) {
-                        program.monday = false;
-                      } else {
-                        program.monday = true;
-                      }
-                    }),
+          GestureDetector(
+              onTap: () => setState(() {
+                    if (program.monday) {
+                      program.monday = false;
+                    } else {
+                      program.monday = true;
+                    }
+                  }),
+              child: Container(
                 child: Center(
                     child: new Text("L",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: program.monday
                                 ? Colors.white
-                                : Color(0xFFD34B4B))))),
-            decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFD34B4B)),
-                color: program.monday ? Color(0xFFD34B4B) : Colors.transparent,
-                shape: BoxShape.circle),
-            constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-            margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-          ),
+                                : Color(0xFFD34B4B)))),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFFD34B4B)),
+                    color:
+                        program.monday ? Color(0xFFD34B4B) : Colors.transparent,
+                    shape: BoxShape.circle),
+                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              )),
         ]),
         Column(children: [
-          Container(
-            child: GestureDetector(
-                onTap: () => setState(() {
-                      if (program.tuesday) {
-                        program.tuesday = false;
-                      } else {
-                        program.tuesday = true;
-                      }
-                    }),
+          GestureDetector(
+              onTap: () => setState(() {
+                    if (program.tuesday) {
+                      program.tuesday = false;
+                    } else {
+                      program.tuesday = true;
+                    }
+                  }),
+              child: Container(
                 child: Center(
                     child: new Text("M",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: program.tuesday
                                 ? Colors.white
-                                : Color(0xFFD34B4B))))),
-            decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFD34B4B)),
-                color: program.tuesday ? Color(0xFFD34B4B) : Colors.transparent,
-                shape: BoxShape.circle),
-            constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-            margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-          ),
+                                : Color(0xFFD34B4B)))),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFFD34B4B)),
+                    color: program.tuesday
+                        ? Color(0xFFD34B4B)
+                        : Colors.transparent,
+                    shape: BoxShape.circle),
+                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              )),
         ]),
         Column(children: [
-          Container(
-            child: GestureDetector(
-                onTap: () => setState(() {
-                      if (program.wednesday) {
-                        program.wednesday = false;
-                      } else {
-                        program.wednesday = true;
-                      }
-                    }),
+          GestureDetector(
+              onTap: () => setState(() {
+                    if (program.wednesday) {
+                      program.wednesday = false;
+                    } else {
+                      program.wednesday = true;
+                    }
+                  }),
+              child: Container(
                 child: Center(
                     child: new Text("M",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: program.wednesday
                                 ? Colors.white
-                                : Color(0xFFD34B4B))))),
-            decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFD34B4B)),
-                color:
-                    program.wednesday ? Color(0xFFD34B4B) : Colors.transparent,
-                shape: BoxShape.circle),
-            constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-            margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-          ),
+                                : Color(0xFFD34B4B)))),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFFD34B4B)),
+                    color: program.wednesday
+                        ? Color(0xFFD34B4B)
+                        : Colors.transparent,
+                    shape: BoxShape.circle),
+                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              )),
         ]),
         Column(children: [
-          Container(
-            child: GestureDetector(
-                onTap: () => setState(() {
-                      if (program.thursday) {
-                        program.thursday = false;
-                      } else {
-                        program.thursday = true;
-                      }
-                    }),
+          GestureDetector(
+              onTap: () => setState(() {
+                    if (program.thursday) {
+                      program.thursday = false;
+                    } else {
+                      program.thursday = true;
+                    }
+                  }),
+              child: Container(
                 child: Center(
                     child: new Text("J",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: program.thursday
                                 ? Colors.white
-                                : Color(0xFFD34B4B))))),
-            decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFD34B4B)),
-                color:
-                    program.thursday ? Color(0xFFD34B4B) : Colors.transparent,
-                shape: BoxShape.circle),
-            constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-            margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-          ),
+                                : Color(0xFFD34B4B)))),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFFD34B4B)),
+                    color: program.thursday
+                        ? Color(0xFFD34B4B)
+                        : Colors.transparent,
+                    shape: BoxShape.circle),
+                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              )),
         ]),
         Column(children: [
-          Container(
-            child: GestureDetector(
-                onTap: () => setState(() {
-                      if (program.friday) {
-                        program.friday = false;
-                      } else {
-                        program.friday = true;
-                      }
-                    }),
+          GestureDetector(
+              onTap: () => setState(() {
+                    if (program.friday) {
+                      program.friday = false;
+                    } else {
+                      program.friday = true;
+                    }
+                  }),
+              child: Container(
                 child: Center(
                     child: new Text("V",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: program.friday
                                 ? Colors.white
-                                : Color(0xFFD34B4B))))),
-            decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFD34B4B)),
-                color: program.friday ? Color(0xFFD34B4B) : Colors.transparent,
-                shape: BoxShape.circle),
-            constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-            margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-          ),
+                                : Color(0xFFD34B4B)))),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFFD34B4B)),
+                    color:
+                        program.friday ? Color(0xFFD34B4B) : Colors.transparent,
+                    shape: BoxShape.circle),
+                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              )),
         ]),
         Column(children: [
-          Container(
-            child: GestureDetector(
-                onTap: () => setState(() {
-                      if (program.saturday) {
-                        program.saturday = false;
-                      } else {
-                        program.saturday = true;
-                      }
-                    }),
+          GestureDetector(
+              onTap: () => setState(() {
+                    if (program.saturday) {
+                      program.saturday = false;
+                    } else {
+                      program.saturday = true;
+                    }
+                  }),
+              child: Container(
                 child: Center(
                     child: new Text("S",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: program.saturday
                                 ? Colors.white
-                                : Color(0xFFD34B4B))))),
-            decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFD34B4B)),
-                color:
-                    program.saturday ? Color(0xFFD34B4B) : Colors.transparent,
-                shape: BoxShape.circle),
-            constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-            margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-          ),
+                                : Color(0xFFD34B4B)))),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFFD34B4B)),
+                    color: program.saturday
+                        ? Color(0xFFD34B4B)
+                        : Colors.transparent,
+                    shape: BoxShape.circle),
+                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              )),
         ]),
         Column(children: [
-          Container(
-            child: GestureDetector(
-                onTap: () => setState(() {
-                      if (program.sunday) {
-                        program.sunday = false;
-                      } else {
-                        program.sunday = true;
-                      }
-                    }),
+          GestureDetector(
+              onTap: () => setState(() {
+                    if (program.sunday) {
+                      program.sunday = false;
+                    } else {
+                      program.sunday = true;
+                    }
+                  }),
+              child: Container(
                 child: Center(
                     child: new Text("D",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: program.sunday
                                 ? Colors.white
-                                : Color(0xFFD34B4B))))),
-            decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFD34B4B)),
-                color: program.sunday ? Color(0xFFD34B4B) : Colors.transparent,
-                shape: BoxShape.circle),
-            constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-            margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          ),
+                                : Color(0xFFD34B4B)))),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xFFD34B4B)),
+                    color:
+                        program.sunday ? Color(0xFFD34B4B) : Colors.transparent,
+                    shape: BoxShape.circle),
+                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              )),
         ]),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
@@ -225,10 +258,29 @@ class CreateTraining extends StatefulWidget {
 
 class CreateTrainingState extends State<CreateTraining> {
   final Function pageSelected;
+  TrainingDatabase db = TrainingDatabase();
+  final formController = TextEditingController();
 
   CreateTrainingState({this.pageSelected});
 
   var program = new Program();
+
+  trainingCreated(name, session, duration) async{
+    var training = TrainingModel(name: name, session: session, duration: duration);
+    await db.initDB();
+    db.insert(training);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditTraining()));
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    formController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -268,6 +320,7 @@ class CreateTrainingState extends State<CreateTraining> {
                     }
                     return null;
                   },
+                  controller: formController,
                   decoration: InputDecoration(
                     hintText: 'Entrez le nom de votre programme',
                   ),
@@ -464,18 +517,15 @@ class CreateTrainingState extends State<CreateTraining> {
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           program.repeat
-              ? Days()
+              ? Days(null)
               : new Column(
                   children: new List.generate(
-                      program.duration, (index) => new Days())),
+                      program.duration, (index) => new Days(index))),
           Row(
             children: [
               Container(
                 child: RaisedButton(
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EditTraining())),
+                    onPressed: () => trainingCreated(formController.text,program.session,program.duration),
                     child: Text('Créer le programme',
                         style: TextStyle(fontSize: 18)),
                     textColor: Colors.white,

@@ -2,10 +2,85 @@ import 'package:flutter/material.dart';
 import './createTraining.dart';
 import './getTraining.dart';
 
-class Training extends StatelessWidget {
-  final Function pageSelected;
+import './database/trainingDatabase.dart';
 
-  Training({this.pageSelected});
+class Training extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return TrainingState();
+  }
+}
+
+class TrainingState extends State<Training> {
+  TrainingDatabase db = TrainingDatabase();
+  List<String> training = [];
+
+  @override
+  void initState() {
+    getAllTraining();
+  }
+
+  getAllTraining() {
+    return FutureBuilder(
+        future: db.getAllTraining(),
+        builder: (BuildContext context,
+            AsyncSnapshot<dynamic> snapshot) {
+          if(snapshot.hasData) {
+            return Column(children: [
+              for (TrainingModel training in snapshot.data)
+                Row(
+                  children: [
+                    InkWell(
+                      child: Container(
+                        decoration: new BoxDecoration(
+                          borderRadius: new BorderRadius.circular(20.0),
+                          color: Colors.black87,
+                          image: DecorationImage(
+                            image: ExactAssetImage(
+                                'assets/images/chest_training.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Column(children: [
+                          new Text(training.name.toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  letterSpacing: 1,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.left),
+                        ], crossAxisAlignment: CrossAxisAlignment.start),
+                        margin: new EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          top: 20,
+                        ),
+                        padding: new EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        alignment: Alignment.bottomLeft,
+                        constraints: BoxConstraints(
+                            minWidth: MediaQuery
+                                .of(context)
+                                .size
+                                .width - 40,
+                            minHeight: 120.0),
+                      ),
+                      onTap: () =>
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (context) => GetTraining())),
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+            ]);
+          } else {
+            return Center();
+          }
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +94,7 @@ class Training extends StatelessWidget {
                     fontWeight: FontWeight.bold)),
             margin: new EdgeInsets.only(left: 20.0, top: 20.0))
       ]),
+      getAllTraining(),
       Row(
         children: [
           Container(
@@ -38,9 +114,9 @@ class Training extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => CreateTraining())),
-                    child: new Text("Creer votre programme".toUpperCase(),
+                    child: new Text("Creer un nouveau programme".toUpperCase(),
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             color: Colors.white,
                             letterSpacing: 1,
                             fontWeight: FontWeight.bold)),
@@ -50,9 +126,10 @@ class Training extends StatelessWidget {
                 decoration: new BoxDecoration(
                   borderRadius: new BorderRadius.circular(20.0),
                 )),
-            margin: new EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 20,
+            margin: new EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
             ),
             alignment: Alignment.center,
           )

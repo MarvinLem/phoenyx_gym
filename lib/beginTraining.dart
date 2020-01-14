@@ -157,7 +157,7 @@ class BeginTraining extends StatelessWidget {
           Container(
             child: RaisedButton(
                 onPressed: () => pageSelected("beginTraining"),
-                child: Text('Mettre en pause la séance',
+                child: Text('Passer le temps de repos',
                     style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(15),

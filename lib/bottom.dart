@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Bottom extends StatelessWidget {
-  final Function onItemTapped;
   final int selectedIndex;
+  final onItemTapped;
 
-  Bottom({this.onItemTapped, this.selectedIndex});
+  Bottom({this.selectedIndex, this.onItemTapped});
 
   @override
   Widget build(BuildContext context) {

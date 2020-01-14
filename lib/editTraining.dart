@@ -59,6 +59,7 @@ class EditTraining extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
         )
       ], mainAxisAlignment: MainAxisAlignment.center,),
+      /*
       Row(children: [
         Column(
           children: [
@@ -128,6 +129,7 @@ class EditTraining extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start)
       ]),
+       */
       Row(children: [
         Column(
           children: [
