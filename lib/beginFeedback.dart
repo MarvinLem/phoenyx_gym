@@ -1,20 +1,118 @@
 import 'package:flutter/material.dart';
+import 'package:basic_utils/basic_utils.dart';
 import './endFeedback.dart';
+
+import './database/exercicesDatabase.dart';
 
 class Feedback {
   List exerciceArray = ['J\'ai réussi mes exercices normalement','J\'ai réussi mes exercices normalement','J\'ai réussi mes exercices normalement'];
 }
 
 class BeginFeedback extends StatefulWidget {
+  int trainingId;
+
+  BeginFeedback({this.trainingId});
+
   @override
   State<StatefulWidget> createState() {
-    return BeginFeedbackState();
+    return BeginFeedbackState(trainingId: trainingId);
   }
 }
 
 class BeginFeedbackState extends State<BeginFeedback> {
+  int trainingId;
+  ExercicesDatabase db = ExercicesDatabase();
+
+  BeginFeedbackState({this.trainingId});
 
   var feedback = new Feedback();
+
+  @override
+  void initState() {
+    getExercicesByTrainingId(trainingId);
+  }
+
+  getExercicesByTrainingId(trainingId) {
+    return FutureBuilder(
+        future: db.getExercicesByTrainingId(trainingId),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            return Column(children: [
+              for (ExercicesModel exercice in snapshot.data)
+                Column(children: [
+                Row(
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              border:
+                              Border.all(width: 2.0, color: Color(0xFFD34B4B)),
+                              image: DecorationImage(
+                                image: ExactAssetImage('assets/images/'+exercice.name+'.png'),
+                                fit: BoxFit.none,
+                              ),
+                            ),
+                            constraints:
+                            BoxConstraints(minWidth: 80.0, minHeight: 80.0),
+                            margin:
+                            new EdgeInsets.only(right: 20, top: 20, bottom: 20),
+                          )
+                        ],
+                      ),
+                      Column(
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  child: Text(StringUtils.capitalize(exercice.name),
+                                      style: TextStyle(
+                                          fontSize: 18, color: Colors.black87),
+                                      textAlign: TextAlign.left),
+                                  alignment: Alignment.topLeft,
+                                  margin: new EdgeInsets.only(bottom: 5),
+                                ),
+                              ],
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                          ],
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center)
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center),
+              Row(
+                  children: [
+                    Container(
+                      child: new DropdownButton<String>(
+                        value: feedback.exerciceArray[exercice.exerciceOrder - 1].toString(),
+                        items: <String>['J\'ai réussi mes exercices normalement', 'J\'ai réussi mes exercices et j\'aurais pu travailler plus', 'J\'ai réussi mais j\'ai eu des difficultés à la fin des exercices', 'Je n\'ai pas réussi à terminer les exercices'].map((String value) {
+                          return new DropdownMenuItem<String>(
+                            value: value,
+                            child: new Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (value) => setState(() {
+                          feedback.exerciceArray[exercice.exerciceOrder - 1] = value;
+                        }),
+                        style: TextStyle(fontSize: 12, color: Colors.black),
+                      ),
+                      constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width-40),
+                      padding:
+                      new EdgeInsets.symmetric(vertical: 10),
+                      margin: new EdgeInsets.only(bottom: 15),
+                    ),
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center)]),
+            ]);
+          } else {
+            return Center();
+          }
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,215 +150,13 @@ class BeginFeedbackState extends State<BeginFeedback> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
           ),
-          Row(
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(width: 2.0, color: Color(0xFFD34B4B)),
-                        image: DecorationImage(
-                          image: ExactAssetImage('assets/images/push-ups.png'),
-                          fit: BoxFit.none,
-                        ),
-                      ),
-                      constraints:
-                          BoxConstraints(minWidth: 80.0, minHeight: 80.0),
-                      margin:
-                          new EdgeInsets.only(right: 20, top: 20, bottom: 20),
-                    )
-                  ],
-                ),
-                Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Text("Pompes",
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black87),
-                                textAlign: TextAlign.left),
-                            alignment: Alignment.topLeft,
-                            margin: new EdgeInsets.only(bottom: 5),
-                          ),
-                        ],
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                      ),
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center)
-              ],
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center),
-          Row(
-              children: [
-                Container(
-                  child: new DropdownButton<String>(
-                    value: feedback.exerciceArray[0].toString(),
-                    items: <String>['J\'ai réussi mes exercices normalement', 'J\'ai réussi mes exercices et j\'aurais pu travailler plus', 'J\'ai réussi mais j\'ai eu des difficultés à la fin des exercices', 'Je n\'ai pas réussi à terminer les exercices'].map((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: new Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (value) => setState(() {
-                      feedback.exerciceArray[0] = value;
-                    }),
-                    style: TextStyle(fontSize: 12, color: Colors.black),
-                  ),
-                  constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width-40),
-                  padding:
-                      new EdgeInsets.symmetric(vertical: 10),
-                  margin: new EdgeInsets.only(bottom: 15),
-                ),
-              ],
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center),
-          Row(
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(width: 2.0, color: Color(0xFFD34B4B)),
-                        image: DecorationImage(
-                          image: ExactAssetImage(
-                              'assets/images/weightlifting.png'),
-                          fit: BoxFit.none,
-                        ),
-                      ),
-                      constraints:
-                          BoxConstraints(minWidth: 80.0, minHeight: 80.0),
-                      margin:
-                          new EdgeInsets.only(right: 20, top: 20, bottom: 20),
-                    )
-                  ],
-                ),
-                Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Text("Squat",
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black87),
-                                textAlign: TextAlign.left),
-                            alignment: Alignment.topLeft,
-                            margin: new EdgeInsets.only(bottom: 5),
-                          ),
-                        ],
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                      ),
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center)
-              ],
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center),
-          Row(
-              children: [
-                Container(
-                  child: new DropdownButton<String>(
-                    value: feedback.exerciceArray[1].toString(),
-                    items: <String>['J\'ai réussi mes exercices normalement', 'J\'ai réussi mes exercices et j\'aurais pu travailler plus', 'J\'ai réussi mais j\'ai eu des difficultés à la fin des exercices', 'Je n\'ai pas réussi à terminer les exercices'].map((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: new Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (value) => setState(() {
-                      feedback.exerciceArray[1] = value;
-                    }),
-                    style: TextStyle(fontSize: 12, color: Colors.black),
-                  ),
-                  constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width-40),
-                  padding:
-                  new EdgeInsets.symmetric(vertical: 10),
-                  margin: new EdgeInsets.only(bottom: 15),
-                ),
-              ],
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center),
-          Row(
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(width: 2.0, color: Color(0xFFD34B4B)),
-                        image: DecorationImage(
-                          image:
-                              ExactAssetImage('assets/images/abs-workout.png'),
-                          fit: BoxFit.none,
-                        ),
-                      ),
-                      constraints:
-                          BoxConstraints(minWidth: 80.0, minHeight: 80.0),
-                      margin:
-                          new EdgeInsets.only(right: 20, top: 20, bottom: 20),
-                    )
-                  ],
-                ),
-                Column(
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Text("Abdos",
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.black87),
-                                textAlign: TextAlign.left),
-                            alignment: Alignment.topLeft,
-                            margin: new EdgeInsets.only(bottom: 5),
-                          ),
-                        ],
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                      ),
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center)
-              ],
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center),
-          Row(
-              children: [
-                Container(
-                  child: new DropdownButton<String>(
-                    value: feedback.exerciceArray[2].toString(),
-                    items: <String>['J\'ai réussi mes exercices normalement', 'J\'ai réussi mes exercices et j\'aurais pu travailler plus', 'J\'ai réussi mais j\'ai eu des difficultés à la fin des exercices', 'Je n\'ai pas réussi à terminer les exercices'].map((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: new Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (value) => setState(() {
-                      feedback.exerciceArray[2] = value;
-                    }),
-                    style: TextStyle(fontSize: 12, color: Colors.black),
-                  ),
-                  constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width-40),
-                  padding:
-                  new EdgeInsets.symmetric(vertical: 10),
-                  margin: new EdgeInsets.only(bottom: 15),
-                ),
-              ],
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center),
+          getExercicesByTrainingId(trainingId),
           Row(
             children: [
               Container(
                 child: RaisedButton(
                     onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => EndFeedback())),
+                        MaterialPageRoute(builder: (context) => EndFeedback(trainingId: trainingId,exerciceArray: feedback.exerciceArray))),
                     child: Text('Valider le feedback',
                         style: TextStyle(fontSize: 18)),
                     textColor: Colors.white,

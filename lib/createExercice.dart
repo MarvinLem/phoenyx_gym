@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import './exercice.dart';
 
+import './database/exercicesDatabase.dart';
+
 class ExerciceList {
+  var exercicesNames = [];
   bool pompes = false;
   bool squat = false;
   bool abdos = false;
@@ -9,22 +12,48 @@ class ExerciceList {
 }
 
 class CreateExercice extends StatefulWidget {
-  final Function pageSelected;
+  int trainingId;
 
-  CreateExercice({this.pageSelected});
+  CreateExercice({this.trainingId});
 
   @override
   State<StatefulWidget> createState() {
-    return CreateExerciceState(pageSelected: pageSelected);
+    return CreateExerciceState(trainingId: trainingId);
   }
 }
 
 class CreateExerciceState extends State<CreateExercice> {
-  final Function pageSelected;
+  int trainingId;
+  int exerciceCount = 0;
+  ExercicesDatabase db = ExercicesDatabase();
 
-  CreateExerciceState({this.pageSelected});
+  CreateExerciceState({this.trainingId});
 
   var exerciceList = new ExerciceList();
+
+  @override
+  void initState() {
+    getExercicesByTrainingId(trainingId);
+  }
+
+  getExercicesByTrainingId(trainingId) async {
+    var exercices = await db.getExercicesByTrainingId(trainingId);
+    exerciceCount = exercices.length;
+  }
+
+  exercicesCreated() async{
+    for(var i=0;i<exerciceList.exercicesNames.length;i++) {
+      var exercice = ExercicesModel(name: exerciceList.exercicesNames[i],
+          series: 3,
+          repetitions: 10,
+          weight: 0,
+          rest: 120,
+          exerciceOrder: i+1+exerciceCount,
+          trainingId: trainingId);
+      db.insert(exercice);
+    }
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +96,7 @@ class CreateExerciceState extends State<CreateExercice> {
                 shape: BoxShape.circle,
                 border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                 image: DecorationImage(
-                  image: ExactAssetImage('assets/images/push-ups.png'),
+                  image: ExactAssetImage('assets/images/pompes.png'),
                   fit: BoxFit.none,
                 ),
               ),
@@ -98,9 +127,11 @@ class CreateExerciceState extends State<CreateExercice> {
                       if (exerciceList.pompes) {
                         exerciceList.pompes = false;
                         exerciceList.count -= 1;
+                        exerciceList.exercicesNames.remove("pompes");
                       } else {
                         exerciceList.pompes = true;
                         exerciceList.count += 1;
+                        exerciceList.exercicesNames.add("pompes");
                       }
                     }),
                     child: exerciceList.pompes ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
@@ -118,7 +149,7 @@ class CreateExerciceState extends State<CreateExercice> {
                 shape: BoxShape.circle,
                 border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                 image: DecorationImage(
-                  image: ExactAssetImage('assets/images/weightlifting.png'),
+                  image: ExactAssetImage('assets/images/squat.png'),
                   fit: BoxFit.none,
                 ),
               ),
@@ -131,7 +162,6 @@ class CreateExerciceState extends State<CreateExercice> {
           children: [
             Container(
               child: InkWell(
-                  onTap: () => pageSelected("Exercice"),
                   child: Text("Squat",
                       style: TextStyle(fontSize: 18, color: Colors.black87),
                       textAlign: TextAlign.center)),
@@ -149,9 +179,11 @@ class CreateExerciceState extends State<CreateExercice> {
                       if (exerciceList.squat) {
                         exerciceList.squat = false;
                         exerciceList.count -= 1;
+                        exerciceList.exercicesNames.remove("squat");
                       } else {
                         exerciceList.squat = true;
                         exerciceList.count += 1;
+                        exerciceList.exercicesNames.add("squat");
                       }
                     }),
                     child: exerciceList.squat ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
@@ -169,7 +201,7 @@ class CreateExerciceState extends State<CreateExercice> {
                 shape: BoxShape.circle,
                 border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                 image: DecorationImage(
-                  image: ExactAssetImage('assets/images/abs-workout.png'),
+                  image: ExactAssetImage('assets/images/abdos.png'),
                   fit: BoxFit.none,
                 ),
               ),
@@ -182,7 +214,6 @@ class CreateExerciceState extends State<CreateExercice> {
           children: [
             Container(
               child: InkWell(
-                  onTap: () => pageSelected("Exercice"),
                   child: Text("Abdos",
                       style: TextStyle(fontSize: 18, color: Colors.black87),
                       textAlign: TextAlign.center)),
@@ -200,9 +231,11 @@ class CreateExerciceState extends State<CreateExercice> {
                       if (exerciceList.abdos) {
                         exerciceList.abdos = false;
                         exerciceList.count -= 1;
+                        exerciceList.exercicesNames.remove("abdos");
                       } else {
                         exerciceList.abdos = true;
                         exerciceList.count += 1;
+                        exerciceList.exercicesNames.add("abdos");
                       }
                     }),
                     child: exerciceList.abdos ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
@@ -216,7 +249,7 @@ class CreateExerciceState extends State<CreateExercice> {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: exerciceList.count == 0 ? null : () => Navigator.pop(context),
+                onPressed: exerciceList.count == 0 ? null : () => exercicesCreated(),
                 child:
                     Text('Ajouter '+ exerciceList.count.toString() + ' exercices', style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,

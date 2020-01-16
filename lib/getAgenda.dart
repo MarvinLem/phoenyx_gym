@@ -182,7 +182,7 @@ class GetAgenda extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                 image: DecorationImage(
-                  image: ExactAssetImage('assets/images/abs-workout.png'),
+                  image: ExactAssetImage('assets/images/abdos.png'),
                   fit: BoxFit.none,
                 ),
               ),

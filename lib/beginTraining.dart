@@ -1,10 +1,65 @@
 import 'package:flutter/material.dart';
 import './beginFeedback.dart';
 
-class BeginTraining extends StatelessWidget {
-  final Function pageSelected;
+import './database/exercicesDatabase.dart';
 
-  BeginTraining({this.pageSelected});
+class BeginTraining extends StatefulWidget {
+  int trainingId;
+  int maxOrder;
+
+  BeginTraining({this.trainingId, this.maxOrder});
+
+  @override
+  State<StatefulWidget> createState() {
+    return BeginTrainingState(trainingId: trainingId, maxOrder: maxOrder);
+  }
+}
+
+class BeginTrainingState extends State<BeginTraining> {
+  int trainingId;
+  int maxOrder;
+  int order = 1;
+  ExercicesDatabase db = ExercicesDatabase();
+  List<String> exercices = [];
+
+  BeginTrainingState({this.trainingId, this.maxOrder});
+
+  @override
+  void initState() {
+    getExercicesByTrainingIdAndOrder(trainingId, order);
+  }
+
+  getExercicesByTrainingIdAndOrder(trainingId, order) {
+    return FutureBuilder(
+        future: db.getExercicesByTrainingIdAndOrder(trainingId, order),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            return Column(children: [
+              for (ExercicesModel exercice in snapshot.data)
+                Row(children: [Column(
+                  children: [
+                    Container(
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
+                        image: DecorationImage(
+                          image: ExactAssetImage('assets/images/'+exercice.name+'.png'),
+                          fit: BoxFit.scaleDown,
+                        ),
+                      ),
+                      margin: new EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+                      padding: new EdgeInsets.symmetric(horizontal: 35, vertical: 35),
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                )])
+            ]);
+          } else {
+            return Center();
+          }
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,24 +86,7 @@ class BeginTraining extends StatelessWidget {
       ),
       Row(
         children: [
-          Column(
-            children: [
-              Container(
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
-                  image: DecorationImage(
-                    image: ExactAssetImage('assets/images/push-ups.png'),
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
-                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                padding: new EdgeInsets.symmetric(horizontal: 35, vertical: 35),
-              )
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-          ),
+          getExercicesByTrainingIdAndOrder(trainingId, order),
           Column(
             children: [
               Container(
@@ -58,24 +96,7 @@ class BeginTraining extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
           ),
-          Column(
-            children: [
-              Container(
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
-                  image: DecorationImage(
-                    image: ExactAssetImage('assets/images/push-ups.png'),
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
-                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 35),
-                padding: new EdgeInsets.symmetric(horizontal: 45, vertical: 45),
-              )
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-          ),
+          getExercicesByTrainingIdAndOrder(trainingId, order+1),
           Column(
             children: [
               Container(
@@ -85,24 +106,7 @@ class BeginTraining extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
           ),
-          Column(
-            children: [
-              Container(
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
-                  image: DecorationImage(
-                    image: ExactAssetImage('assets/images/push-ups.png'),
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
-                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                padding: new EdgeInsets.symmetric(horizontal: 35, vertical: 35),
-              )
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-          ),
+          getExercicesByTrainingIdAndOrder(trainingId, order+2),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,8 +160,14 @@ class BeginTraining extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => pageSelected("beginTraining"),
-                child: Text('Passer le temps de repos',
+                onPressed: () => setState(() {
+                  if(order == maxOrder){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => BeginFeedback(trainingId: trainingId)));
+                  } else {
+                    order += 1;
+                  }
+                }),
+                child: Text('Séance terminée',
                     style: TextStyle(fontSize: 18)),
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(15),
@@ -174,7 +184,7 @@ class BeginTraining extends StatelessWidget {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BeginFeedback())),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BeginFeedback(trainingId: trainingId))),
                 child: Text('Mettre fin à la séance',
                     style: TextStyle(fontSize: 12)),
                 textColor: Colors.white,

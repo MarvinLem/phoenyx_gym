@@ -41,13 +41,22 @@ class TrainingDatabase {
   }
 
   insert(TrainingModel training) async {
+    await initDB();
     db.insert("training", training.toMap());
+  }
+
+  delete(int id) async {
+    await initDB();
+    db.delete(
+      'training',
+      where: "id = ?",
+      whereArgs: [id],
+    );
   }
 
   getAllTraining() async {
     await initDB();
     List<Map> results = await db.query("training");
-    //Changer l'image de fond (aléatoirement pour le moment)
     return results.map((map) => TrainingModel.fromMap(map));
   }
 }

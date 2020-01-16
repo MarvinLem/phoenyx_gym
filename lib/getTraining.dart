@@ -1,11 +1,135 @@
 import 'package:flutter/material.dart';
+import 'package:basic_utils/basic_utils.dart';
 import './beginTraining.dart';
 import './editTraining.dart';
 
-class GetTraining extends StatelessWidget {
-  final Function pageSelected;
+import './database/exercicesDatabase.dart';
 
-  GetTraining({this.pageSelected});
+class GetTraining extends StatefulWidget {
+  int trainingId;
+
+  GetTraining({this.trainingId});
+
+  @override
+  State<StatefulWidget> createState() {
+    return GetTrainingState(trainingId: trainingId);
+  }
+}
+
+class GetTrainingState extends State<GetTraining> {
+  int trainingId;
+  ExercicesDatabase db = ExercicesDatabase();
+  int exercices;
+
+  GetTrainingState({this.trainingId});
+
+  @override
+  void initState() {
+    getExercicesByTrainingId(trainingId);
+  }
+
+  getExercicesByTrainingId(trainingId) {
+    return FutureBuilder(
+        future: db.getExercicesByTrainingId(trainingId),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            exercices = snapshot.data.length;
+            return Column(children: [
+              for (ExercicesModel exercice in snapshot.data)
+                Row(children: [
+                  Column(
+                    children: [
+                      Container(
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.circle,
+                          border:
+                              Border.all(width: 2.0, color: Color(0xFFD34B4B)),
+                          image: DecorationImage(
+                            image:
+                                ExactAssetImage('assets/images/'+ exercice.name +'.png'),
+                            fit: BoxFit.none,
+                          ),
+                        ),
+                        constraints:
+                            BoxConstraints(minWidth: 80.0, minHeight: 80.0),
+                        margin: new EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
+                      )
+                    ],
+                  ),
+                  Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              child: exercice.weight != 0 && exercice.weight != null
+                                  ? new Text(
+                                      StringUtils.capitalize(exercice.name) +
+                                          " - " +
+                                          exercice.weight.toString() +
+                                          "kg",
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black87),
+                                      textAlign: TextAlign.left)
+                                  : new Text(
+                                      StringUtils.capitalize(exercice.name),
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black87),
+                                      textAlign: TextAlign.left),
+                              alignment: Alignment.topLeft,
+                              margin: new EdgeInsets.only(bottom: 5),
+                            ),
+                          ],
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                        ),
+                        Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                    exercice.series.toString() +
+                                        " séries de " +
+                                        exercice.repetitions.toString() +
+                                        " répétitions",
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.black87)),
+                                margin: new EdgeInsets.only(bottom: 5),
+                              ),
+                            ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start),
+                        Row(
+                            children: [
+                              Container(
+                                child: Text(
+                                    exercice.rest.toString() +
+                                        " secondes de repos",
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.black87)),
+                                margin: new EdgeInsets.only(bottom: 5),
+                              ),
+                            ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start),
+                      ],
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start)
+                ]),
+            ]);
+          } else {
+            return Row(
+              children: [
+                Container(
+                  child: Text("Cette séance ne contient aucun exercice",
+                      style: TextStyle(fontSize: 16, color: Colors.black87)),
+                  margin: new EdgeInsets.only(bottom: 20, top: 20),
+                )
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            );
+          }
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,186 +186,7 @@ class GetTraining extends StatelessWidget {
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
-          Row(children: [
-            Column(
-              children: [
-                Container(
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(width: 2.0, color: Color(0xFFD34B4B)),
-                    image: DecorationImage(
-                      image: ExactAssetImage('assets/images/push-ups.png'),
-                      fit: BoxFit.none,
-                    ),
-                  ),
-                  constraints: BoxConstraints(minWidth: 80.0, minHeight: 80.0),
-                  margin:
-                      new EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                )
-              ],
-            ),
-            Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        child: Text("Pompes",
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black87),
-                            textAlign: TextAlign.left),
-                        alignment: Alignment.topLeft,
-                        margin: new EdgeInsets.only(bottom: 5),
-                      ),
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                  ),
-                  Row(
-                      children: [
-                        Container(
-                          child: Text("3 séries de 15 répétitions",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.black87)),
-                          margin: new EdgeInsets.only(bottom: 5),
-                        ),
-                      ],
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start),
-                  Row(
-                      children: [
-                        Container(
-                          child: Text("2 minutes de repos",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.black87)),
-                          margin: new EdgeInsets.only(bottom: 5),
-                        ),
-                      ],
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start)
-          ]),
-          Row(children: [
-            Column(
-              children: [
-                Container(
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(width: 2.0, color: Color(0xFFD34B4B)),
-                    image: DecorationImage(
-                      image: ExactAssetImage('assets/images/weightlifting.png'),
-                      fit: BoxFit.none,
-                    ),
-                  ),
-                  constraints: BoxConstraints(minWidth: 80.0, minHeight: 80.0),
-                  margin:
-                      new EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                )
-              ],
-            ),
-            Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        child: Text("Squat - 50 kg",
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black87),
-                            textAlign: TextAlign.left),
-                        alignment: Alignment.topLeft,
-                        margin: new EdgeInsets.only(bottom: 5),
-                      ),
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                  ),
-                  Row(
-                      children: [
-                        Container(
-                          child: Text("3 séries de 15 répétitions",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.black87)),
-                          margin: new EdgeInsets.only(bottom: 5),
-                        ),
-                      ],
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start),
-                  Row(
-                      children: [
-                        Container(
-                          child: Text("2 minutes de repos",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.black87)),
-                          margin: new EdgeInsets.only(bottom: 5),
-                        ),
-                      ],
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start)
-          ]),
-          Row(children: [
-            Column(
-              children: [
-                Container(
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(width: 2.0, color: Color(0xFFD34B4B)),
-                    image: DecorationImage(
-                      image: ExactAssetImage('assets/images/abs-workout.png'),
-                      fit: BoxFit.none,
-                    ),
-                  ),
-                  constraints: BoxConstraints(minWidth: 80.0, minHeight: 80.0),
-                  margin:
-                      new EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                )
-              ],
-            ),
-            Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        child: Text("Abdos",
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black87),
-                            textAlign: TextAlign.left),
-                        alignment: Alignment.topLeft,
-                        margin: new EdgeInsets.only(bottom: 5),
-                      ),
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                  ),
-                  Row(
-                      children: [
-                        Container(
-                          child: Text("3 séries de 15 répétitions",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.black87)),
-                          margin: new EdgeInsets.only(bottom: 5),
-                        ),
-                      ],
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start),
-                  Row(
-                      children: [
-                        Container(
-                          child: Text("2 minutes de repos",
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.black87)),
-                          margin: new EdgeInsets.only(bottom: 5),
-                        ),
-                      ],
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start)
-          ]),
+          getExercicesByTrainingId(trainingId),
           Row(
             children: [
               Container(
@@ -249,9 +194,9 @@ class GetTraining extends StatelessWidget {
                     onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BeginTraining()),
+                              builder: (context) => BeginTraining(trainingId: trainingId, maxOrder: exercices)),
                         ),
-                    child: Text('Commencer la scéance',
+                    child: Text('Commencer la séance',
                         style: TextStyle(fontSize: 18)),
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(15),
@@ -271,7 +216,7 @@ class GetTraining extends StatelessWidget {
                     onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditTraining()),
+                              builder: (context) => EditTraining(trainingId: trainingId)),
                         ),
                     child: Text('Modifier la séance',
                         style: TextStyle(fontSize: 18)),

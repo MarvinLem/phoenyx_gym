@@ -70,7 +70,7 @@ class TrainingState extends State<Training> {
                       onTap: () =>
                           Navigator.push(context,
                               MaterialPageRoute(
-                                  builder: (context) => GetTraining())),
+                                  builder: (context) => GetTraining(trainingId: training.id))),
                     )
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,

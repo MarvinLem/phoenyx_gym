@@ -7,7 +7,7 @@ import './profil.dart';
 import './bottom.dart';
 import './style.dart';
 
-import './database/trainingDatabase.dart';
+import './database/database.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
   String pageName;
-  TrainingDatabase db = TrainingDatabase();
+  AllDatabase db = AllDatabase();
 
   onItemTapped(index){
     setState(() {

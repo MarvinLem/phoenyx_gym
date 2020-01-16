@@ -246,33 +246,23 @@ class DaysState extends State<Days> {
 }
 
 class CreateTraining extends StatefulWidget {
-  final Function pageSelected;
-
-  CreateTraining({this.pageSelected});
-
   @override
   State<StatefulWidget> createState() {
-    return CreateTrainingState(pageSelected: pageSelected);
+    return CreateTrainingState();
   }
 }
 
 class CreateTrainingState extends State<CreateTraining> {
-  final Function pageSelected;
   TrainingDatabase db = TrainingDatabase();
   final formController = TextEditingController();
 
-  CreateTrainingState({this.pageSelected});
-
   var program = new Program();
 
-  trainingCreated(name, session, duration) async{
-    var training = TrainingModel(name: name, session: session, duration: duration);
-    await db.initDB();
+  trainingCreated(name, session, duration) async {
+    var training = TrainingModel(
+        name: name, session: session, duration: duration);
     db.insert(training);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => EditTraining()));
+    Navigator.pop(context);
   }
 
   @override
