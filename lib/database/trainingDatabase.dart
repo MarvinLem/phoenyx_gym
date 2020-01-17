@@ -59,4 +59,10 @@ class TrainingDatabase {
     List<Map> results = await db.query("training");
     return results.map((map) => TrainingModel.fromMap(map));
   }
+
+  getLastTraining() async {
+    await initDB();
+    var results = await db.query("training", orderBy: "id DESC", limit: 1);
+    return results;
+  }
 }

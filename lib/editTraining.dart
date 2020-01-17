@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:basic_utils/basic_utils.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import './createExercice.dart';
 import './editExercice.dart';
 
@@ -8,26 +10,28 @@ import './database/exercicesDatabase.dart';
 
 class EditTraining extends StatefulWidget {
   int trainingId;
+  int sessionId;
 
-  EditTraining({this.trainingId});
+  EditTraining({this.trainingId, this.sessionId});
 
   @override
   State<StatefulWidget> createState() {
-    return EditTrainingState(trainingId: trainingId);
+    return EditTrainingState(trainingId: trainingId,sessionId: sessionId);
   }
 }
 
 class EditTrainingState extends State<EditTraining> {
   int trainingId;
+  int sessionId;
   ExercicesDatabase db = ExercicesDatabase();
   TrainingDatabase trainingDb = TrainingDatabase();
   List<String> exercices = [];
 
-  EditTrainingState({this.trainingId});
+  EditTrainingState({this.trainingId,this.sessionId});
 
   @override
   void initState() {
-    getExercicesByTrainingId(trainingId);
+    getExercicesByTrainingIdAndSessionId(trainingId,sessionId);
   }
 
   trainingDeleted(id) async{
@@ -39,9 +43,9 @@ class EditTrainingState extends State<EditTraining> {
     });
   }
 
-  getExercicesByTrainingId(trainingId) {
+  getExercicesByTrainingIdAndSessionId(trainingId,sessionId) {
     return FutureBuilder(
-        future: db.getExercicesByTrainingId(trainingId),
+        future: db.getExercicesByTrainingIdAndSessionId(trainingId, sessionId),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             return Column(children: [
@@ -162,46 +166,7 @@ class EditTrainingState extends State<EditTraining> {
                         fontWeight: FontWeight.bold)),
                 margin: new EdgeInsets.only(left: 20.0, top: 20.0)),
           ]),
-          Row(
-            children: [
-              Column(
-                children: [
-                  Container(
-                    child: GestureDetector(
-                      child: new Icon(Icons.arrow_left,
-                          size: 40, color: Color(0xFFD34B4B)),
-                    ),
-                    margin: new EdgeInsets.only(top: 20.0),
-                  ),
-                ],
-                mainAxisAlignment: MainAxisAlignment.center,
-              ),
-              Column(children: [
-                Container(
-                  child: new Text("Votre séance du lundi",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xFFD34B4B),
-                          fontWeight: FontWeight.bold)),
-                  margin: new EdgeInsets.only(top: 20.0),
-                )
-              ]),
-              Column(
-                children: [
-                  Container(
-                    child: GestureDetector(
-                      child: new Icon(Icons.arrow_right,
-                          size: 40, color: Color(0xFFD34B4B)),
-                    ),
-                    margin: new EdgeInsets.only(top: 20.0),
-                  ),
-                ],
-                mainAxisAlignment: MainAxisAlignment.center,
-              )
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
-          ),
-          getExercicesByTrainingId(trainingId),
+          getExercicesByTrainingIdAndSessionId(trainingId,sessionId),
           Row(children: [
             Column(
               children: [
@@ -229,7 +194,7 @@ class EditTrainingState extends State<EditTraining> {
                             onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => CreateExercice(trainingId: trainingId))),
+                                    builder: (context) => CreateExercice(trainingId: trainingId,sessionId: sessionId))),
                             child: Text("Ajouter un nouvel exercice",
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.black87),
@@ -249,8 +214,7 @@ class EditTrainingState extends State<EditTraining> {
             children: [
               Container(
                 child: RaisedButton(
-                    onPressed: () => Navigator.of(context)
-                        .popUntil((route) => route.isFirst),
+                    onPressed: () => Navigator.pop(context),
                     child: Text('Enregister le programme',
                         style: TextStyle(fontSize: 18)),
                     textColor: Colors.white,

@@ -9,8 +9,9 @@ class ExercicesModel{
   int rest;
   int exerciceOrder;
   int trainingId;
+  int sessionId;
 
-  ExercicesModel({this.id,this.name,this.series,this.repetitions,this.weight,this.rest,this.exerciceOrder,this.trainingId});
+  ExercicesModel({this.id,this.name,this.series,this.repetitions,this.weight,this.rest,this.exerciceOrder,this.trainingId,this.sessionId});
 
   Map<String, dynamic> toMap() {
     return {
@@ -22,6 +23,7 @@ class ExercicesModel{
       'rest': rest,
       'exerciceOrder': exerciceOrder,
       'trainingId': trainingId,
+      'sessionId': sessionId
     };
   }
 
@@ -34,6 +36,7 @@ class ExercicesModel{
     rest = map['rest'];
     exerciceOrder = map['exerciceOrder'];
     trainingId = map['trainingId'];
+    sessionId = map['sessionId'];
   }
 }
 
@@ -46,7 +49,7 @@ class ExercicesDatabase {
       version: 1,
       onCreate: (db, version) {
         db.execute(
-          "CREATE TABLE exercices(id INTEGER PRIMARY KEY, name TEXT, series INTEGER, repetitions INTEGER, weight INTEGER, rest INTEGER, exerciceOrder INTEGER, trainingId INTEGER)",
+          "CREATE TABLE exercices(id INTEGER PRIMARY KEY, name TEXT, series INTEGER, repetitions INTEGER, weight INTEGER, rest INTEGER, exerciceOrder INTEGER, trainingId INTEGER, sessionId INTEGER)",
         );
       },
     );
@@ -107,15 +110,15 @@ class ExercicesDatabase {
     return results;
   }
 
-  getExercicesByTrainingId(int trainingId) async {
+  getExercicesByTrainingIdAndSessionId(int trainingId, int sessionId) async {
     await initDB();
-    List<Map> results = await db.query("exercices", where: "trainingId = ?", orderBy: "exerciceOrder ASC", whereArgs: [trainingId]);
+    List<Map> results = await db.query("exercices", where: "trainingId = ? AND sessionId = ?", orderBy: "exerciceOrder ASC", whereArgs: [trainingId,sessionId]);
     return results.map((map) => ExercicesModel.fromMap(map));
   }
 
-  getExercicesByTrainingIdAndOrder(int trainingId, int order) async {
+  getExercicesByTrainingIdAndSessionIdAndOrder(int trainingId, int sessionId, int order) async {
     await initDB();
-    List<Map> results = await db.query("exercices", where: "exerciceOrder = ? AND trainingId = ?", whereArgs: [order,trainingId]);
+    List<Map> results = await db.query("exercices", where: "exerciceOrder = ? AND trainingId = ? AND sessionId = ?", whereArgs: [order,trainingId,sessionId]);
     return results.map((map) => ExercicesModel.fromMap(map));
   }
 }

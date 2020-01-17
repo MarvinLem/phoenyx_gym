@@ -5,33 +5,35 @@ import './database/exercicesDatabase.dart';
 
 class BeginTraining extends StatefulWidget {
   int trainingId;
+  int sessionId;
   int maxOrder;
 
-  BeginTraining({this.trainingId, this.maxOrder});
+  BeginTraining({this.trainingId, this.sessionId, this.maxOrder});
 
   @override
   State<StatefulWidget> createState() {
-    return BeginTrainingState(trainingId: trainingId, maxOrder: maxOrder);
+    return BeginTrainingState(trainingId: trainingId, sessionId: sessionId, maxOrder: maxOrder);
   }
 }
 
 class BeginTrainingState extends State<BeginTraining> {
   int trainingId;
+  int sessionId;
   int maxOrder;
   int order = 1;
   ExercicesDatabase db = ExercicesDatabase();
   List<String> exercices = [];
 
-  BeginTrainingState({this.trainingId, this.maxOrder});
+  BeginTrainingState({this.trainingId, this.sessionId, this.maxOrder});
 
   @override
   void initState() {
-    getExercicesByTrainingIdAndOrder(trainingId, order);
+    getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, order);
   }
 
-  getExercicesByTrainingIdAndOrder(trainingId, order) {
+  getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, order) {
     return FutureBuilder(
-        future: db.getExercicesByTrainingIdAndOrder(trainingId, order),
+        future: db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, order),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             return Column(children: [
@@ -86,7 +88,7 @@ class BeginTrainingState extends State<BeginTraining> {
       ),
       Row(
         children: [
-          getExercicesByTrainingIdAndOrder(trainingId, order),
+          getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, order),
           Column(
             children: [
               Container(
@@ -96,7 +98,7 @@ class BeginTrainingState extends State<BeginTraining> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
           ),
-          getExercicesByTrainingIdAndOrder(trainingId, order+1),
+          getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, order+1),
           Column(
             children: [
               Container(
@@ -106,7 +108,7 @@ class BeginTrainingState extends State<BeginTraining> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
           ),
-          getExercicesByTrainingIdAndOrder(trainingId, order+2),
+          getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, order+2),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -162,7 +164,7 @@ class BeginTrainingState extends State<BeginTraining> {
             child: RaisedButton(
                 onPressed: () => setState(() {
                   if(order == maxOrder){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => BeginFeedback(trainingId: trainingId)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => BeginFeedback(trainingId: trainingId,sessionId: sessionId)));
                   } else {
                     order += 1;
                   }
@@ -184,7 +186,7 @@ class BeginTrainingState extends State<BeginTraining> {
         children: [
           Container(
             child: RaisedButton(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BeginFeedback(trainingId: trainingId))),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BeginFeedback(trainingId: trainingId,sessionId: sessionId))),
                 child: Text('Mettre fin à la séance',
                     style: TextStyle(fontSize: 12)),
                 textColor: Colors.white,

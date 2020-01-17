@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import './editTraining.dart';
 
 import './database/trainingDatabase.dart';
+import './database/sessionDatabase.dart';
 
 class Program {
   String name = "Nouveau programme";
@@ -18,33 +21,33 @@ class Program {
 }
 
 class Days extends StatefulWidget {
-  final index;
-  Days(this.index);
+  CreateTrainingState parent;
+  int index;
+  int maxSeance;
+  Program program;
+
+  Days(this.parent, this.index, this.maxSeance, this.program);
   @override
   State<StatefulWidget> createState() {
-    return DaysState(index);
+    return DaysState();
   }
 }
 
 class DaysState extends State<Days> {
-  final index;
-  DaysState(this.index);
-  var program = new Program();
+  int numberOfSeance = 0;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        (index != null)
+        (widget.index != null)
             ? Column(children: [
                 Container(
                   child: Center(
-                      child: new Text((index + 1).toString(),
+                      child: new Text((widget.index + 1).toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: program.monday
-                                  ? Colors.white
-                                  : Color(0xFFD34B4B),
+                              color: Color(0xFFD34B4B),
                               fontSize: 16))),
                   decoration: BoxDecoration(
                       color: Colors.transparent, shape: BoxShape.circle),
@@ -56,10 +59,14 @@ class DaysState extends State<Days> {
         Column(children: [
           GestureDetector(
               onTap: () => setState(() {
-                    if (program.monday) {
-                      program.monday = false;
+                    if (widget.program.monday) {
+                      widget.program.monday = false;
+                      numberOfSeance -= 1;
                     } else {
-                      program.monday = true;
+                        if(numberOfSeance < widget.maxSeance) {
+                          widget.program.monday = true;
+                          numberOfSeance += 1;
+                        }
                     }
                   }),
               child: Container(
@@ -67,13 +74,13 @@ class DaysState extends State<Days> {
                     child: new Text("L",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: program.monday
+                            color: widget.program.monday
                                 ? Colors.white
                                 : Color(0xFFD34B4B)))),
                 decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFD34B4B)),
                     color:
-                        program.monday ? Color(0xFFD34B4B) : Colors.transparent,
+                        widget.program.monday ? Color(0xFFD34B4B) : Colors.transparent,
                     shape: BoxShape.circle),
                 constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
                 margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -82,10 +89,14 @@ class DaysState extends State<Days> {
         Column(children: [
           GestureDetector(
               onTap: () => setState(() {
-                    if (program.tuesday) {
-                      program.tuesday = false;
+                    if (widget.program.tuesday) {
+                      widget.program.tuesday = false;
+                      numberOfSeance -= 1;
                     } else {
-                      program.tuesday = true;
+                      if(numberOfSeance < widget.maxSeance) {
+                        widget.program.tuesday = true;
+                        numberOfSeance += 1;
+                      }
                     }
                   }),
               child: Container(
@@ -93,12 +104,12 @@ class DaysState extends State<Days> {
                     child: new Text("M",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: program.tuesday
+                            color: widget.program.tuesday
                                 ? Colors.white
                                 : Color(0xFFD34B4B)))),
                 decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFD34B4B)),
-                    color: program.tuesday
+                    color: widget.program.tuesday
                         ? Color(0xFFD34B4B)
                         : Colors.transparent,
                     shape: BoxShape.circle),
@@ -109,10 +120,14 @@ class DaysState extends State<Days> {
         Column(children: [
           GestureDetector(
               onTap: () => setState(() {
-                    if (program.wednesday) {
-                      program.wednesday = false;
+                    if (widget.program.wednesday) {
+                      widget.program.wednesday = false;
+                      numberOfSeance -= 1;
                     } else {
-                      program.wednesday = true;
+                        if(numberOfSeance < widget.maxSeance) {
+                          widget.program.wednesday = true;
+                          numberOfSeance += 1;
+                        }
                     }
                   }),
               child: Container(
@@ -120,12 +135,12 @@ class DaysState extends State<Days> {
                     child: new Text("M",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: program.wednesday
+                            color: widget.program.wednesday
                                 ? Colors.white
                                 : Color(0xFFD34B4B)))),
                 decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFD34B4B)),
-                    color: program.wednesday
+                    color: widget.program.wednesday
                         ? Color(0xFFD34B4B)
                         : Colors.transparent,
                     shape: BoxShape.circle),
@@ -136,10 +151,14 @@ class DaysState extends State<Days> {
         Column(children: [
           GestureDetector(
               onTap: () => setState(() {
-                    if (program.thursday) {
-                      program.thursday = false;
+                    if (widget.program.thursday) {
+                      widget.program.thursday = false;
+                      numberOfSeance -= 1;
                     } else {
-                      program.thursday = true;
+                        if(numberOfSeance < widget.maxSeance) {
+                          widget.program.thursday = true;
+                          numberOfSeance += 1;
+                        }
                     }
                   }),
               child: Container(
@@ -147,12 +166,12 @@ class DaysState extends State<Days> {
                     child: new Text("J",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: program.thursday
+                            color: widget.program.thursday
                                 ? Colors.white
                                 : Color(0xFFD34B4B)))),
                 decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFD34B4B)),
-                    color: program.thursday
+                    color: widget.program.thursday
                         ? Color(0xFFD34B4B)
                         : Colors.transparent,
                     shape: BoxShape.circle),
@@ -163,10 +182,14 @@ class DaysState extends State<Days> {
         Column(children: [
           GestureDetector(
               onTap: () => setState(() {
-                    if (program.friday) {
-                      program.friday = false;
+                    if (widget.program.friday) {
+                      widget.program.friday = false;
+                      numberOfSeance -= 1;
                     } else {
-                      program.friday = true;
+                        if(numberOfSeance < widget.maxSeance) {
+                          widget.program.friday = true;
+                          numberOfSeance += 1;
+                        }
                     }
                   }),
               child: Container(
@@ -174,13 +197,13 @@ class DaysState extends State<Days> {
                     child: new Text("V",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: program.friday
+                            color: widget.program.friday
                                 ? Colors.white
                                 : Color(0xFFD34B4B)))),
                 decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFD34B4B)),
                     color:
-                        program.friday ? Color(0xFFD34B4B) : Colors.transparent,
+                        widget.program.friday ? Color(0xFFD34B4B) : Colors.transparent,
                     shape: BoxShape.circle),
                 constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
                 margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -189,10 +212,14 @@ class DaysState extends State<Days> {
         Column(children: [
           GestureDetector(
               onTap: () => setState(() {
-                    if (program.saturday) {
-                      program.saturday = false;
+                    if (widget.program.saturday) {
+                      widget.program.saturday = false;
+                      numberOfSeance -= 1;
                     } else {
-                      program.saturday = true;
+                        if(numberOfSeance < widget.maxSeance) {
+                          widget.program.saturday = true;
+                          numberOfSeance += 1;
+                        }
                     }
                   }),
               child: Container(
@@ -200,12 +227,12 @@ class DaysState extends State<Days> {
                     child: new Text("S",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: program.saturday
+                            color: widget.program.saturday
                                 ? Colors.white
                                 : Color(0xFFD34B4B)))),
                 decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFD34B4B)),
-                    color: program.saturday
+                    color: widget.program.saturday
                         ? Color(0xFFD34B4B)
                         : Colors.transparent,
                     shape: BoxShape.circle),
@@ -216,10 +243,14 @@ class DaysState extends State<Days> {
         Column(children: [
           GestureDetector(
               onTap: () => setState(() {
-                    if (program.sunday) {
-                      program.sunday = false;
+                    if (widget.program.sunday) {
+                      widget.program.sunday = false;
+                      numberOfSeance -= 1;
                     } else {
-                      program.sunday = true;
+                        if(numberOfSeance < widget.maxSeance) {
+                          widget.program.sunday = true;
+                          numberOfSeance += 1;
+                        }
                     }
                   }),
               child: Container(
@@ -227,13 +258,13 @@ class DaysState extends State<Days> {
                     child: new Text("D",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: program.sunday
+                            color: widget.program.sunday
                                 ? Colors.white
                                 : Color(0xFFD34B4B)))),
                 decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFD34B4B)),
                     color:
-                        program.sunday ? Color(0xFFD34B4B) : Colors.transparent,
+                        widget.program.sunday ? Color(0xFFD34B4B) : Colors.transparent,
                     shape: BoxShape.circle),
                 constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
                 margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -254,6 +285,7 @@ class CreateTraining extends StatefulWidget {
 
 class CreateTrainingState extends State<CreateTraining> {
   TrainingDatabase db = TrainingDatabase();
+  SessionDatabase sessionDb = SessionDatabase();
   final formController = TextEditingController();
 
   var program = new Program();
@@ -262,6 +294,36 @@ class CreateTrainingState extends State<CreateTraining> {
     var training = TrainingModel(
         name: name, session: session, duration: duration);
     db.insert(training);
+    var lastTraining = await db.getLastTraining();
+    var trainingId = lastTraining[0]["id"];
+      if(program.monday == true) {
+        var session = SessionModel(day: "Monday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        sessionDb.insert(session);
+      }
+      if(program.thursday == true) {
+        var session = SessionModel(day: "Thursday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        sessionDb.insert(session);
+      }
+      if(program.wednesday == true) {
+        var session = SessionModel(day: "Wednesday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        sessionDb.insert(session);
+      }
+      if(program.tuesday == true) {
+        var session = SessionModel(day: "Tuesday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        sessionDb.insert(session);
+      }
+      if(program.friday == true) {
+        var session = SessionModel(day: "Friday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        sessionDb.insert(session);
+      }
+      if(program.saturday == true) {
+        var session = SessionModel(day: "Saturday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        sessionDb.insert(session);
+      }
+      if(program.sunday == true) {
+        var session = SessionModel(day: "Sunday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        sessionDb.insert(session);
+      }
     Navigator.pop(context);
   }
 
@@ -507,10 +569,10 @@ class CreateTrainingState extends State<CreateTraining> {
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           program.repeat
-              ? Days(null)
+              ? Days(this, null, program.session,program)
               : new Column(
                   children: new List.generate(
-                      program.duration, (index) => new Days(index))),
+                      program.duration, (index) => new Days(this, index, program.session, program))),
           Row(
             children: [
               Container(

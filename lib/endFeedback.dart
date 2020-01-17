@@ -4,33 +4,35 @@ import './database/exercicesDatabase.dart';
 
 class EndFeedback extends StatefulWidget {
   int trainingId;
+  int sessionId;
   List exerciceArray;
 
-  EndFeedback({this.trainingId, this.exerciceArray});
+  EndFeedback({this.trainingId,this.sessionId,this.exerciceArray});
 
   @override
   State<StatefulWidget> createState() {
     return EndFeedbackState(
-        trainingId: trainingId, exerciceArray: exerciceArray);
+        trainingId: trainingId, sessionId: sessionId,exerciceArray: exerciceArray);
   }
 }
 
 class EndFeedbackState extends State<EndFeedback> {
   final int trainingId;
+  final int sessionId;
   final List exerciceArray;
   ExercicesDatabase db = ExercicesDatabase();
 
-  EndFeedbackState({this.trainingId, this.exerciceArray});
+  EndFeedbackState({this.trainingId, this.sessionId,this.exerciceArray});
 
   @override
   void initState() {
     print(exerciceArray);
-    getExercicesByTrainingId(trainingId);
+    getExercicesByTrainingIdAndSessionId(trainingId,sessionId);
   }
 
-  getExercicesByTrainingId(trainingId) {
+  getExercicesByTrainingIdAndSessionId(trainingId,sessionId) {
     return FutureBuilder(
-        future: db.getExercicesByTrainingId(trainingId),
+        future: db.getExercicesByTrainingIdAndSessionId(trainingId, sessionId),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             return Column(children: [
@@ -152,7 +154,7 @@ class EndFeedbackState extends State<EndFeedback> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
           ),
-          getExercicesByTrainingId(trainingId),
+          getExercicesByTrainingIdAndSessionId(trainingId,sessionId),
           Row(
             children: [
               Container(

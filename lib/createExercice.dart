@@ -13,31 +13,33 @@ class ExerciceList {
 
 class CreateExercice extends StatefulWidget {
   int trainingId;
+  int sessionId;
 
-  CreateExercice({this.trainingId});
+  CreateExercice({this.trainingId,this.sessionId});
 
   @override
   State<StatefulWidget> createState() {
-    return CreateExerciceState(trainingId: trainingId);
+    return CreateExerciceState(trainingId: trainingId, sessionId: sessionId);
   }
 }
 
 class CreateExerciceState extends State<CreateExercice> {
   int trainingId;
+  int sessionId;
   int exerciceCount = 0;
   ExercicesDatabase db = ExercicesDatabase();
 
-  CreateExerciceState({this.trainingId});
+  CreateExerciceState({this.trainingId,this.sessionId});
 
   var exerciceList = new ExerciceList();
 
   @override
   void initState() {
-    getExercicesByTrainingId(trainingId);
+    getExercicesByTrainingIdAndSessionId(trainingId,sessionId);
   }
 
-  getExercicesByTrainingId(trainingId) async {
-    var exercices = await db.getExercicesByTrainingId(trainingId);
+  getExercicesByTrainingIdAndSessionId(trainingId,sessionId) async {
+    var exercices = await db.getExercicesByTrainingIdAndSessionId(trainingId, sessionId);
     exerciceCount = exercices.length;
   }
 
@@ -49,7 +51,8 @@ class CreateExerciceState extends State<CreateExercice> {
           weight: 0,
           rest: 120,
           exerciceOrder: i+1+exerciceCount,
-          trainingId: trainingId);
+          trainingId: trainingId,
+          sessionId: sessionId);
       db.insert(exercice);
     }
     Navigator.pop(context);

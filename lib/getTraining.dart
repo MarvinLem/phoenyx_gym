@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:basic_utils/basic_utils.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import './beginTraining.dart';
 import './editTraining.dart';
 
 import './database/exercicesDatabase.dart';
+import './database/sessionDatabase.dart';
 
 class GetTraining extends StatefulWidget {
   int trainingId;
@@ -19,18 +22,56 @@ class GetTraining extends StatefulWidget {
 class GetTrainingState extends State<GetTraining> {
   int trainingId;
   ExercicesDatabase db = ExercicesDatabase();
+  SessionDatabase sessionDb = SessionDatabase();
   int exercices;
+  var sessionArray = [];
+  var sessionIdArray = [0];
+  var dayArray = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"];
+  int day = 0;
+
+  DateTime date = DateTime.now();
 
   GetTrainingState({this.trainingId});
 
   @override
   void initState() {
-    getExercicesByTrainingId(trainingId);
+    getDaysSession();
+    getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[day]);
+    var today = new DateFormat('EEEE').format(date);
+
+    /*
+    switch(today){
+      case "Monday": {  day = 0; }
+      break;
+      case "Thursday": {  day = 1; }
+      break;
+      case "Wednesday": {  day = 2; }
+      break;
+      case "Tuesday": {  day = 3; }
+      break;
+      case "Friday": {  day = 4; }
+      break;
+      case "Saturday": {  day = 5; }
+      break;
+      case "Sunday": {  day = 6; }
+      break;
+    }*/
   }
 
-  getExercicesByTrainingId(trainingId) {
+  getDaysSession() async {
+    var session = await sessionDb.getSessionByTrainingIdAndDistinctDay(trainingId);
+    print(session);
+    for(int i=0;i<session.length;i++){
+      setState(() {
+        sessionArray.add(session[i]['day']);
+        sessionIdArray.add(session[i]['id']);
+      });
+    }
+  }
+
+  getExercicesByTrainingIdAndSessionId(trainingId,sessionId) {
     return FutureBuilder(
-        future: db.getExercicesByTrainingId(trainingId),
+        future: db.getExercicesByTrainingIdAndSessionId(trainingId, sessionId),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             exercices = snapshot.data.length;
@@ -153,6 +194,11 @@ class GetTrainingState extends State<GetTraining> {
                 children: [
                   Container(
                     child: GestureDetector(
+                      onTap: () => setState(() {
+                        if(day > 0) {
+                          day -= 1;
+                        }
+                      }),
                       child: new Icon(Icons.arrow_left,
                           size: 40, color: Color(0xFFD34B4B)),
                     ),
@@ -163,7 +209,11 @@ class GetTrainingState extends State<GetTraining> {
               ),
               Column(children: [
                 Container(
-                  child: new Text("Votre séance du lundi",
+                  child: (sessionArray.isEmpty) ? new Text("Votre séance du loading",
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xFFD34B4B),
+                          fontWeight: FontWeight.bold)) : new Text(("Votre séance du "+ sessionArray[day]).replaceAll('Monday', 'lundi').replaceAll('Thursday', 'mardi').replaceAll('Wednesday', 'mercredi').replaceAll('Tuesday', 'jeudi').replaceAll('Friday', 'vendredi').replaceAll('Saturday', 'samedi').replaceAll('Sunday', 'dimanche'),
                       style: TextStyle(
                           fontSize: 18,
                           color: Color(0xFFD34B4B),
@@ -175,6 +225,11 @@ class GetTrainingState extends State<GetTraining> {
                 children: [
                   Container(
                     child: GestureDetector(
+                      onTap: () => setState(() {
+                        if(day < sessionArray.length-1) {
+                          day += 1;
+                        }
+                      }),
                       child: new Icon(Icons.arrow_right,
                           size: 40, color: Color(0xFFD34B4B)),
                     ),
@@ -186,7 +241,7 @@ class GetTrainingState extends State<GetTraining> {
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
-          getExercicesByTrainingId(trainingId),
+          getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[day]),
           Row(
             children: [
               Container(
@@ -194,7 +249,7 @@ class GetTrainingState extends State<GetTraining> {
                     onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BeginTraining(trainingId: trainingId, maxOrder: exercices)),
+                              builder: (context) => BeginTraining(trainingId: trainingId, sessionId: sessionIdArray[day], maxOrder: exercices)),
                         ),
                     child: Text('Commencer la séance',
                         style: TextStyle(fontSize: 18)),
@@ -216,7 +271,7 @@ class GetTrainingState extends State<GetTraining> {
                     onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditTraining(trainingId: trainingId)),
+                              builder: (context) => EditTraining(trainingId: trainingId, sessionId: sessionIdArray[day])),
                         ),
                     child: Text('Modifier la séance',
                         style: TextStyle(fontSize: 18)),

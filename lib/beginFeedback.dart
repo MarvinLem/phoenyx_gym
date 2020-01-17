@@ -10,20 +10,22 @@ class Feedback {
 
 class BeginFeedback extends StatefulWidget {
   int trainingId;
+  int sessionId;
 
-  BeginFeedback({this.trainingId});
+  BeginFeedback({this.trainingId,this.sessionId});
 
   @override
   State<StatefulWidget> createState() {
-    return BeginFeedbackState(trainingId: trainingId);
+    return BeginFeedbackState(trainingId: trainingId,sessionId: sessionId);
   }
 }
 
 class BeginFeedbackState extends State<BeginFeedback> {
   int trainingId;
+  int sessionId;
   ExercicesDatabase db = ExercicesDatabase();
 
-  BeginFeedbackState({this.trainingId});
+  BeginFeedbackState({this.trainingId, this.sessionId});
 
   var feedback = new Feedback();
 
@@ -34,7 +36,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
 
   getExercicesByTrainingId(trainingId) {
     return FutureBuilder(
-        future: db.getExercicesByTrainingId(trainingId),
+        future: db.getExercicesByTrainingIdAndSessionId(trainingId, sessionId),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             return Column(children: [
@@ -156,7 +158,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
               Container(
                 child: RaisedButton(
                     onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => EndFeedback(trainingId: trainingId,exerciceArray: feedback.exerciceArray))),
+                        MaterialPageRoute(builder: (context) => EndFeedback(trainingId: trainingId,sessionId: sessionId,exerciceArray: feedback.exerciceArray))),
                     child: Text('Valider le feedback',
                         style: TextStyle(fontSize: 18)),
                     textColor: Colors.white,
