@@ -7,23 +7,28 @@ import './editTraining.dart';
 
 import './database/exercicesDatabase.dart';
 import './database/sessionDatabase.dart';
+import './database/trainingDatabase.dart';
 
 class GetTraining extends StatefulWidget {
   int trainingId;
+  int sessionId;
 
-  GetTraining({this.trainingId});
+  GetTraining({this.trainingId, this.sessionId});
 
   @override
   State<StatefulWidget> createState() {
-    return GetTrainingState(trainingId: trainingId);
+    return GetTrainingState(trainingId: trainingId,sessionId: sessionId);
   }
 }
 
 class GetTrainingState extends State<GetTraining> {
   int trainingId;
+  int sessionId;
   ExercicesDatabase db = ExercicesDatabase();
   SessionDatabase sessionDb = SessionDatabase();
-  int exercices;
+  TrainingDatabase trainingDb = TrainingDatabase();
+  int exercices = 0;
+  String trainingName;
   var sessionArray = [];
   var sessionIdArray = [0];
   var dayArray = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"];
@@ -31,41 +36,33 @@ class GetTrainingState extends State<GetTraining> {
 
   DateTime date = DateTime.now();
 
-  GetTrainingState({this.trainingId});
+  GetTrainingState({this.trainingId, this.sessionId});
 
   @override
   void initState() {
+    getTrainingName();
     getDaysSession();
     getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[day]);
-    var today = new DateFormat('EEEE').format(date);
+  }
 
-    /*
-    switch(today){
-      case "Monday": {  day = 0; }
-      break;
-      case "Thursday": {  day = 1; }
-      break;
-      case "Wednesday": {  day = 2; }
-      break;
-      case "Tuesday": {  day = 3; }
-      break;
-      case "Friday": {  day = 4; }
-      break;
-      case "Saturday": {  day = 5; }
-      break;
-      case "Sunday": {  day = 6; }
-      break;
-    }*/
+  getTrainingName() async {
+      var training = await trainingDb.getTrainingName(trainingId);
+      setState(() {
+        trainingName = training[0]['name'];
+      });
   }
 
   getDaysSession() async {
     var session = await sessionDb.getSessionByTrainingIdAndDistinctDay(trainingId);
-    print(session);
+    sessionIdArray = [];
     for(int i=0;i<session.length;i++){
       setState(() {
         sessionArray.add(session[i]['day']);
         sessionIdArray.add(session[i]['id']);
       });
+    }
+    if(sessionId != null){
+      day = sessionId - 1;
     }
   }
 
@@ -75,6 +72,7 @@ class GetTrainingState extends State<GetTraining> {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             exercices = snapshot.data.length;
+            if(exercices>0){
             return Column(children: [
               for (ExercicesModel exercice in snapshot.data)
                 Row(children: [
@@ -156,12 +154,43 @@ class GetTrainingState extends State<GetTraining> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start)
                 ]),
+              Row(
+                children: [
+                  Container(
+                      child: exercices > 0 ? RaisedButton(
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BeginTraining(trainingId: trainingId, sessionId: sessionIdArray[day], maxOrder: exercices)),
+                          ),
+                          child: Text('Commencer la séance',
+                              style: TextStyle(fontSize: 18)),
+                          textColor: Colors.white,
+                          padding: const EdgeInsets.all(15),
+                          color: Color(0xFFD34B4B),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50))) : Center())
+                ],
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
             ]);
           } else {
             return Row(
               children: [
                 Container(
                   child: Text("Cette séance ne contient aucun exercice",
+                      style: TextStyle(fontSize: 16, color: Colors.black87)),
+                  margin: new EdgeInsets.only(bottom: 20, top: 20),
+                )
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            );
+            }
+          } else {
+            return Row(
+              children: [
+                Container(
+                  child: Text("Ce programme ne semble pas exister",
                       style: TextStyle(fontSize: 16, color: Colors.black87)),
                   margin: new EdgeInsets.only(bottom: 20, top: 20),
                 )
@@ -181,7 +210,11 @@ class GetTrainingState extends State<GetTraining> {
         body: ListView(children: [
           Row(children: [
             Container(
-                child: new Text("Nom du programme".toUpperCase(),
+                child: (trainingName != null) ? new Text(trainingName.toUpperCase(),
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xFFD34B4B),
+                        fontWeight: FontWeight.bold)) : new Text("Programme".toUpperCase(),
                     style: TextStyle(
                         fontSize: 20,
                         color: Color(0xFFD34B4B),
@@ -192,7 +225,7 @@ class GetTrainingState extends State<GetTraining> {
             children: [
               Column(
                 children: [
-                  Container(
+                  (day != 0) ? Container(
                     child: GestureDetector(
                       onTap: () => setState(() {
                         if(day > 0) {
@@ -203,7 +236,7 @@ class GetTrainingState extends State<GetTraining> {
                           size: 40, color: Color(0xFFD34B4B)),
                     ),
                     margin: new EdgeInsets.only(top: 20.0),
-                  ),
+                  ) : Container(),
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
@@ -213,7 +246,7 @@ class GetTrainingState extends State<GetTraining> {
                       style: TextStyle(
                           fontSize: 18,
                           color: Color(0xFFD34B4B),
-                          fontWeight: FontWeight.bold)) : new Text(("Votre séance du "+ sessionArray[day]).replaceAll('Monday', 'lundi').replaceAll('Thursday', 'mardi').replaceAll('Wednesday', 'mercredi').replaceAll('Tuesday', 'jeudi').replaceAll('Friday', 'vendredi').replaceAll('Saturday', 'samedi').replaceAll('Sunday', 'dimanche'),
+                          fontWeight: FontWeight.bold)) : new Text(("Votre séance du "+ sessionArray[day]).replaceAll('Monday', 'lundi').replaceAll('Tuesday', 'mardi').replaceAll('Wednesday', 'mercredi').replaceAll('Thursday', 'jeudi').replaceAll('Friday', 'vendredi').replaceAll('Saturday', 'samedi').replaceAll('Sunday', 'dimanche'),
                       style: TextStyle(
                           fontSize: 18,
                           color: Color(0xFFD34B4B),
@@ -223,7 +256,7 @@ class GetTrainingState extends State<GetTraining> {
               ]),
               Column(
                 children: [
-                  Container(
+                  (day < sessionArray.length-1) ? Container(
                     child: GestureDetector(
                       onTap: () => setState(() {
                         if(day < sessionArray.length-1) {
@@ -234,7 +267,7 @@ class GetTrainingState extends State<GetTraining> {
                           size: 40, color: Color(0xFFD34B4B)),
                     ),
                     margin: new EdgeInsets.only(top: 20.0),
-                  ),
+                  ) : Center(),
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,
               )
@@ -242,28 +275,6 @@ class GetTrainingState extends State<GetTraining> {
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[day]),
-          Row(
-            children: [
-              Container(
-                child: RaisedButton(
-                    onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BeginTraining(trainingId: trainingId, sessionId: sessionIdArray[day], maxOrder: exercices)),
-                        ),
-                    child: Text('Commencer la séance',
-                        style: TextStyle(fontSize: 18)),
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(15),
-                    color: Color(0xFFD34B4B),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50))),
-                alignment: Alignment.center,
-                margin: new EdgeInsets.only(top: 10.0, bottom: 10),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
-          ),
           Row(
             children: [
               Container(

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import './getAgenda.dart';
 import './editAgenda.dart';
+import './createTraining.dart';
+
+import './database/dateDatabase.dart';
 
 class AgendaOptions {
   int trainingDay = 1;
@@ -15,6 +18,157 @@ class Agenda extends StatefulWidget {
 
 class AgendaState extends State<Agenda> {
   var agenda = new AgendaOptions();
+  var dayArray = [
+    "Lundi",
+    "Mardi",
+    "Mercredi",
+    "Jeudi",
+    "Vendredi",
+    "Samedi",
+    "Dimanche"
+  ];
+  DateDatabase db = DateDatabase();
+
+  @override
+  void initState() {
+    getAllDate();
+  }
+
+  stringifyDate(date){
+    var startMinute = new DateTime.fromMillisecondsSinceEpoch(date.startAt).minute.toString() != '0' ? new DateTime.fromMillisecondsSinceEpoch(date.startAt).minute.toString() : '00';
+    var endMinute = new DateTime.fromMillisecondsSinceEpoch(date.endAt).minute.toString() != '0' ? new DateTime.fromMillisecondsSinceEpoch(date.endAt).minute.toString() : '00';
+    return Text(
+        dayArray[new DateTime.fromMillisecondsSinceEpoch(date.date).weekday - 1] +
+            " " +
+            new DateTime.fromMillisecondsSinceEpoch(date.date)
+                .day
+                .toString() +
+            "/" +
+            new DateTime.fromMillisecondsSinceEpoch(date.date)
+                .month
+                .toString() +
+            " - " +
+            new DateTime.fromMillisecondsSinceEpoch(date.startAt)
+                .hour
+                .toString() +
+            ":" +
+            startMinute +
+            "->" +
+            new DateTime.fromMillisecondsSinceEpoch(date.endAt)
+                .hour
+                .toString() +
+            ":" +
+            endMinute,
+        style: TextStyle(
+            fontSize: 16, color: Colors.black87));
+  }
+
+  getAllDate() {
+    var now = DateTime.now();
+    var startOfDay = new DateTime(now.year, now.month, now.day);
+    var milliSeconds = startOfDay.millisecondsSinceEpoch - 86400000;
+    return FutureBuilder(
+        future:
+            db.getAllInformationsForHome(milliSeconds),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data.length > 0) {
+              return Column(children: [
+                for (DateModel date in snapshot.data)
+                  Row(
+                    children: [
+                      Column(children: [
+                        Row(children: [
+                          Container(
+                              child: (date.startAt != null && date.endAt != null)
+                                  ? stringifyDate(date)
+                                  : Text(
+                                      dayArray[new DateTime.fromMillisecondsSinceEpoch(date.date).weekday - 1] +
+                                          " " +
+                                          new DateTime.fromMillisecondsSinceEpoch(date.date)
+                                              .day
+                                              .toString() +
+                                          "/" +
+                                          new DateTime.fromMillisecondsSinceEpoch(date.date)
+                                              .month
+                                              .toString(),
+                                      style: TextStyle(fontSize: 16, color: Colors.black87)),
+                              margin: new EdgeInsets.only(top: 20.0, left: 25.0)),
+                          Container(
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditAgenda(dateId: date.id)),
+                                    );
+                                  },
+                                  child: Text("Changer l'horaire",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          decoration: TextDecoration.underline,
+                                          color: Colors.black87))),
+                              margin:
+                                  new EdgeInsets.only(left: 20.0, top: 20.0)),
+                        ]),
+                        Row(children: [
+                          Container(
+                              decoration: new BoxDecoration(
+                                  border:
+                                      new Border.all(color: Color(0xFFD34B4B)),
+                                  borderRadius:
+                                      new BorderRadius.circular(20.0)),
+                              constraints: BoxConstraints(
+                                  minWidth:
+                                      MediaQuery.of(context).size.width - 40,
+                                  minHeight: 60.0),
+                              alignment: Alignment.center,
+                              margin: new EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 10,
+                              ),
+                              child: Column(children: [
+                                Row(children: [
+                                  Text(date.name,
+                                      style: TextStyle(fontSize: 16))
+                                ]),
+                              ]))
+                        ], mainAxisAlignment: MainAxisAlignment.center),
+                      ], crossAxisAlignment: CrossAxisAlignment.start)
+                    ],
+                  ),
+              ]);
+            } else {
+              return Column(
+                  children: [
+                    Container(
+                      child: Text("Vous ne posseder encore aucune séance",
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.black87)),
+                      margin: new EdgeInsets.only(bottom: 20, top: 20),
+                    ),
+                    RaisedButton(
+                        onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CreateTraining()),
+                            ),
+                        child: Text('Créer votre premier programme',
+                            style: TextStyle(fontSize: 18)),
+                        textColor: Colors.white,
+                        padding: const EdgeInsets.all(15),
+                        color: Color(0xFFD34B4B),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)))
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start);
+            }
+          } else {
+            return Center();
+          }
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +206,8 @@ class AgendaState extends State<Agenda> {
                       ], mainAxisAlignment: MainAxisAlignment.center),
                       margin: new EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
-                      padding: new EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 8),
+                      padding:
+                          new EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                       decoration: BoxDecoration(
                           border: Border.all(color: Color(0xFFD34B4B))))),
               Row(children: [
@@ -426,100 +580,7 @@ class AgendaState extends State<Agenda> {
                       fontWeight: FontWeight.bold)),
               margin: new EdgeInsets.only(left: 20.0, top: 20.0))
         ]),
-        Row(
-          children: [
-            Column(children: [
-              Row(children: [
-                Container(
-                    child: Text("Lundi 15/10 - 17:00 -> 18:00",
-                        style: TextStyle(fontSize: 16, color: Colors.black87)),
-                    margin: new EdgeInsets.only(top: 20.0)),
-                Container(
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditAgenda()),
-                          );
-                        },
-                        child: Text("Changer l'horaire",
-                            style: TextStyle(
-                                fontSize: 14,
-                                decoration: TextDecoration.underline,
-                                color: Colors.black87))),
-                    margin: new EdgeInsets.only(left: 20.0, top: 20.0)),
-              ]),
-              Row(children: [
-                Container(
-                    decoration: new BoxDecoration(
-                        border: new Border.all(color: Color(0xFFD34B4B)),
-                        borderRadius: new BorderRadius.circular(20.0)),
-                    constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width - 40,
-                        minHeight: 60.0),
-                    alignment: Alignment.center,
-                    margin: new EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    child: Column(children: [
-                      Row(children: [
-                        Text("Entrainements Pectoraux Séance du Lundi")
-                      ]),
-                    ]))
-              ], mainAxisAlignment: MainAxisAlignment.center),
-            ])
-          ],
-        ),
-        Row(
-          children: [
-            Column(children: [
-              Row(children: [
-                Container(
-                    child: Text("Mardi 16/10 - 18:00 -> 19:00",
-                        style: TextStyle(fontSize: 16, color: Colors.black87)),
-                    margin: new EdgeInsets.only(top: 20.0)),
-                Container(
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditAgenda()),
-                          );
-                        },
-                        child: Text("Changer l'horaire",
-                            style: TextStyle(
-                                fontSize: 14,
-                                decoration: TextDecoration.underline,
-                                color: Colors.black87))),
-                    margin: new EdgeInsets.only(left: 20.0, top: 20.0)),
-              ]),
-              Row(children: [
-                Container(
-                    decoration: new BoxDecoration(
-                        border: new Border.all(color: Color(0xFFD34B4B)),
-                        borderRadius: new BorderRadius.circular(20.0)),
-                    constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width - 40,
-                        minHeight: 60.0),
-                    alignment: Alignment.center,
-                    margin: new EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 10,
-                      bottom: 20,
-                    ),
-                    child: Column(children: [
-                      Row(children: [
-                        Text("Entrainements Jambes Séance du Mardi")
-                      ]),
-                    ]))
-              ], mainAxisAlignment: MainAxisAlignment.center),
-            ])
-          ],
-        ),
+        getAllDate(),
       ],
     );
   }

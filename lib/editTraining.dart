@@ -7,6 +7,7 @@ import './editExercice.dart';
 
 import './database/trainingDatabase.dart';
 import './database/exercicesDatabase.dart';
+import './database/sessionDatabase.dart';
 
 class EditTraining extends StatefulWidget {
   int trainingId;
@@ -23,20 +24,30 @@ class EditTraining extends StatefulWidget {
 class EditTrainingState extends State<EditTraining> {
   int trainingId;
   int sessionId;
+  String trainingName;
   ExercicesDatabase db = ExercicesDatabase();
   TrainingDatabase trainingDb = TrainingDatabase();
+  SessionDatabase sessionDb = SessionDatabase();
   List<String> exercices = [];
 
   EditTrainingState({this.trainingId,this.sessionId});
 
   @override
   void initState() {
+    getTrainingName();
     getExercicesByTrainingIdAndSessionId(trainingId,sessionId);
   }
 
-  trainingDeleted(id) async{
-    await trainingDb.delete(trainingId);
-    await db.deleteExercicesByTrainingId(trainingId);
+  getTrainingName() async {
+    var training = await trainingDb.getTrainingName(trainingId);
+    setState(() {
+      trainingName = training[0]['name'];
+    });
+  }
+
+  sessionDeleted(id) async{
+    await sessionDb.delete(sessionId);
+    await db.deleteExercicesByTrainingIdAndSessionId(trainingId,sessionId);
     var count = 0;
     Navigator.popUntil(context, (route) {
       return count++ == 2;
@@ -127,7 +138,7 @@ class EditTrainingState extends State<EditTraining> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                EditExercice(id: exercice.id))),
+                                                EditExercice(id: exercice.id,trainingId: trainingId))),
                                     child: Text("Modifier l'exercice",
                                         style: TextStyle(
                                             fontSize: 12,
@@ -159,7 +170,11 @@ class EditTrainingState extends State<EditTraining> {
         body: ListView(children: [
           Row(children: [
             Container(
-                child: new Text("Nom du programme".toUpperCase(),
+                child: (trainingName != null) ? new Text(trainingName.toUpperCase(),
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xFFD34B4B),
+                        fontWeight: FontWeight.bold)):new Text("Programme".toUpperCase(),
                     style: TextStyle(
                         fontSize: 20,
                         color: Color(0xFFD34B4B),
@@ -215,7 +230,7 @@ class EditTrainingState extends State<EditTraining> {
               Container(
                 child: RaisedButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text('Enregister le programme',
+                    child: Text('Enregister la séance',
                         style: TextStyle(fontSize: 18)),
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(15),
@@ -232,8 +247,8 @@ class EditTrainingState extends State<EditTraining> {
             children: [
               Container(
                 child: RaisedButton(
-                    onPressed: () => trainingDeleted(trainingId),
-                    child: Text('Supprimer ce programme',
+                    onPressed: () => sessionDeleted(sessionId),
+                    child: Text('Supprimer cette séance',
                         style: TextStyle(fontSize: 15)),
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(15),

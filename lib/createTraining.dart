@@ -5,6 +5,7 @@ import './editTraining.dart';
 
 import './database/trainingDatabase.dart';
 import './database/sessionDatabase.dart';
+import './database/dateDatabase.dart';
 
 class Program {
   String name = "Nouveau programme";
@@ -18,6 +19,7 @@ class Program {
   bool saturday = false;
   bool sunday = false;
   bool repeat = true;
+  int currentSession = 0;
 }
 
 class Days extends StatefulWidget {
@@ -27,6 +29,7 @@ class Days extends StatefulWidget {
   Program program;
 
   Days(this.parent, this.index, this.maxSeance, this.program);
+
   @override
   State<StatefulWidget> createState() {
     return DaysState();
@@ -34,8 +37,6 @@ class Days extends StatefulWidget {
 }
 
 class DaysState extends State<Days> {
-  int numberOfSeance = 0;
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -58,14 +59,14 @@ class DaysState extends State<Days> {
             : Container(),
         Column(children: [
           GestureDetector(
-              onTap: () => setState(() {
+              onTap: () => widget.parent.setState(() {
                     if (widget.program.monday) {
                       widget.program.monday = false;
-                      numberOfSeance -= 1;
+                      widget.program.currentSession -= 1;
                     } else {
-                        if(numberOfSeance < widget.maxSeance) {
+                        if(widget.program.currentSession < widget.maxSeance) {
                           widget.program.monday = true;
-                          numberOfSeance += 1;
+                          widget.program.currentSession += 1;
                         }
                     }
                   }),
@@ -88,14 +89,14 @@ class DaysState extends State<Days> {
         ]),
         Column(children: [
           GestureDetector(
-              onTap: () => setState(() {
+              onTap: () => widget.parent.setState(() {
                     if (widget.program.tuesday) {
                       widget.program.tuesday = false;
-                      numberOfSeance -= 1;
+                      widget.program.currentSession -= 1;
                     } else {
-                      if(numberOfSeance < widget.maxSeance) {
+                      if(widget.program.currentSession < widget.maxSeance) {
                         widget.program.tuesday = true;
-                        numberOfSeance += 1;
+                        widget.program.currentSession += 1;
                       }
                     }
                   }),
@@ -119,14 +120,14 @@ class DaysState extends State<Days> {
         ]),
         Column(children: [
           GestureDetector(
-              onTap: () => setState(() {
+              onTap: () => widget.parent.setState(() {
                     if (widget.program.wednesday) {
                       widget.program.wednesday = false;
-                      numberOfSeance -= 1;
+                      widget.program.currentSession -= 1;
                     } else {
-                        if(numberOfSeance < widget.maxSeance) {
+                        if(widget.program.currentSession < widget.maxSeance) {
                           widget.program.wednesday = true;
-                          numberOfSeance += 1;
+                          widget.program.currentSession += 1;
                         }
                     }
                   }),
@@ -150,14 +151,14 @@ class DaysState extends State<Days> {
         ]),
         Column(children: [
           GestureDetector(
-              onTap: () => setState(() {
+              onTap: () => widget.parent.setState(() {
                     if (widget.program.thursday) {
                       widget.program.thursday = false;
-                      numberOfSeance -= 1;
+                      widget.program.currentSession -= 1;
                     } else {
-                        if(numberOfSeance < widget.maxSeance) {
+                        if(widget.program.currentSession < widget.maxSeance) {
                           widget.program.thursday = true;
-                          numberOfSeance += 1;
+                          widget.program.currentSession += 1;
                         }
                     }
                   }),
@@ -181,14 +182,14 @@ class DaysState extends State<Days> {
         ]),
         Column(children: [
           GestureDetector(
-              onTap: () => setState(() {
+              onTap: () => widget.parent.setState(() {
                     if (widget.program.friday) {
                       widget.program.friday = false;
-                      numberOfSeance -= 1;
+                      widget.program.currentSession -= 1;
                     } else {
-                        if(numberOfSeance < widget.maxSeance) {
+                        if(widget.program.currentSession < widget.maxSeance) {
                           widget.program.friday = true;
-                          numberOfSeance += 1;
+                          widget.program.currentSession += 1;
                         }
                     }
                   }),
@@ -211,14 +212,14 @@ class DaysState extends State<Days> {
         ]),
         Column(children: [
           GestureDetector(
-              onTap: () => setState(() {
+              onTap: () => widget.parent.setState(() {
                     if (widget.program.saturday) {
                       widget.program.saturday = false;
-                      numberOfSeance -= 1;
+                      widget.program.currentSession -= 1;
                     } else {
-                        if(numberOfSeance < widget.maxSeance) {
+                        if(widget.program.currentSession < widget.maxSeance) {
                           widget.program.saturday = true;
-                          numberOfSeance += 1;
+                          widget.program.currentSession += 1;
                         }
                     }
                   }),
@@ -242,14 +243,14 @@ class DaysState extends State<Days> {
         ]),
         Column(children: [
           GestureDetector(
-              onTap: () => setState(() {
+              onTap: () => widget.parent.setState(() {
                     if (widget.program.sunday) {
                       widget.program.sunday = false;
-                      numberOfSeance -= 1;
+                      widget.program.currentSession -= 1;
                     } else {
-                        if(numberOfSeance < widget.maxSeance) {
+                        if(widget.program.currentSession < widget.maxSeance) {
                           widget.program.sunday = true;
-                          numberOfSeance += 1;
+                          widget.program.currentSession += 1;
                         }
                     }
                   }),
@@ -286,9 +287,28 @@ class CreateTraining extends StatefulWidget {
 class CreateTrainingState extends State<CreateTraining> {
   TrainingDatabase db = TrainingDatabase();
   SessionDatabase sessionDb = SessionDatabase();
-  final formController = TextEditingController();
+  DateDatabase dateDb = DateDatabase();
+  final formController = TextEditingController(text: "Votre programme");
 
   var program = new Program();
+
+  insertDate(day,duration,sessionId) async {
+    var now = new DateTime.now();
+    var startOfDay = new DateTime(now.year, now.month, now.day);
+    int millisecondsOf7Days = 604800000;
+    while(startOfDay.weekday!=day)
+    {
+      startOfDay=startOfDay.add(new Duration(days: 1));
+    }
+    for(int i=0;i<duration;i++) {
+      var milliSeconds = startOfDay.millisecondsSinceEpoch + millisecondsOf7Days * i;
+      var date = DateModel(date: milliSeconds,
+          startAt: null,
+          endAt: null,
+          sessionId: sessionId);
+      dateDb.insert(date);
+    }
+  }
 
   trainingCreated(name, session, duration) async {
     var training = TrainingModel(
@@ -299,30 +319,51 @@ class CreateTrainingState extends State<CreateTraining> {
       if(program.monday == true) {
         var session = SessionModel(day: "Monday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
-      }
-      if(program.thursday == true) {
-        var session = SessionModel(day: "Thursday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
-        sessionDb.insert(session);
-      }
-      if(program.wednesday == true) {
-        var session = SessionModel(day: "Wednesday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
-        sessionDb.insert(session);
+        var lastSession = await sessionDb.getLastSession();
+        var sessionId = lastSession[0]["id"];
+        insertDate(1,duration,sessionId);
       }
       if(program.tuesday == true) {
         var session = SessionModel(day: "Tuesday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        var lastSession = await sessionDb.getLastSession();
+        var sessionId = lastSession[0]["id"];
+        insertDate(2,duration,sessionId);
+      }
+      if(program.wednesday == true) {
+        var session = SessionModel(day: "Wednesday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        sessionDb.insert(session);
+        var lastSession = await sessionDb.getLastSession();
+        var sessionId = lastSession[0]["id"];
+        insertDate(3,duration,sessionId);
+      }
+      if(program.thursday == true) {
+        var session = SessionModel(day: "Thursday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        sessionDb.insert(session);
+        var lastSession = await sessionDb.getLastSession();
+        var sessionId = lastSession[0]["id"];
+        insertDate(4,duration,sessionId);
       }
       if(program.friday == true) {
         var session = SessionModel(day: "Friday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        var lastSession = await sessionDb.getLastSession();
+        var sessionId = lastSession[0]["id"];
+        insertDate(5,duration,sessionId);
       }
       if(program.saturday == true) {
         var session = SessionModel(day: "Saturday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        var lastSession = await sessionDb.getLastSession();
+        var sessionId = lastSession[0]["id"];
+        insertDate(6,duration,sessionId);
       }
       if(program.sunday == true) {
         var session = SessionModel(day: "Sunday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        var lastSession = await sessionDb.getLastSession();
+        var sessionId = lastSession[0]["id"];
+        insertDate(7,duration,sessionId);
       }
     Navigator.pop(context);
   }
@@ -576,9 +617,16 @@ class CreateTrainingState extends State<CreateTraining> {
           Row(
             children: [
               Container(
-                child: RaisedButton(
+                child: program.session == program.currentSession ? RaisedButton(
                     onPressed: () => trainingCreated(formController.text,program.session,program.duration),
                     child: Text('Créer le programme',
+                        style: TextStyle(fontSize: 18)),
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(15),
+                    color: Color(0xFFD34B4B),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50))) : RaisedButton(
+                    child: Text("Selectionner d'abord les séances",
                         style: TextStyle(fontSize: 18)),
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(15),

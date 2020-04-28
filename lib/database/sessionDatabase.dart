@@ -60,6 +60,18 @@ class SessionDatabase {
     return results.map((map) => SessionModel.fromMap(map));
   }
 
+  getLastSession() async {
+    await initDB();
+    var results = await db.query("session", orderBy: "id DESC", limit: 1);
+    return results;
+  }
+
+  getSessionById(int id) async {
+    await initDB();
+    var results = await db.query("session", where: "id = ?", orderBy: "date ASC", whereArgs: [id]);
+    return results;
+  }
+
   getSessionByTrainingId(int trainingId) async {
     await initDB();
     var results = await db.query("session", where: "trainingId = ?", orderBy: "date ASC", whereArgs: [trainingId]);

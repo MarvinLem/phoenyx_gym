@@ -98,6 +98,15 @@ class ExercicesDatabase {
     );
   }
 
+  deleteExercicesByTrainingIdAndSessionId(trainingId,sessionId) async {
+    await initDB();
+    db.delete(
+      'exercices',
+      where: "trainingId = ? AND sessionId = ?",
+      whereArgs: [trainingId,sessionId],
+    );
+  }
+
   getAllExercices() async {
     await initDB();
     List<Map> results = await db.query("exercices");
@@ -118,7 +127,7 @@ class ExercicesDatabase {
 
   getExercicesByTrainingIdAndSessionIdAndOrder(int trainingId, int sessionId, int order) async {
     await initDB();
-    List<Map> results = await db.query("exercices", where: "exerciceOrder = ? AND trainingId = ? AND sessionId = ?", whereArgs: [order,trainingId,sessionId]);
-    return results.map((map) => ExercicesModel.fromMap(map));
+    var results = await db.query("exercices", where: "exerciceOrder = ? AND trainingId = ? AND sessionId = ?", whereArgs: [order,trainingId,sessionId]);
+    return results;
   }
 }

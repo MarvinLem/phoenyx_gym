@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:phoenyx_gym/database/trainingDatabase.dart';
 import './exercice.dart';
 
 import './database/exercicesDatabase.dart';
+import './database/trainingDatabase.dart';
 
 class ExerciceList {
   var exercicesNames = [];
@@ -27,7 +29,9 @@ class CreateExerciceState extends State<CreateExercice> {
   int trainingId;
   int sessionId;
   int exerciceCount = 0;
+  String trainingName;
   ExercicesDatabase db = ExercicesDatabase();
+  TrainingDatabase trainingDb = TrainingDatabase();
 
   CreateExerciceState({this.trainingId,this.sessionId});
 
@@ -35,7 +39,15 @@ class CreateExerciceState extends State<CreateExercice> {
 
   @override
   void initState() {
+    getTrainingName();
     getExercicesByTrainingIdAndSessionId(trainingId,sessionId);
+  }
+
+  getTrainingName() async {
+    var training = await trainingDb.getTrainingName(trainingId);
+    setState(() {
+      trainingName = training[0]['name'];
+    });
   }
 
   getExercicesByTrainingIdAndSessionId(trainingId,sessionId) async {
@@ -67,7 +79,11 @@ class CreateExerciceState extends State<CreateExercice> {
     body: ListView(children: [
       Row(children: [
         Container(
-            child: new Text("Nom du programme".toUpperCase(),
+            child: (trainingName != null) ? new Text(trainingName.toUpperCase(),
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xFFD34B4B),
+                    fontWeight: FontWeight.bold)):new Text("Programme".toUpperCase(),
                 style: TextStyle(
                     fontSize: 20,
                     color: Color(0xFFD34B4B),

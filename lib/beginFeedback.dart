@@ -5,7 +5,8 @@ import './endFeedback.dart';
 import './database/exercicesDatabase.dart';
 
 class Feedback {
-  List exerciceArray = ['J\'ai réussi mes exercices normalement','J\'ai réussi mes exercices normalement','J\'ai réussi mes exercices normalement'];
+  //Rajouter un push
+  List exerciceArray = [];
 }
 
 class BeginFeedback extends StatefulWidget {
@@ -31,14 +32,17 @@ class BeginFeedbackState extends State<BeginFeedback> {
 
   @override
   void initState() {
-    getExercicesByTrainingId(trainingId);
+    getExercicesByTrainingId(trainingId, sessionId);
   }
 
-  getExercicesByTrainingId(trainingId) {
+  getExercicesByTrainingId(trainingId, sessionId) {
     return FutureBuilder(
         future: db.getExercicesByTrainingIdAndSessionId(trainingId, sessionId),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
+            for(ExercicesModel exercice in snapshot.data){
+              feedback.exerciceArray.add('J\'ai réussi mes exercices normalement');
+            }
             return Column(children: [
               for (ExercicesModel exercice in snapshot.data)
                 Column(children: [
@@ -152,7 +156,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
           ),
-          getExercicesByTrainingId(trainingId),
+          getExercicesByTrainingId(trainingId,sessionId),
           Row(
             children: [
               Container(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import './home.dart';
 import './training.dart';
@@ -18,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
-  String pageName;
   AllDatabase db = AllDatabase();
 
   onItemTapped(index){
@@ -41,8 +41,11 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Color(0xFF9E3838),
+    ));
     return new Scaffold(
-      appBar: AppBar(title: Text("Phoenix Gym")),
+      appBar: selectedIndex != 0 ? AppBar(title: Text("Phoenix Gym")) : null,
       body: FutureBuilder(
           future: db.initDB(),
           builder: (BuildContext context, snapshot) {
