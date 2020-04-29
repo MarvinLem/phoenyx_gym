@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+
 import './getAgenda.dart';
 import './editAgenda.dart';
 import './createTraining.dart';
@@ -27,11 +29,14 @@ class AgendaState extends State<Agenda> {
     "Samedi",
     "Dimanche"
   ];
+  Map<DateTime, List> training = {};
   DateDatabase db = DateDatabase();
+  var _calendarController;
 
   @override
   void initState() {
     getAllDate();
+    _calendarController = CalendarController();
   }
 
   stringifyDate(date){
@@ -61,6 +66,49 @@ class AgendaState extends State<Agenda> {
             endMinute,
         style: TextStyle(
             fontSize: 16, color: Colors.black87));
+  }
+
+  getCalendar(){
+    return FutureBuilder(
+        future:
+        db.getAllDate(),
+    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data.length > 0) {
+            training = {};
+            for (DateModel date in snapshot.data) {
+              DateTime datetime = DateTime.fromMillisecondsSinceEpoch(date.date);
+              training[datetime] != null ? training[datetime].add('Entrainement') : training.putIfAbsent(datetime, () => ['Entrainement']);
+            }
+            return TableCalendar(
+              calendarController: _calendarController,
+              locale: 'fr_FR',
+              events: training,
+              startingDayOfWeek: StartingDayOfWeek.monday,
+              availableCalendarFormats: const {
+                CalendarFormat.month: '',
+              },
+              calendarStyle: CalendarStyle(
+                weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
+                selectedColor: Color(0xFFD34B4B),
+                todayColor: Color(0xFF9E3838),
+                markersColor: Color(0xFFD34B4B),
+                highlightSelected: false,
+              ),
+              daysOfWeekStyle: DaysOfWeekStyle(
+                weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
+              ),
+              headerStyle: HeaderStyle(
+                centerHeaderTitle: true,
+              ),
+            );
+          } else {
+            return Center();
+          }
+        } else {
+          return Center();
+        }
+    });
   }
 
   getAllDate() {
@@ -170,6 +218,18 @@ class AgendaState extends State<Agenda> {
         });
   }
 
+  Widget _buildTrainingMarker(DateTime date, List events) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 1.5),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Color(0xFFD34B4B),
+      ),
+      width: 10.0,
+      height: 10.0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -181,8 +241,10 @@ class AgendaState extends State<Agenda> {
                       fontSize: 20,
                       color: Color(0xFFD34B4B),
                       fontWeight: FontWeight.bold)),
-              margin: new EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10))
+              margin: new EdgeInsets.only(left: 20.0, top: 20.0, bottom: 0))
         ]),
+        getCalendar(),
+        /*
         Row(
           children: [
             Column(children: [
@@ -571,6 +633,7 @@ class AgendaState extends State<Agenda> {
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),
+        */
         Row(children: [
           Container(
               child: new Text("Prochains entrainements".toUpperCase(),

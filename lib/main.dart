@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import './home.dart';
 import './training.dart';
@@ -10,7 +11,9 @@ import './style.dart';
 
 import './database/database.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  initializeDateFormatting().then((_) => runApp(MyApp()));
+}
 
 class HomeScreen extends StatefulWidget {
   @override

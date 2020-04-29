@@ -30,6 +30,8 @@ dependencies:
 
   basic_utils: ^1.2.0
 
+  table_calendar: ^2.2.3
+
   intl: any
 
   path: any

@@ -62,6 +62,11 @@ class DateDatabase {
     db.rawUpdate(''' UPDATE date SET endAt = ? WHERE id = ? ''',[endAt, id]);
   }
 
+  updateDate(int date, int id) async {
+    await initDB();
+    db.rawUpdate(''' UPDATE date SET date = ? WHERE id = ? ''',[date, id]);
+  }
+
   delete(int id) async {
     await initDB();
     db.delete(

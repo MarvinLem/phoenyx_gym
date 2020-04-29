@@ -387,18 +387,24 @@ class EditAgendaState extends State<EditAgenda> {
                                             fontSize: 16)), onChanged: (date) {
                                   setState(() {
                                     seance.date = date.millisecondsSinceEpoch;
+                                    db.updateDate(seance.date, dateId);
+                                    db.updateStart((seance.date + (seance.start * 3600000)).toInt(), dateId);
+                                    db.updateEnd((seance.date + (seance.end * 3600000)).toInt(), dateId);
                                   });
                                 }, onConfirm: (date) {
                                   setState(() {
                                     seance.date = date.millisecondsSinceEpoch;
+                                    db.updateDate(seance.date, dateId);
+                                    db.updateStart((seance.date + (seance.start * 3600000)).toInt(), dateId);
+                                    db.updateEnd((seance.date + (seance.end * 3600000)).toInt(), dateId);
                                   });
                                 },
-                                    currentTime: DateTime.now(),
+                                    currentTime: DateTime.fromMillisecondsSinceEpoch(seance.date),
                                     locale: LocaleType.fr);
                               },
                               child: Container(
                                   child: Text(
-                                      seance.date.toString().substring(0, 10),
+          new DateTime.fromMillisecondsSinceEpoch(seance.date).toString().substring(0, 10),
                                       style: TextStyle(
                                           fontSize: 24, color: Colors.black87),
                                       textAlign: TextAlign.left),
