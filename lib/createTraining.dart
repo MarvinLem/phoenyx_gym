@@ -292,7 +292,7 @@ class CreateTrainingState extends State<CreateTraining> {
 
   var program = new Program();
 
-  insertDate(day,duration,sessionId) async {
+  insertDate(day,duration,sessionId,trainingId) async {
     var now = new DateTime.now();
     var startOfDay = new DateTime(now.year, now.month, now.day);
     int millisecondsOf7Days = 604800000;
@@ -305,7 +305,8 @@ class CreateTrainingState extends State<CreateTraining> {
       var date = DateModel(date: milliSeconds,
           startAt: null,
           endAt: null,
-          sessionId: sessionId);
+          sessionId: sessionId,
+          trainingId: trainingId);
       dateDb.insert(date);
     }
   }
@@ -321,49 +322,49 @@ class CreateTrainingState extends State<CreateTraining> {
         sessionDb.insert(session);
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
-        insertDate(1,duration,sessionId);
+        insertDate(1,duration,sessionId,trainingId);
       }
       if(program.tuesday == true) {
         var session = SessionModel(day: "Tuesday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
-        insertDate(2,duration,sessionId);
+        insertDate(2,duration,sessionId,trainingId);
       }
       if(program.wednesday == true) {
         var session = SessionModel(day: "Wednesday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
-        insertDate(3,duration,sessionId);
+        insertDate(3,duration,sessionId,trainingId);
       }
       if(program.thursday == true) {
         var session = SessionModel(day: "Thursday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
-        insertDate(4,duration,sessionId);
+        insertDate(4,duration,sessionId,trainingId);
       }
       if(program.friday == true) {
         var session = SessionModel(day: "Friday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
-        insertDate(5,duration,sessionId);
+        insertDate(5,duration,sessionId,trainingId);
       }
       if(program.saturday == true) {
         var session = SessionModel(day: "Saturday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
-        insertDate(6,duration,sessionId);
+        insertDate(6,duration,sessionId,trainingId);
       }
       if(program.sunday == true) {
         var session = SessionModel(day: "Sunday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
-        insertDate(7,duration,sessionId);
+        insertDate(7,duration,sessionId,trainingId);
       }
     Navigator.pop(context);
   }

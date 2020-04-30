@@ -9,7 +9,7 @@ class DateModel{
   int sessionId;
   int trainingId;
 
-  DateModel({this.id,this.date,this.startAt,this.endAt, this.sessionId});
+  DateModel({this.id,this.date,this.startAt,this.endAt, this.sessionId, this.trainingId});
 
   Map<String, dynamic> toMap() {
     return {
@@ -18,6 +18,7 @@ class DateModel{
       'startAt': startAt,
       'endAt': endAt,
       'sessionId': sessionId,
+      'trainingId': trainingId
     };
   }
 
@@ -73,6 +74,15 @@ class DateDatabase {
       'date',
       where: "id = ?",
       whereArgs: [id],
+    );
+  }
+
+  deleteByTrainingId(int trainingId) async {
+    await initDB();
+    db.delete(
+      'date',
+      where: "trainingId = ?",
+      whereArgs: [trainingId],
     );
   }
 

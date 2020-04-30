@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import './getAgenda.dart';
 import './editAgenda.dart';
+import './getTraining.dart';
 import './createTraining.dart';
 
 import './database/dateDatabase.dart';
@@ -39,15 +39,26 @@ class AgendaState extends State<Agenda> {
     _calendarController = CalendarController();
   }
 
-  stringifyDate(date){
-    var startMinute = new DateTime.fromMillisecondsSinceEpoch(date.startAt).minute.toString() != '0' ? new DateTime.fromMillisecondsSinceEpoch(date.startAt).minute.toString() : '00';
-    var endMinute = new DateTime.fromMillisecondsSinceEpoch(date.endAt).minute.toString() != '0' ? new DateTime.fromMillisecondsSinceEpoch(date.endAt).minute.toString() : '00';
+  stringifyDate(date) {
+    var startMinute = new DateTime.fromMillisecondsSinceEpoch(date.startAt)
+                .minute
+                .toString() !=
+            '0'
+        ? new DateTime.fromMillisecondsSinceEpoch(date.startAt)
+            .minute
+            .toString()
+        : '00';
+    var endMinute = new DateTime.fromMillisecondsSinceEpoch(date.endAt)
+                .minute
+                .toString() !=
+            '0'
+        ? new DateTime.fromMillisecondsSinceEpoch(date.endAt).minute.toString()
+        : '00';
     return Text(
-        dayArray[new DateTime.fromMillisecondsSinceEpoch(date.date).weekday - 1] +
+        dayArray[new DateTime.fromMillisecondsSinceEpoch(date.date).weekday -
+                1] +
             " " +
-            new DateTime.fromMillisecondsSinceEpoch(date.date)
-                .day
-                .toString() +
+            new DateTime.fromMillisecondsSinceEpoch(date.date).day.toString() +
             "/" +
             new DateTime.fromMillisecondsSinceEpoch(date.date)
                 .month
@@ -64,51 +75,85 @@ class AgendaState extends State<Agenda> {
                 .toString() +
             ":" +
             endMinute,
-        style: TextStyle(
-            fontSize: 16, color: Colors.black87));
+        style: TextStyle(fontSize: 16, color: Colors.black87));
   }
 
-  getCalendar(){
+  void onDaySelected(DateTime day, List events) {
+    events.forEach((event) => Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                GetTraining(trainingId: event[0], sessionId: event[1]))));
+  }
+
+  getCalendar() {
     return FutureBuilder(
-        future:
-        db.getAllDate(),
-    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.length > 0) {
-            training = {};
-            for (DateModel date in snapshot.data) {
-              DateTime datetime = DateTime.fromMillisecondsSinceEpoch(date.date);
-              training[datetime] != null ? training[datetime].add('Entrainement') : training.putIfAbsent(datetime, () => ['Entrainement']);
+        future: db.getAllDate(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data.length > 0) {
+              training = {};
+              for (DateModel date in snapshot.data) {
+                DateTime datetime =
+                    DateTime.fromMillisecondsSinceEpoch(date.date);
+                training[datetime] != null
+                    ? training[datetime].add([date.trainingId, date.sessionId])
+                    : training.putIfAbsent(
+                        datetime,
+                        () => [
+                              [date.trainingId, date.sessionId]
+                            ]);
+              }
+              return TableCalendar(
+                  calendarController: _calendarController,
+                  locale: 'fr_FR',
+                  events: training,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  availableCalendarFormats: const {
+                    CalendarFormat.month: '',
+                  },
+                  calendarStyle: CalendarStyle(
+                    weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
+                    selectedColor: Color(0xFFD34B4B),
+                    todayColor: Color(0xFF9E3838),
+                    markersColor: Color(0xFFD34B4B),
+                    highlightSelected: false,
+                  ),
+                  daysOfWeekStyle: DaysOfWeekStyle(
+                    weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
+                  ),
+                  headerStyle: HeaderStyle(
+                    centerHeaderTitle: true,
+                  ),
+                  onDaySelected: onDaySelected);
+            } else {
+              return TableCalendar(
+                  calendarController: _calendarController,
+                  locale: 'fr_FR',
+                  events: training,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  availableCalendarFormats: const {
+                    CalendarFormat.month: '',
+                  },
+                  calendarStyle: CalendarStyle(
+                    weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
+                    selectedColor: Color(0xFFD34B4B),
+                    todayColor: Color(0xFF9E3838),
+                    markersColor: Color(0xFFD34B4B),
+                    highlightSelected: false,
+                  ),
+                  daysOfWeekStyle: DaysOfWeekStyle(
+                    weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
+                  ),
+                  headerStyle: HeaderStyle(
+                    centerHeaderTitle: true,
+                  ),
+                  onDaySelected: onDaySelected);
             }
-            return TableCalendar(
-              calendarController: _calendarController,
-              locale: 'fr_FR',
-              events: training,
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              availableCalendarFormats: const {
-                CalendarFormat.month: '',
-              },
-              calendarStyle: CalendarStyle(
-                weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
-                selectedColor: Color(0xFFD34B4B),
-                todayColor: Color(0xFF9E3838),
-                markersColor: Color(0xFFD34B4B),
-                highlightSelected: false,
-              ),
-              daysOfWeekStyle: DaysOfWeekStyle(
-                weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
-              ),
-              headerStyle: HeaderStyle(
-                centerHeaderTitle: true,
-              ),
-            );
           } else {
             return Center();
           }
-        } else {
-          return Center();
-        }
-    });
+        });
   }
 
   getAllDate() {
@@ -116,8 +161,7 @@ class AgendaState extends State<Agenda> {
     var startOfDay = new DateTime(now.year, now.month, now.day);
     var milliSeconds = startOfDay.millisecondsSinceEpoch - 86400000;
     return FutureBuilder(
-        future:
-            db.getAllInformationsForHome(milliSeconds),
+        future: db.getAllInformationsForHome(milliSeconds),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.length > 0) {
@@ -128,27 +172,37 @@ class AgendaState extends State<Agenda> {
                       Column(children: [
                         Row(children: [
                           Container(
-                              child: (date.startAt != null && date.endAt != null)
+                              child: (date.startAt != null &&
+                                      date.endAt != null)
                                   ? stringifyDate(date)
                                   : Text(
-                                      dayArray[new DateTime.fromMillisecondsSinceEpoch(date.date).weekday - 1] +
+                                      dayArray[
+                                              new DateTime.fromMillisecondsSinceEpoch(
+                                                          date.date)
+                                                      .weekday -
+                                                  1] +
                                           " " +
-                                          new DateTime.fromMillisecondsSinceEpoch(date.date)
+                                          new DateTime.fromMillisecondsSinceEpoch(
+                                                  date.date)
                                               .day
                                               .toString() +
                                           "/" +
-                                          new DateTime.fromMillisecondsSinceEpoch(date.date)
+                                          new DateTime.fromMillisecondsSinceEpoch(
+                                                  date.date)
                                               .month
                                               .toString(),
-                                      style: TextStyle(fontSize: 16, color: Colors.black87)),
-                              margin: new EdgeInsets.only(top: 20.0, left: 25.0)),
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black87)),
+                              margin:
+                                  new EdgeInsets.only(top: 20.0, left: 25.0)),
                           Container(
                               child: InkWell(
                                   onTap: () {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => EditAgenda(dateId: date.id)),
+                                          builder: (context) =>
+                                              EditAgenda(dateId: date.id)),
                                     );
                                   },
                                   child: Text("Changer l'horaire",
@@ -195,19 +249,21 @@ class AgendaState extends State<Agenda> {
                               TextStyle(fontSize: 16, color: Colors.black87)),
                       margin: new EdgeInsets.only(bottom: 20, top: 20),
                     ),
-                    RaisedButton(
-                        onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CreateTraining()),
-                            ),
-                        child: Text('Créer votre premier programme',
-                            style: TextStyle(fontSize: 18)),
-                        textColor: Colors.white,
-                        padding: const EdgeInsets.all(15),
-                        color: Color(0xFFD34B4B),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)))
+                    Container(
+                        child: RaisedButton(
+                            onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CreateTraining()),
+                                ),
+                            child: Text('Créer votre premier programme',
+                                style: TextStyle(fontSize: 18)),
+                            textColor: Colors.white,
+                            padding: const EdgeInsets.all(15),
+                            color: Color(0xFFD34B4B),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50))),
+                        margin: new EdgeInsets.only(bottom: 20))
                   ],
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start);
@@ -216,18 +272,6 @@ class AgendaState extends State<Agenda> {
             return Center();
           }
         });
-  }
-
-  Widget _buildTrainingMarker(DateTime date, List events) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 1.5),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Color(0xFFD34B4B),
-      ),
-      width: 10.0,
-      height: 10.0,
-    );
   }
 
   @override

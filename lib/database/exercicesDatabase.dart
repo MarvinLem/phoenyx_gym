@@ -89,6 +89,15 @@ class ExercicesDatabase {
     );
   }
 
+  deleteByTrainingId(int trainingId) async {
+    await initDB();
+    db.delete(
+      'exercices',
+      where: "trainingId = ?",
+      whereArgs: [trainingId],
+    );
+  }
+
   deleteExercicesByTrainingId(trainingId) async {
     await initDB();
     db.delete(

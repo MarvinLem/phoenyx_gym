@@ -146,6 +146,13 @@ class EditAgendaState extends State<EditAgenda> {
                                       } else {
                                         seance.start += 0.25;
                                       }
+                                      if (seance.start > seance.end) {
+                                        seance.end = seance.start;
+                                        int newEnd = (seance.date +
+                                            (seance.end * 3600000))
+                                            .toInt();
+                                        db.updateEnd(newEnd, dateId);
+                                      }
                                       int newStart = (seance.date +
                                               (seance.start * 3600000))
                                           .toInt();
@@ -201,6 +208,13 @@ class EditAgendaState extends State<EditAgenda> {
                                         seance.start = 23.75;
                                       } else {
                                         seance.start -= 0.25;
+                                      }
+                                      if (seance.start > seance.end) {
+                                        seance.end = seance.start;
+                                        int newEnd = (seance.date +
+                                            (seance.end * 3600000))
+                                            .toInt();
+                                        db.updateEnd(newEnd, dateId);
                                       }
                                       int newStart = (seance.date +
                                               (seance.start * 3600000))
@@ -269,6 +283,13 @@ class EditAgendaState extends State<EditAgenda> {
                                           } else {
                                             seance.end += 0.25;
                                           }
+                                          if (seance.end < seance.start) {
+                                            seance.start = seance.end;
+                                            int newStart = (seance.date +
+                                                (seance.start * 3600000))
+                                                .toInt();
+                                            db.updateStart(newStart, dateId);
+                                          }
                                           int newEnd = (seance.date +
                                               (seance.end * 3600000))
                                               .toInt();
@@ -325,6 +346,13 @@ class EditAgendaState extends State<EditAgenda> {
                                             seance.end = 23.75;
                                           } else {
                                             seance.end -= 0.25;
+                                          }
+                                          if (seance.end < seance.start) {
+                                            seance.start = seance.end;
+                                            int newStart = (seance.date +
+                                                (seance.start * 3600000))
+                                                .toInt();
+                                            db.updateStart(newStart, dateId);
                                           }
                                           int newEnd = (seance.date +
                                               (seance.end * 3600000))

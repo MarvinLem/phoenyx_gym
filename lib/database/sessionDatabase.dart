@@ -54,6 +54,15 @@ class SessionDatabase {
     );
   }
 
+  deleteByTrainingId(int trainingId) async {
+    await initDB();
+    db.delete(
+      'session',
+      where: "trainingId = ?",
+      whereArgs: [trainingId],
+    );
+  }
+
   getAllSession() async {
     await initDB();
     List<Map> results = await db.query("session");

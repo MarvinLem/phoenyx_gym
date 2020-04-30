@@ -18,7 +18,7 @@ class AllDatabase {
           "CREATE TABLE session(id INTEGER PRIMARY KEY, day TEXT, date DATETIME, trainingId INTEGER)",
         );
         db.execute(
-          "CREATE TABLE date(id INTEGER PRIMARY KEY, date INTEGER, startAt INTEGER, endAt INTEGER, sessionId INTEGER)",
+          "CREATE TABLE date(id INTEGER PRIMARY KEY, date INTEGER, startAt INTEGER, endAt INTEGER, sessionId INTEGER, trainingId INTEGER)",
         );
       },
     );

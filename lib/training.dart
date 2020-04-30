@@ -3,6 +3,10 @@ import './createTraining.dart';
 import './getTraining.dart';
 
 import './database/trainingDatabase.dart';
+import './database/dateDatabase.dart';
+import './database/sessionDatabase.dart';
+import './database/exercicesDatabase.dart';
+
 
 class Training extends StatefulWidget {
   @override
@@ -13,6 +17,9 @@ class Training extends StatefulWidget {
 
 class TrainingState extends State<Training> {
   TrainingDatabase db = TrainingDatabase();
+  DateDatabase dateDb = DateDatabase();
+  SessionDatabase sessionDb = SessionDatabase();
+  ExercicesDatabase exercicesDb = ExercicesDatabase();
   List<String> training = [];
 
   @override
@@ -20,17 +27,24 @@ class TrainingState extends State<Training> {
     getAllTraining();
   }
 
+  deleteTraining(trainingId){
+    db.delete(trainingId);
+    sessionDb.deleteByTrainingId(trainingId);
+    dateDb.deleteByTrainingId(trainingId);
+    exercicesDb.deleteByTrainingId(trainingId);
+    setState(() {});
+  }
+
   getAllTraining() {
     return FutureBuilder(
         future: db.getAllTraining(),
-        builder: (BuildContext context,
-            AsyncSnapshot<dynamic> snapshot) {
-          if(snapshot.hasData) {
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
             return Column(children: [
               for (TrainingModel training in snapshot.data)
                 Row(
                   children: [
-                    InkWell(
+                    GestureDetector(
                       child: Container(
                         decoration: new BoxDecoration(
                           borderRadius: new BorderRadius.circular(20.0),
@@ -61,16 +75,33 @@ class TrainingState extends State<Training> {
                         ),
                         alignment: Alignment.bottomLeft,
                         constraints: BoxConstraints(
-                            minWidth: MediaQuery
-                                .of(context)
-                                .size
-                                .width - 40,
+                            minWidth: MediaQuery.of(context).size.width - 40,
                             minHeight: 120.0),
                       ),
-                      onTap: () =>
-                          Navigator.push(context,
-                              MaterialPageRoute(
-                                  builder: (context) => GetTraining(trainingId: training.id))),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  GetTraining(trainingId: training.id))),
+                      onLongPress: () {
+                        showMenu(
+                          position: RelativeRect.fromLTRB(10, 100, 0, 0),
+                          initialValue: true,
+                          items: <PopupMenuEntry>[
+                            PopupMenuItem(
+                                child: InkWell(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Icon(Icons.delete),
+                                        Text("Delete"),
+                                      ],
+                                    ),
+                                    onTap: () => deleteTraining(training.id)
+                                ))
+                          ],
+                          context: context,
+                        );
+                      },
                     )
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
