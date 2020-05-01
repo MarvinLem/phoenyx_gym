@@ -11,6 +11,7 @@ class Program {
   String name = "Nouveau programme";
   int session = 3;
   int duration = 5;
+  int seance = 1;
   bool monday = false;
   bool tuesday = false;
   bool wednesday = false;
@@ -303,65 +304,72 @@ class CreateTrainingState extends State<CreateTraining> {
     for(int i=0;i<duration;i++) {
       var milliSeconds = startOfDay.millisecondsSinceEpoch + millisecondsOf7Days * i;
       var date = DateModel(date: milliSeconds,
-          startAt: null,
-          endAt: null,
+          startAt: milliSeconds,
+          endAt: milliSeconds,
           sessionId: sessionId,
           trainingId: trainingId);
       dateDb.insert(date);
     }
   }
 
-  trainingCreated(name, session, duration) async {
+  trainingCreated(name, session, duration, seance) async {
     var training = TrainingModel(
         name: name, session: session, duration: duration);
     db.insert(training);
     var lastTraining = await db.getLastTraining();
     var trainingId = lastTraining[0]["id"];
       if(program.monday == true) {
-        var session = SessionModel(day: "Monday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        seance += 1;
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
         insertDate(1,duration,sessionId,trainingId);
       }
       if(program.tuesday == true) {
-        var session = SessionModel(day: "Tuesday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        seance += 1;
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
         insertDate(2,duration,sessionId,trainingId);
       }
       if(program.wednesday == true) {
-        var session = SessionModel(day: "Wednesday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        seance += 1;
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
         insertDate(3,duration,sessionId,trainingId);
       }
       if(program.thursday == true) {
-        var session = SessionModel(day: "Thursday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        seance += 1;
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
         insertDate(4,duration,sessionId,trainingId);
       }
       if(program.friday == true) {
-        var session = SessionModel(day: "Friday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        seance += 1;
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
         insertDate(5,duration,sessionId,trainingId);
       }
       if(program.saturday == true) {
-        var session = SessionModel(day: "Saturday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        seance += 1;
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
         insertDate(6,duration,sessionId,trainingId);
       }
       if(program.sunday == true) {
-        var session = SessionModel(day: "Sunday", date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
+        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
         sessionDb.insert(session);
+        seance += 1;
         var lastSession = await sessionDb.getLastSession();
         var sessionId = lastSession[0]["id"];
         insertDate(7,duration,sessionId,trainingId);
@@ -619,7 +627,7 @@ class CreateTrainingState extends State<CreateTraining> {
             children: [
               Container(
                 child: program.session == program.currentSession ? RaisedButton(
-                    onPressed: () => trainingCreated(formController.text,program.session,program.duration),
+                    onPressed: () => trainingCreated(formController.text,program.session,program.duration,program.seance),
                     child: Text('Créer le programme',
                         style: TextStyle(fontSize: 18)),
                     textColor: Colors.white,

@@ -120,7 +120,7 @@ class HomeState extends State<Home> {
                                               left: 18, top: 5)),
                                     ]),
                                     Row(children: [
-                                      (date.startAt != null && date.endAt != null) ? Container(
+                                      (date.startAt != date.date || date.endAt != date.date) ? Container(
                                           child: stringifyDate(date),
                                           margin: new EdgeInsets.only(
                                               left: 18, top: 10.0)) : Center(),

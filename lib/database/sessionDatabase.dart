@@ -2,16 +2,16 @@ import 'package:sqflite/sqflite.dart';
 
 class SessionModel{
   int id;
-  String day;
+  int seance;
   int date;
   int trainingId;
 
-  SessionModel({this.id,this.day,this.date,this.trainingId});
+  SessionModel({this.id,this.seance,this.date,this.trainingId});
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'day': day,
+      'seance': seance,
       'date': date,
       'trainingId': trainingId,
     };
@@ -19,7 +19,7 @@ class SessionModel{
 
   SessionModel.fromMap(Map<String, dynamic> map) {
     id = map['id'];
-    day = map['day'];
+    seance = map['seance'];
     date = map['date'];
     trainingId = map['trainingId'];
   }
@@ -34,7 +34,7 @@ class SessionDatabase {
       version: 1,
       onCreate: (db, version) {
         db.execute(
-          "CREATE TABLE session(id INTEGER PRIMARY KEY, day TEXT, date DATETIME, trainingId INTEGER)",
+          "CREATE TABLE session(id INTEGER PRIMARY KEY, seance INTEGER, date DATETIME, trainingId INTEGER)",
         );
       },
     );
@@ -89,7 +89,7 @@ class SessionDatabase {
 
   getSessionByTrainingIdAndDistinctDay(int trainingId) async {
     await initDB();
-    var results = await db.query("session", columns: ['day','id'],where: "trainingId = ?", orderBy: "date ASC", distinct: true, whereArgs: [trainingId]);
+    var results = await db.query("session", columns: ['seance','id'],where: "trainingId = ?", orderBy: "date ASC", distinct: true, whereArgs: [trainingId]);
     return results;
   }
 }

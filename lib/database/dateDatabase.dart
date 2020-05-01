@@ -100,7 +100,7 @@ class DateDatabase {
 
   getAllInformationsForHome(datetime) async {
     await initDB();
-    List<Map> results = await db.rawQuery("SELECT training.name,training.id AS trainingId,date.date,date.startAt,date.endAt,date.sessionId,date.id FROM training INNER JOIN session ON session.trainingId = training.id INNER JOIN date ON date.sessionId = session.id WHERE date.date > ? ORDER BY date.date ASC LIMIT 2", [datetime]);
+    List<Map> results = await db.rawQuery("SELECT training.name,training.id AS trainingId,date.date,date.startAt,date.endAt,date.sessionId,date.id FROM training INNER JOIN session ON session.trainingId = training.id INNER JOIN date ON date.sessionId = session.id WHERE date.startAt > ? ORDER BY date.startAt ASC LIMIT 2", [datetime]);
     return results.map((map) => DateModel.fromMap(map));
   }
 }

@@ -31,8 +31,7 @@ class GetTrainingState extends State<GetTraining> {
   String trainingName;
   var sessionArray = [];
   var sessionIdArray = [0];
-  var dayArray = ["lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche"];
-  int day = 0;
+  int seance = 0;
 
   DateTime date = DateTime.now();
 
@@ -40,9 +39,11 @@ class GetTrainingState extends State<GetTraining> {
 
   @override
   void initState() {
+    print(seance);
+    print(sessionIdArray);
     getTrainingName();
     getDaysSession();
-    getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[day]);
+    getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[seance]);
   }
 
   getTrainingName() async {
@@ -57,13 +58,14 @@ class GetTrainingState extends State<GetTraining> {
     sessionIdArray = [];
     for(int i=0;i<session.length;i++){
       setState(() {
-        sessionArray.add(session[i]['day']);
+        sessionArray.add(session[i]['seance']);
         sessionIdArray.add(session[i]['id']);
       });
     }
     if(sessionId != null){
-      day = sessionId - 1;
+      seance = sessionIdArray.indexOf(sessionId);
     }
+
   }
 
   getExercicesByTrainingIdAndSessionId(trainingId,sessionId) {
@@ -161,7 +163,7 @@ class GetTrainingState extends State<GetTraining> {
                           onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => BeginTraining(trainingId: trainingId, sessionId: sessionIdArray[day], maxOrder: exercices)),
+                                builder: (context) => BeginTraining(trainingId: trainingId, sessionId: sessionIdArray[seance], maxOrder: exercices)),
                           ),
                           child: Text('Commencer la séance',
                               style: TextStyle(fontSize: 18)),
@@ -225,11 +227,11 @@ class GetTrainingState extends State<GetTraining> {
             children: [
               Column(
                 children: [
-                  (day != 0) ? Container(
+                  (seance != 0) ? Container(
                     child: GestureDetector(
                       onTap: () => setState(() {
-                        if(day > 0) {
-                          day -= 1;
+                        if(seance > 0) {
+                          seance -= 1;
                         }
                       }),
                       child: new Icon(Icons.arrow_left,
@@ -246,7 +248,7 @@ class GetTrainingState extends State<GetTraining> {
                       style: TextStyle(
                           fontSize: 18,
                           color: Color(0xFFD34B4B),
-                          fontWeight: FontWeight.bold)) : new Text(("Votre séance du "+ sessionArray[day]).replaceAll('Monday', 'lundi').replaceAll('Tuesday', 'mardi').replaceAll('Wednesday', 'mercredi').replaceAll('Thursday', 'jeudi').replaceAll('Friday', 'vendredi').replaceAll('Saturday', 'samedi').replaceAll('Sunday', 'dimanche'),
+                          fontWeight: FontWeight.bold)) : new Text(("Votre " + (seance+1).toString() + " séance de la semaine").replaceAll("1", "1ère").replaceAll("2", "2ème").replaceAll("3", "3ème").replaceAll("4", "4ème").replaceAll("5", "5ème").replaceAll("6", "6ème").replaceAll("7", "7ème"),
                       style: TextStyle(
                           fontSize: 18,
                           color: Color(0xFFD34B4B),
@@ -256,11 +258,11 @@ class GetTrainingState extends State<GetTraining> {
               ]),
               Column(
                 children: [
-                  (day < sessionArray.length-1) ? Container(
+                  (seance < sessionArray.length-1) ? Container(
                     child: GestureDetector(
                       onTap: () => setState(() {
-                        if(day < sessionArray.length-1) {
-                          day += 1;
+                        if(seance < sessionArray.length-1) {
+                          seance += 1;
                         }
                       }),
                       child: new Icon(Icons.arrow_right,
@@ -274,7 +276,7 @@ class GetTrainingState extends State<GetTraining> {
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
-          getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[day]),
+          getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[seance]),
           Row(
             children: [
               Container(
@@ -282,7 +284,7 @@ class GetTrainingState extends State<GetTraining> {
                     onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditTraining(trainingId: trainingId, sessionId: sessionIdArray[day])),
+                              builder: (context) => EditTraining(trainingId: trainingId, sessionId: sessionIdArray[seance])),
                         ),
                     child: Text('Modifier la séance',
                         style: TextStyle(fontSize: 18)),

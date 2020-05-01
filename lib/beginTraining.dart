@@ -120,7 +120,25 @@ class BeginTrainingState extends State<BeginTraining> {
                 ]),
               ]);
             } else {
-              return Center();
+              return Column(children: [
+                Row(children: [
+                  Column(
+                    children: [
+                      Container(
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        margin: new EdgeInsets.symmetric(
+                            horizontal: 25, vertical: 30),
+                        padding: new EdgeInsets.symmetric(
+                            horizontal: 35, vertical: 35),
+                      )
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  )
+                ]),
+              ]);
             }
           } else {
             return Center();
@@ -155,6 +173,20 @@ class BeginTrainingState extends State<BeginTraining> {
                 Row(
                   children: [
                     getExercicesByTrainingIdAndSessionIdAndOrder(
+                        trainingId, sessionId, order - 1),
+                    (order != 1)
+                        ? Column(
+                            children: [
+                              Container(
+                                child: new Icon(Icons.play_arrow,
+                                    color: Color(0xFFD34B4B)),
+                              )
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                          )
+                        : Center(),
+                    getExercicesByTrainingIdAndSessionIdAndOrder(
                         trainingId, sessionId, order),
                     (maxOrder >= order + 1)
                         ? Column(
@@ -170,20 +202,6 @@ class BeginTrainingState extends State<BeginTraining> {
                         : Center(),
                     getExercicesByTrainingIdAndSessionIdAndOrder(
                         trainingId, sessionId, order + 1),
-                    (maxOrder >= order + 2)
-                        ? Column(
-                            children: [
-                              Container(
-                                child: new Icon(Icons.play_arrow,
-                                    color: Color(0xFFD34B4B)),
-                              )
-                            ],
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                          )
-                        : Center(),
-                    getExercicesByTrainingIdAndSessionIdAndOrder(
-                        trainingId, sessionId, order + 2),
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -339,6 +357,37 @@ class BeginTrainingState extends State<BeginTraining> {
                   children: [
                     Container(
                       child: RaisedButton(
+                          onPressed: () => setState(() {
+                                if (order == maxOrder) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BeginFeedback(
+                                              trainingId: trainingId,
+                                              sessionId: sessionId)));
+                                } else {
+                                  order += 1;
+                                  getRemaingVariables(
+                                      trainingId, sessionId, order);
+                                }
+                              }),
+                          child: Text('Passer cet exercice',
+                                  style: TextStyle(fontSize: 14)),
+                          textColor: Colors.white,
+                          padding: const EdgeInsets.all(15),
+                          color: Color(0xFF9E3838),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50))),
+                      alignment: Alignment.center,
+                      margin: new EdgeInsets.only(top: 10.0, bottom: 10),
+                    ),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      child: RaisedButton(
                           onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -359,42 +408,44 @@ class BeginTrainingState extends State<BeginTraining> {
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
               ])
-            : Center(child: InkWell( child:
-                Column(children: [
-                  Text(
-                    (countdown.toString()).toUpperCase(),
-                    style: TextStyle(
-                        fontSize: 72,
-                        color: Color(0xFF3F3F3F),
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    "Toucher l'écran pour commencer l'entrainement",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xFF3F3F3F),
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  Container( child:
-                  RaisedButton(
-                      onPressed: () => setState(() {
-                        countdown += 10;
-                      }),
-                      child: Text('Ajouter 10 secondes',
-                          style: TextStyle(fontSize: 18)),
-                      textColor: Colors.white,
-                      padding: const EdgeInsets.all(15),
-                      color: Color(0xFFD34B4B),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50))),
-                  margin: EdgeInsets.only(top: 80))
-                ], mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center),
-          onTap: () => setState(() {
-            countdown = 0;
-          })
-        )));
+            : Center(
+                child: InkWell(
+                    child: Column(
+                        children: [
+                          Text(
+                            (countdown.toString()).toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 72,
+                                color: Color(0xFF3F3F3F),
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            "Toucher l'écran pour commencer l'entrainement",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF3F3F3F),
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                          Container(
+                              child: RaisedButton(
+                                  onPressed: () => setState(() {
+                                        countdown += 10;
+                                      }),
+                                  child: Text('Ajouter 10 secondes',
+                                      style: TextStyle(fontSize: 18)),
+                                  textColor: Colors.white,
+                                  padding: const EdgeInsets.all(15),
+                                  color: Color(0xFFD34B4B),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50))),
+                              margin: EdgeInsets.only(top: 80))
+                        ],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center),
+                    onTap: () => setState(() {
+                          countdown = 0;
+                        }))));
   }
 }
