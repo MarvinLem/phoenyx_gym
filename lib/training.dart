@@ -57,6 +57,8 @@ class TrainingState extends State<Training> {
                         ),
                         child: Column(children: [
                           new Text(training.name.toUpperCase(),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 18,
                                   letterSpacing: 1,
@@ -76,7 +78,8 @@ class TrainingState extends State<Training> {
                         alignment: Alignment.bottomLeft,
                         constraints: BoxConstraints(
                             minWidth: MediaQuery.of(context).size.width - 40,
-                            minHeight: 120.0),
+                            minHeight: 120.0,
+                            maxWidth: MediaQuery.of(context).size.width - 40),
                       ),
                       onTap: () => Navigator.push(
                           context,

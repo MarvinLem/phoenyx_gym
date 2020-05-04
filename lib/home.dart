@@ -115,9 +115,12 @@ class HomeState extends State<Home> {
                                           child: Text(date.name,
                                               style: TextStyle(
                                                   fontSize: 16,
-                                                  color: Colors.black87)),
+                                                  color: Colors.black87),
+                                              maxLines: 2,
+                                          overflow: TextOverflow.ellipsis),
                                           margin: new EdgeInsets.only(
-                                              left: 18, top: 5)),
+                                              left: 18, top: 5),
+                                          constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width-235, maxWidth: MediaQuery.of(context).size.width-235)),
                                     ]),
                                     Row(children: [
                                       (date.startAt != date.date || date.endAt != date.date) ? Container(
@@ -227,6 +230,7 @@ class HomeState extends State<Home> {
                       minWidth: MediaQuery.of(context).size.width - 30,
                       maxWidth: MediaQuery.of(context).size.width - 30),
                   padding: new EdgeInsets.all(15),
+                  margin: new EdgeInsets.only(bottom: 25),
                   decoration: new BoxDecoration(
                       color: Color(0xFFFFFFFF),
                       borderRadius: BorderRadius.circular(10.0)))
@@ -239,7 +243,7 @@ class HomeState extends State<Home> {
                 image: new AssetImage('assets/images/background.png'))),
         constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width,
-            minHeight: MediaQuery.of(context).size.height),
+            minHeight: MediaQuery.of(context).size.height - 80),
       )
     ]);
   }

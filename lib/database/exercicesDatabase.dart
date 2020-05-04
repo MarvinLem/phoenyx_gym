@@ -80,6 +80,11 @@ class ExercicesDatabase {
     db.rawUpdate(''' UPDATE exercices SET rest = ? WHERE id = ? ''',[rest, id]);
   }
 
+  updateExercice(int series, int repetitions, int weight, int rest, int id) async {
+    await initDB();
+    db.rawUpdate(''' UPDATE exercices SET series = ?, repetitions = ?, weight = ?, rest = ? WHERE id = ? ''',[series, repetitions, weight, rest, id]);
+  }
+
   delete(int id) async {
     await initDB();
     db.delete(

@@ -172,8 +172,8 @@ class AgendaState extends State<Agenda> {
                       Column(children: [
                         Row(children: [
                           Container(
-                              child: (date.startAt != null &&
-                                      date.endAt != null)
+                              child: (date.startAt != date.date &&
+                                      date.endAt != date.date)
                                   ? stringifyDate(date)
                                   : Text(
                                       dayArray[
