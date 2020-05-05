@@ -216,12 +216,13 @@ class GetTrainingState extends State<GetTraining> {
                     style: TextStyle(
                         fontSize: 20,
                         color: Color(0xFFD34B4B),
-                        fontWeight: FontWeight.bold)) : new Text("Programme".toUpperCase(),
+                        fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis,) : new Text("Programme".toUpperCase(),
                     style: TextStyle(
                         fontSize: 20,
                         color: Color(0xFFD34B4B),
                         fontWeight: FontWeight.bold)),
-                margin: new EdgeInsets.only(left: 20.0, top: 20.0)),
+                margin: new EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-40)),
           ]),
           Row(
             children: [
@@ -237,8 +238,8 @@ class GetTrainingState extends State<GetTraining> {
                       child: new Icon(Icons.arrow_left,
                           size: 40, color: Color(0xFFD34B4B)),
                     ),
-                    margin: new EdgeInsets.only(top: 20.0),
-                  ) : Container(),
+                    margin: new EdgeInsets.only(top: 20.0)
+                  ) : Container(constraints: BoxConstraints(minWidth: 40)),
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
@@ -254,6 +255,7 @@ class GetTrainingState extends State<GetTraining> {
                           color: Color(0xFFD34B4B),
                           fontWeight: FontWeight.bold)),
                   margin: new EdgeInsets.only(top: 20.0),
+                    constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width-120)
                 )
               ]),
               Column(
@@ -269,7 +271,7 @@ class GetTrainingState extends State<GetTraining> {
                           size: 40, color: Color(0xFFD34B4B)),
                     ),
                     margin: new EdgeInsets.only(top: 20.0),
-                  ) : Center(),
+                  ) : Container(constraints: BoxConstraints(minWidth: 40)),
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,
               )

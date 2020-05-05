@@ -77,6 +77,10 @@ class EndFeedbackState extends State<EndFeedback> {
           exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions,'weight': exercice.weight + 5,'rest': exercice.rest});
       }
       break;
+      default: {
+          //on garde pareil
+          exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions,'weight': exercice.weight,'rest': exercice.rest});
+      }
     }
   }
 

@@ -7,11 +7,63 @@ import './database/dateDatabase.dart';
 import './database/sessionDatabase.dart';
 import './database/exercicesDatabase.dart';
 
-
 class Training extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return TrainingState();
+  }
+}
+
+class ItemMenu extends StatefulWidget {
+  final modal;
+  final trainingId;
+  Function callback;
+
+  ItemMenu({this.modal, this.trainingId, this.callback});
+
+  @override
+  State<StatefulWidget> createState() {
+    return ItemMenuState(modal: modal, trainingId: trainingId, callback: callback);
+  }
+}
+
+class ItemMenuState extends State<ItemMenu> {
+  bool modal;
+  int trainingId;
+  Function callback;
+  TrainingDatabase db = TrainingDatabase();
+  DateDatabase dateDb = DateDatabase();
+  SessionDatabase sessionDb = SessionDatabase();
+  ExercicesDatabase exercicesDb = ExercicesDatabase();
+
+  ItemMenuState({this.modal, this.trainingId, this.callback});
+
+  deleteTraining(trainingId) {
+    db.delete(trainingId);
+    sessionDb.deleteByTrainingId(trainingId);
+    dateDb.deleteByTrainingId(trainingId);
+    exercicesDb.deleteByTrainingId(trainingId);
+    setState(() {
+      this.widget.callback();
+    });
+    Navigator.pop(context);
+  }
+
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        modal == false ?
+        setState(() {
+          modal = true;
+        }) : deleteTraining(trainingId);
+      },
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.delete),
+          Text(modal == false ? 'Supprimer' : 'Etes vous sûr ?'),
+        ],
+      ),
+    );
   }
 }
 
@@ -21,18 +73,18 @@ class TrainingState extends State<Training> {
   SessionDatabase sessionDb = SessionDatabase();
   ExercicesDatabase exercicesDb = ExercicesDatabase();
   List<String> training = [];
+  bool modal = false;
 
   @override
   void initState() {
     getAllTraining();
+    modal = false;
   }
 
-  deleteTraining(trainingId){
-    db.delete(trainingId);
-    sessionDb.deleteByTrainingId(trainingId);
-    dateDb.deleteByTrainingId(trainingId);
-    exercicesDb.deleteByTrainingId(trainingId);
-    setState(() {});
+  void callback() {
+    setState(() {
+        modal = false;
+    });
   }
 
   getAllTraining() {
@@ -89,18 +141,15 @@ class TrainingState extends State<Training> {
                       onLongPress: () {
                         showMenu(
                           position: RelativeRect.fromLTRB(10, 100, 0, 0),
-                          initialValue: true,
                           items: <PopupMenuEntry>[
                             PopupMenuItem(
-                                child: InkWell(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(Icons.delete),
-                                        Text("Delete"),
-                                      ],
-                                    ),
-                                    onTap: () => deleteTraining(training.id)
-                                ))
+                                value: modal,
+                                child: StatefulBuilder(builder:
+                                            (BuildContext context,
+                                                StateSetter setState) {
+                                          return ItemMenu(modal: modal, trainingId: training.id, callback: callback);
+                                        }),
+                            )
                           ],
                           context: context,
                         );

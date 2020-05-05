@@ -179,7 +179,8 @@ class EditTrainingState extends State<EditTraining> {
                         fontSize: 20,
                         color: Color(0xFFD34B4B),
                         fontWeight: FontWeight.bold)),
-                margin: new EdgeInsets.only(left: 20.0, top: 20.0)),
+                margin: new EdgeInsets.only(left: 20.0, top: 20.0),
+                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-40)),
           ]),
           getExercicesByTrainingIdAndSessionId(trainingId,sessionId),
           Row(children: [

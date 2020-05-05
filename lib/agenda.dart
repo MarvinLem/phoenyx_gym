@@ -105,6 +105,7 @@ class AgendaState extends State<Agenda> {
                             ]);
               }
               return TableCalendar(
+                  availableGestures: AvailableGestures.horizontalSwipe,
                   calendarController: _calendarController,
                   locale: 'fr_FR',
                   events: training,

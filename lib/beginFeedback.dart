@@ -129,14 +129,12 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                       minWidth: 40, minHeight: 40),
                                   decoration: new BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: feedback.exerciceArray[
-                                                exercice.exerciceOrder - 1] ==
-                                            0
-                                        ? Color(0xFFD34B4B)
-                                        : Colors.transparent,
                                     image: DecorationImage(
-                                      image: ExactAssetImage(
-                                          'assets/images/sad.png'),
+                                      image: ExactAssetImage(feedback.exerciceArray[
+                                      exercice.exerciceOrder - 1] ==
+                                          0
+                                          ?
+                                          'assets/images/sad-red.png' : 'assets/images/sad.png'),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -155,14 +153,12 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                       minWidth: 40, minHeight: 40),
                                   decoration: new BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: feedback.exerciceArray[
-                                                exercice.exerciceOrder - 1] ==
-                                            1
-                                        ? Color(0xFFD34B4B)
-                                        : Colors.transparent,
                                     image: DecorationImage(
-                                      image: ExactAssetImage(
-                                          'assets/images/meh.png'),
+                                      image: ExactAssetImage(feedback.exerciceArray[
+                                      exercice.exerciceOrder - 1] ==
+                                          1
+                                          ?
+                                      'assets/images/meh-red.png' : 'assets/images/meh.png'),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -180,15 +176,13 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                   constraints: new BoxConstraints(
                                       minWidth: 40, minHeight: 40),
                                   decoration: new BoxDecoration(
-                                    color: feedback.exerciceArray[
-                                                exercice.exerciceOrder - 1] ==
-                                            2
-                                        ? Color(0xFFD34B4B)
-                                        : Colors.transparent,
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
-                                      image: ExactAssetImage(
-                                          'assets/images/happy.png'),
+                                      image: ExactAssetImage(feedback.exerciceArray[
+                                      exercice.exerciceOrder - 1] ==
+                                          2
+                                          ?
+                                      'assets/images/happy-red.png' : 'assets/images/happy.png'),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -206,15 +200,13 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                   constraints: new BoxConstraints(
                                       minWidth: 40, minHeight: 40),
                                   decoration: new BoxDecoration(
-                                    color: feedback.exerciceArray[
-                                                exercice.exerciceOrder - 1] ==
-                                            3
-                                        ? Color(0xFFD34B4B)
-                                        : Colors.transparent,
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
-                                      image: ExactAssetImage(
-                                          'assets/images/smile.png'),
+                                      image: ExactAssetImage(feedback.exerciceArray[
+                                      exercice.exerciceOrder - 1] ==
+                                          3
+                                          ?
+                                      'assets/images/smile-red.png' : 'assets/images/smile.png'),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -222,7 +214,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
                           ]),
                           constraints: BoxConstraints(
                               minWidth: MediaQuery.of(context).size.width - 40),
-                          margin: new EdgeInsets.only(bottom: 30),
+                          margin: new EdgeInsets.only(bottom: 60),
                         ),
                       ],
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -244,6 +236,11 @@ class BeginFeedbackState extends State<BeginFeedback> {
         body: ListView(children: [
           Row(
             children: [
+              Column(children:[
+                Container(constraints: new BoxConstraints(
+                    minWidth: 25, minHeight: 25))
+              ]),
+              Column(children:[
               Container(
                   child: new Text(
                     "Fin de la séance".toUpperCase(),
@@ -253,7 +250,72 @@ class BeginFeedbackState extends State<BeginFeedback> {
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
-                  margin: new EdgeInsets.only(top: 20.0)),
+                  margin: new EdgeInsets.only(top: 20.0),
+                  constraints: new BoxConstraints(
+                      minWidth: 260))]),
+              Column(children:[
+                InkWell(
+                      onTap: () {
+                        showMenu(
+                          position: RelativeRect.fromLTRB(10, 100, 0, 0),
+                          items: <PopupMenuEntry>[
+                            PopupMenuItem(
+                              child:Column(children:[
+                                Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
+                        maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: ExactAssetImage('assets/images/sad.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                )),
+                              Text("Vous n'avez pas reussi à réaliser l'exercice demandé et vous n'étiez pas pret d'y arriver"),
+                                Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
+                                    maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: ExactAssetImage('assets/images/meh.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                )),
+                                Text("Vous n'avez pas reussi à réaliser l'exercice demandé mais vous y étiez presque"),
+                                Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
+                                    maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: ExactAssetImage('assets/images/happy.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                )),
+                                Text("Vous avez reussi à réaliser l'exercice normalement"),
+                                Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
+                                    maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: ExactAssetImage('assets/images/smile.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                )),
+                                Text("Vous avez reussi à réaliser l'exercice et c'était meme très facile")]),
+                            )
+                          ],
+                          context: context,
+                        );
+                      },
+                    child:
+              Container(
+                margin:
+                new EdgeInsets.only(top: 20.0),
+                constraints: new BoxConstraints(
+                    minWidth: 25, minHeight: 25),
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: ExactAssetImage('assets/images/tooltip.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ))])
             ],
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
