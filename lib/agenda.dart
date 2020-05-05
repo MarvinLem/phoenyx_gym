@@ -6,6 +6,7 @@ import './getTraining.dart';
 import './createTraining.dart';
 
 import './database/dateDatabase.dart';
+import './database/trainingDatabase.dart';
 
 class AgendaOptions {
   int trainingDay = 1;
@@ -31,12 +32,17 @@ class AgendaState extends State<Agenda> {
   ];
   Map<DateTime, List> training = {};
   DateDatabase db = DateDatabase();
+  TrainingDatabase trainingDb = TrainingDatabase();
   var _calendarController;
+  var selectedEvents;
+  var trainingName;
+  var trainingArray;
 
   @override
   void initState() {
     getAllDate();
     _calendarController = CalendarController();
+    trainingArray = [];
   }
 
   stringifyDate(date) {
@@ -78,12 +84,57 @@ class AgendaState extends State<Agenda> {
         style: TextStyle(fontSize: 16, color: Colors.black87));
   }
 
-  void onDaySelected(DateTime day, List events) {
-    events.forEach((event) => Navigator.push(
+  addTrainingToArray(trainingId, sessionId) async{
+    trainingName = await trainingDb.getTrainingName(trainingId);
+    trainingArray.add({ 'name': trainingName[0]['name'], 'trainingId': trainingId, 'sessionId': sessionId});
+  }
+
+  void onDaySelected(DateTime day, List events){
+    trainingArray = [];
+    setState(() {
+      selectedEvents = events;
+    });
+    events.forEach((event) async => await addTrainingToArray(event[0], event[1]));
+    /*
+        Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) =>
-                GetTraining(trainingId: event[0], sessionId: event[1]))));
+                GetTraining(trainingId: event[0], sessionId: event[1])))
+    */
+  }
+
+  Widget trainingList() {
+    if(trainingArray != null) {
+      return Column(
+        children: trainingArray
+            .map<Widget>((event) =>
+            Container(
+                constraints: BoxConstraints(
+                    maxWidth:
+                    MediaQuery.of(context).size.width - 40,
+                    minHeight: 60.0),
+              decoration: new BoxDecoration(
+                  border:
+                  new Border.all(color: Color(0xFFD34B4B)),
+                  borderRadius:
+                  new BorderRadius.circular(20.0)),
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 8.0, vertical: 4.0),
+              child: ListTile(
+                title: Text(event['name']),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GetTraining(trainingId: event['trainingId'], sessionId: event['sessionId']))),
+              ),
+            ))
+            .toList(),
+      );
+    } else {
+      return Container();
+    }
   }
 
   getCalendar() {
@@ -289,6 +340,7 @@ class AgendaState extends State<Agenda> {
               margin: new EdgeInsets.only(left: 20.0, top: 20.0, bottom: 0))
         ]),
         getCalendar(),
+        trainingList(),
         /*
         Row(
           children: [

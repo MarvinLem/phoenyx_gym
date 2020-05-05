@@ -269,7 +269,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                     fit: BoxFit.cover,
                                   ),
                                 )),
-                              Text("Vous n'avez pas reussi à réaliser l'exercice demandé et vous n'étiez pas pret d'y arriver"),
+                              Text("Vous n'avez pas reussi à réaliser l'exercice demandé et vous n'étiez pas pret d'y arriver."),
                                 Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
                                     maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
                                   shape: BoxShape.circle,
@@ -278,7 +278,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                     fit: BoxFit.cover,
                                   ),
                                 )),
-                                Text("Vous n'avez pas reussi à réaliser l'exercice demandé mais vous y étiez presque"),
+                                Text("Vous n'avez pas reussi à réaliser l'exercice demandé mais vous y étiez presque."),
                                 Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
                                     maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
                                   shape: BoxShape.circle,
@@ -287,7 +287,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                     fit: BoxFit.cover,
                                   ),
                                 )),
-                                Text("Vous avez reussi à réaliser l'exercice normalement"),
+                                Text("Vous avez reussi à réaliser l'exercice normalement."),
                                 Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
                                     maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
                                   shape: BoxShape.circle,
@@ -296,7 +296,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                     fit: BoxFit.cover,
                                   ),
                                 )),
-                                Text("Vous avez reussi à réaliser l'exercice et c'était meme très facile")]),
+                                Text("Vous avez reussi à réaliser l'exercice et c'était meme très facile.")]),
                             )
                           ],
                           context: context,

@@ -39,8 +39,6 @@ class GetTrainingState extends State<GetTraining> {
 
   @override
   void initState() {
-    print(seance);
-    print(sessionIdArray);
     getTrainingName();
     getDaysSession();
     getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[seance]);
