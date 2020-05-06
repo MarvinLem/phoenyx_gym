@@ -5,7 +5,6 @@ import './editTraining.dart';
 
 import './database/trainingDatabase.dart';
 import './database/sessionDatabase.dart';
-import './database/dateDatabase.dart';
 
 class Program {
   String name = "Nouveau programme";
@@ -288,27 +287,34 @@ class CreateTraining extends StatefulWidget {
 class CreateTrainingState extends State<CreateTraining> {
   TrainingDatabase db = TrainingDatabase();
   SessionDatabase sessionDb = SessionDatabase();
-  DateDatabase dateDb = DateDatabase();
   final formController = TextEditingController(text: "Votre programme");
 
   var program = new Program();
 
-  insertDate(day,duration,sessionId,trainingId) async {
+  insertDate(day,duration,seance,trainingId) async {
+    var weekBonus = 0;
     var now = new DateTime.now();
     var startOfDay = new DateTime(now.year, now.month, now.day);
+    var startOfMonday = startOfDay;
     int millisecondsOf7Days = 604800000;
     while(startOfDay.weekday!=day)
     {
       startOfDay=startOfDay.add(new Duration(days: 1));
     }
+    while(startOfMonday.weekday!=1){
+      startOfMonday=startOfMonday.add(new Duration(days: 1));
+    }
+    startOfDay.millisecondsSinceEpoch < startOfMonday.millisecondsSinceEpoch ? weekBonus = 0 : weekBonus = 1;
     for(int i=0;i<duration;i++) {
       var milliSeconds = startOfDay.millisecondsSinceEpoch + millisecondsOf7Days * i;
-      var date = DateModel(date: milliSeconds,
+      var session = SessionModel(
+          seance: seance,
+          week: i + 1 + weekBonus,
+          date: milliSeconds,
           startAt: milliSeconds,
           endAt: milliSeconds,
-          sessionId: sessionId,
           trainingId: trainingId);
-      dateDb.insert(date);
+      sessionDb.insert(session);
     }
   }
 
@@ -319,60 +325,32 @@ class CreateTrainingState extends State<CreateTraining> {
     var lastTraining = await db.getLastTraining();
     var trainingId = lastTraining[0]["id"];
       if(program.monday == true) {
-        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
-        sessionDb.insert(session);
+        insertDate(1,duration,seance,trainingId);
         seance += 1;
-        var lastSession = await sessionDb.getLastSession();
-        var sessionId = lastSession[0]["id"];
-        insertDate(1,duration,sessionId,trainingId);
       }
       if(program.tuesday == true) {
-        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
-        sessionDb.insert(session);
+        insertDate(2,duration,seance,trainingId);
         seance += 1;
-        var lastSession = await sessionDb.getLastSession();
-        var sessionId = lastSession[0]["id"];
-        insertDate(2,duration,sessionId,trainingId);
       }
       if(program.wednesday == true) {
-        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
-        sessionDb.insert(session);
+        insertDate(3,duration,seance,trainingId);
         seance += 1;
-        var lastSession = await sessionDb.getLastSession();
-        var sessionId = lastSession[0]["id"];
-        insertDate(3,duration,sessionId,trainingId);
       }
       if(program.thursday == true) {
-        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
-        sessionDb.insert(session);
+        insertDate(4,duration,seance,trainingId);
         seance += 1;
-        var lastSession = await sessionDb.getLastSession();
-        var sessionId = lastSession[0]["id"];
-        insertDate(4,duration,sessionId,trainingId);
       }
       if(program.friday == true) {
-        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
-        sessionDb.insert(session);
+        insertDate(5,duration,seance,trainingId);
         seance += 1;
-        var lastSession = await sessionDb.getLastSession();
-        var sessionId = lastSession[0]["id"];
-        insertDate(5,duration,sessionId,trainingId);
       }
       if(program.saturday == true) {
-        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
-        sessionDb.insert(session);
+        insertDate(6,duration,seance,trainingId);
         seance += 1;
-        var lastSession = await sessionDb.getLastSession();
-        var sessionId = lastSession[0]["id"];
-        insertDate(6,duration,sessionId,trainingId);
       }
       if(program.sunday == true) {
-        var session = SessionModel(seance: seance, date: DateTime.now().millisecondsSinceEpoch, trainingId: trainingId);
-        sessionDb.insert(session);
+        insertDate(7,duration,seance,trainingId);
         seance += 1;
-        var lastSession = await sessionDb.getLastSession();
-        var sessionId = lastSession[0]["id"];
-        insertDate(7,duration,sessionId,trainingId);
       }
     Navigator.pop(context);
   }

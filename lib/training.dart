@@ -3,7 +3,6 @@ import './createTraining.dart';
 import './getTraining.dart';
 
 import './database/trainingDatabase.dart';
-import './database/dateDatabase.dart';
 import './database/sessionDatabase.dart';
 import './database/exercicesDatabase.dart';
 
@@ -32,7 +31,6 @@ class ItemMenuState extends State<ItemMenu> {
   int trainingId;
   Function callback;
   TrainingDatabase db = TrainingDatabase();
-  DateDatabase dateDb = DateDatabase();
   SessionDatabase sessionDb = SessionDatabase();
   ExercicesDatabase exercicesDb = ExercicesDatabase();
 
@@ -41,7 +39,6 @@ class ItemMenuState extends State<ItemMenu> {
   deleteTraining(trainingId) {
     db.delete(trainingId);
     sessionDb.deleteByTrainingId(trainingId);
-    dateDb.deleteByTrainingId(trainingId);
     exercicesDb.deleteByTrainingId(trainingId);
     setState(() {
       this.widget.callback();
@@ -69,7 +66,6 @@ class ItemMenuState extends State<ItemMenu> {
 
 class TrainingState extends State<Training> {
   TrainingDatabase db = TrainingDatabase();
-  DateDatabase dateDb = DateDatabase();
   SessionDatabase sessionDb = SessionDatabase();
   ExercicesDatabase exercicesDb = ExercicesDatabase();
   List<String> training = [];

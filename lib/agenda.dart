@@ -5,7 +5,7 @@ import './editAgenda.dart';
 import './getTraining.dart';
 import './createTraining.dart';
 
-import './database/dateDatabase.dart';
+import './database/sessionDatabase.dart';
 import './database/trainingDatabase.dart';
 
 class AgendaOptions {
@@ -31,7 +31,7 @@ class AgendaState extends State<Agenda> {
     "Dimanche"
   ];
   Map<DateTime, List> training = {};
-  DateDatabase db = DateDatabase();
+  SessionDatabase db = SessionDatabase();
   TrainingDatabase trainingDb = TrainingDatabase();
   var _calendarController;
   var selectedEvents;
@@ -139,20 +139,20 @@ class AgendaState extends State<Agenda> {
 
   getCalendar() {
     return FutureBuilder(
-        future: db.getAllDate(),
+        future: db.getAllSession(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data.length > 0) {
               training = {};
-              for (DateModel date in snapshot.data) {
+              for (SessionModel date in snapshot.data) {
                 DateTime datetime =
                     DateTime.fromMillisecondsSinceEpoch(date.date);
                 training[datetime] != null
-                    ? training[datetime].add([date.trainingId, date.sessionId])
+                    ? training[datetime].add([date.trainingId, date.id])
                     : training.putIfAbsent(
                         datetime,
                         () => [
-                              [date.trainingId, date.sessionId]
+                              [date.trainingId, date.id]
                             ]);
               }
               return TableCalendar(
@@ -166,10 +166,11 @@ class AgendaState extends State<Agenda> {
                   },
                   calendarStyle: CalendarStyle(
                     weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
-                    selectedColor: Color(0xFFD34B4B),
-                    todayColor: Color(0xFF9E3838),
+                    selectedColor: Color(0xFF9E3838),
+                    todayColor: Colors.transparent,
                     markersColor: Color(0xFFD34B4B),
-                    highlightSelected: false,
+                    highlightSelected: true,
+                      todayStyle: TextStyle(color: Colors.black)
                   ),
                   daysOfWeekStyle: DaysOfWeekStyle(
                     weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
@@ -189,10 +190,11 @@ class AgendaState extends State<Agenda> {
                   },
                   calendarStyle: CalendarStyle(
                     weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
-                    selectedColor: Color(0xFFD34B4B),
-                    todayColor: Color(0xFF9E3838),
+                    selectedColor: Color(0xFF9E3838),
+                      todayColor: Colors.transparent,
                     markersColor: Color(0xFFD34B4B),
-                    highlightSelected: false,
+                    highlightSelected: true,
+                      todayStyle: TextStyle(color: Colors.black)
                   ),
                   daysOfWeekStyle: DaysOfWeekStyle(
                     weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
@@ -218,7 +220,7 @@ class AgendaState extends State<Agenda> {
           if (snapshot.hasData) {
             if (snapshot.data.length > 0) {
               return Column(children: [
-                for (DateModel date in snapshot.data)
+                for (SessionModel date in snapshot.data)
                   Row(
                     children: [
                       Column(children: [
@@ -308,7 +310,7 @@ class AgendaState extends State<Agenda> {
                                   MaterialPageRoute(
                                       builder: (context) => CreateTraining()),
                                 ),
-                            child: Text('Créer votre premier programme',
+                            child: Text('Créer votre programme',
                                 style: TextStyle(fontSize: 18)),
                             textColor: Colors.white,
                             padding: const EdgeInsets.all(15),

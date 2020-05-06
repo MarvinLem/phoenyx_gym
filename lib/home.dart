@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:phoenyx_gym/database/dateDatabase.dart';
 import 'package:phoenyx_gym/database/sessionDatabase.dart';
 import 'package:phoenyx_gym/database/trainingDatabase.dart';
 import './getTraining.dart';
@@ -18,10 +17,10 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   var sessionIdArray = [];
+  var trainingNameArray = [];
   var dayArray = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
   var monthArray = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre"];
-  DateDatabase db = DateDatabase();
-  SessionDatabase sessionDb = SessionDatabase();
+  SessionDatabase db = SessionDatabase();
   TrainingDatabase trainingDb = TrainingDatabase();
 
   @override
@@ -60,7 +59,7 @@ class HomeState extends State<Home> {
           if(snapshot.hasData){
             if(snapshot.data.length > 0) {
               return Column(children: [
-                for (DateModel date in snapshot.data)
+                for (SessionModel date in snapshot.data)
                   Container(
                     child: Row(
                       children: [
@@ -68,7 +67,7 @@ class HomeState extends State<Home> {
                             onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => GetTraining(trainingId: date.trainingId, sessionId: date.sessionId))),
+                                    builder: (context) => GetTraining(trainingId: date.trainingId, sessionId: date.id))),
                             child: Row(children: [
                               Column(children: [
                                 Container(
@@ -178,7 +177,7 @@ class HomeState extends State<Home> {
                       MaterialPageRoute(
                           builder: (context) => CreateTraining()),
                     ),
-                    child: Text('Créer votre premier programme',
+                    child: Text('Créer votre programme',
                         style: TextStyle(fontSize: 18)),
                     textColor: Colors.white,
                     padding: const EdgeInsets.all(15),

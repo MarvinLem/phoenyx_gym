@@ -15,10 +15,7 @@ class AllDatabase {
           "CREATE TABLE training(id INTEGER PRIMARY KEY, name TEXT, session INTEGER, duration INTEGER)",
         );
         db.execute(
-          "CREATE TABLE session(id INTEGER PRIMARY KEY, seance INTEGER, date DATETIME, trainingId INTEGER)",
-        );
-        db.execute(
-          "CREATE TABLE date(id INTEGER PRIMARY KEY, date INTEGER, startAt INTEGER, endAt INTEGER, sessionId INTEGER, trainingId INTEGER)",
+          "CREATE TABLE session(id INTEGER PRIMARY KEY, seance INTEGER, week INTEGER, date INTEGER, startAt INTEGER, endAt INTEGER, trainingId INTEGER)",
         );
       },
     );

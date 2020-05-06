@@ -66,6 +66,12 @@ class TrainingDatabase {
     return results;
   }
 
+  getTraining(int trainingId) async {
+    await initDB();
+    var results = await db.query("training", columns: ['name','session'], where: "id = ?", whereArgs: [trainingId]);
+    return results;
+  }
+
   getTrainingName(int trainingId) async {
     await initDB();
     var results = await db.query("training", columns: ['name'], where: "id = ?", whereArgs: [trainingId]);

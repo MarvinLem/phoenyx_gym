@@ -29,9 +29,11 @@ class GetTrainingState extends State<GetTraining> {
   TrainingDatabase trainingDb = TrainingDatabase();
   int exercices = 0;
   String trainingName;
+  int trainingSession;
   var sessionArray = [];
   var sessionIdArray = [0];
   int seance = 0;
+  int week = 1;
 
   DateTime date = DateTime.now();
 
@@ -39,31 +41,39 @@ class GetTrainingState extends State<GetTraining> {
 
   @override
   void initState() {
-    getTrainingName();
-    getDaysSession();
+    getTraining();
     getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[seance]);
   }
 
-  getTrainingName() async {
-      var training = await trainingDb.getTrainingName(trainingId);
+  getTraining() async {
+      var training = await trainingDb.getTraining(trainingId);
       setState(() {
         trainingName = training[0]['name'];
+        trainingSession = training[0]['session'];
       });
+      getDaysSession();
   }
 
   getDaysSession() async {
-    var session = await sessionDb.getSessionByTrainingIdAndDistinctDay(trainingId);
+    //Avoir les (session du training) prochaines séances
+    var actualSession;
+    if(sessionId != null) actualSession = await sessionDb.getSessionById(sessionId);
+    if(actualSession != null) week = actualSession[0]['week'];
+    var session = await sessionDb.getSessionByTrainingIdAndWeek(trainingId, week);
     sessionIdArray = [];
     for(int i=0;i<session.length;i++){
       setState(() {
-        sessionArray.add(session[i]['seance']);
+        //Rajouter pour qu'on est seulement le nombre de session par semaine
         sessionIdArray.add(session[i]['id']);
       });
     }
-    if(sessionId != null){
+    if(actualSession != null){
       seance = sessionIdArray.indexOf(sessionId);
+      week = actualSession[0]['week'];
+    } else {
+      seance = 0;
+      week = 1;
     }
-
   }
 
   getExercicesByTrainingIdAndSessionId(trainingId,sessionId) {
@@ -222,6 +232,20 @@ class GetTrainingState extends State<GetTraining> {
                 margin: new EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
                 constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-40)),
           ]),
+          Row(children: [
+            Container(
+                child: (trainingName != null) ? new Text(("Semaine " + week.toString()).toUpperCase(),
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFFD34B4B),
+                      fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis) : new Text("Programme".toUpperCase(),
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xFFD34B4B),
+                        fontWeight: FontWeight.bold)),
+                margin: new EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-40)),
+          ]),
           Row(
             children: [
               Column(
@@ -236,14 +260,14 @@ class GetTrainingState extends State<GetTraining> {
                       child: new Icon(Icons.arrow_left,
                           size: 40, color: Color(0xFFD34B4B)),
                     ),
-                    margin: new EdgeInsets.only(top: 20.0)
+                    margin: new EdgeInsets.only(top: 15.0)
                   ) : Container(constraints: BoxConstraints(minWidth: 40)),
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
               Column(children: [
                 Container(
-                  child: (sessionArray.isEmpty) ? new Text("Votre séance du loading",
+                  child: (sessionIdArray.isEmpty) ? new Text("Votre séance du loading",
                       style: TextStyle(
                           fontSize: 18,
                           color: Color(0xFFD34B4B),
@@ -252,23 +276,23 @@ class GetTrainingState extends State<GetTraining> {
                           fontSize: 18,
                           color: Color(0xFFD34B4B),
                           fontWeight: FontWeight.bold)),
-                  margin: new EdgeInsets.only(top: 20.0),
+                  margin: new EdgeInsets.only(top: 15.0),
                     constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width-120)
                 )
               ]),
               Column(
                 children: [
-                  (seance < sessionArray.length-1) ? Container(
+                  (seance < sessionIdArray.length-1) ? Container(
                     child: GestureDetector(
                       onTap: () => setState(() {
-                        if(seance < sessionArray.length-1) {
+                        if(seance < sessionIdArray.length-1) {
                           seance += 1;
                         }
                       }),
                       child: new Icon(Icons.arrow_right,
                           size: 40, color: Color(0xFFD34B4B)),
                     ),
-                    margin: new EdgeInsets.only(top: 20.0),
+                    margin: new EdgeInsets.only(top: 15.0),
                   ) : Container(constraints: BoxConstraints(minWidth: 40)),
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,

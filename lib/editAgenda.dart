@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-import './database/dateDatabase.dart';
+import './database/sessionDatabase.dart';
 
 class Seance {
   double start;
@@ -38,7 +38,7 @@ class EditAgendaState extends State<EditAgenda> {
   bool buttonPressed = false;
   bool loopActive = false;
 
-  DateDatabase db = DateDatabase();
+  SessionDatabase db = SessionDatabase();
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class EditAgendaState extends State<EditAgenda> {
 
   getDateById(id) {
     return FutureBuilder(
-        future: db.getDateById(id),
+        future: db.getSessionById(id),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             var seance = new Seance(
