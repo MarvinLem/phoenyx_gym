@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './database/exercicesDatabase.dart';
 import './database/trainingDatabase.dart';
+import './database/sessionDatabase.dart';
 
 class ExerciceOptions {
   String name;
@@ -9,32 +10,40 @@ class ExerciceOptions {
   int series;
   int repetitions;
   int weight;
+  int exerciceOrder;
 
   ExerciceOptions(
-      this.name, this.rest, this.series, this.repetitions, this.weight);
+      this.name, this.rest, this.series, this.repetitions, this.weight, this.exerciceOrder);
 }
 
 class EditExercice extends StatefulWidget {
   int id;
   int trainingId;
+  int sessionId;
+  String mode;
 
-  EditExercice({this.id, this.trainingId});
+  EditExercice({this.id, this.trainingId, this.sessionId, this.mode});
 
   @override
   State<StatefulWidget> createState() {
-    return EditExerciceState(id: id, trainingId: trainingId);
+    return EditExerciceState(id: id, trainingId: trainingId, sessionId: sessionId, mode: mode);
   }
 }
 
 class EditExerciceState extends State<EditExercice> {
   int id;
   int trainingId;
+  int sessionId;
+  int seanceId;
   String trainingName;
+  String mode;
   ExercicesDatabase db = ExercicesDatabase();
   TrainingDatabase trainingDb = TrainingDatabase();
+  SessionDatabase sessionDb = SessionDatabase();
   List<String> exercices = [];
+  var exercicesOptions;
 
-  EditExerciceState({this.id, this.trainingId});
+  EditExerciceState({this.id, this.trainingId, this.sessionId, this.mode});
 
   bool buttonPressed = false;
   bool loopActive = false;
@@ -42,7 +51,15 @@ class EditExerciceState extends State<EditExercice> {
   @override
   void initState() {
     getTrainingName();
+    getSessionId();
     getExercicesById(id);
+  }
+
+  getSessionId() async {
+    var session = await sessionDb.getSessionById(sessionId);
+    setState(() {
+      seanceId = session[0]['seanceId'];
+    });
   }
 
   getTrainingName() async {
@@ -53,7 +70,11 @@ class EditExerciceState extends State<EditExercice> {
   }
 
   exerciceDeleted(id) async {
-    db.delete(id);
+    if(mode == "only"){
+      db.delete(id);
+    } else if(mode == "all"){
+      db.deleteMultiple(seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+    }
     Navigator.pop(context);
   }
 
@@ -62,12 +83,13 @@ class EditExerciceState extends State<EditExercice> {
         future: db.getExercicesById(id),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
-            var exercicesOptions = new ExerciceOptions(
+            exercicesOptions = new ExerciceOptions(
                 snapshot.data[0]['name'],
                 snapshot.data[0]['rest'],
                 snapshot.data[0]['series'],
                 snapshot.data[0]['repetitions'],
-                snapshot.data[0]['weight']);
+                snapshot.data[0]['weight'],
+                snapshot.data[0]['exerciceOrder']);
             return Column(children: [
               Column(children: [
                 Row(
@@ -153,8 +175,12 @@ class EditExerciceState extends State<EditExercice> {
                                     // do your thing
                                     setState(() {
                                       if(exercicesOptions.series > 1) {
-                                        db.updateSeries(
-                                            exercicesOptions.series - 1, id);
+                                        if(mode == "only"){
+                                          db.updateSeries(exercicesOptions.series - 1, id);
+                                        } else if(mode == "all"){
+                                          print("test");
+                                          db.updateMultipleSeries(exercicesOptions.series - 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                        }
                                         exercicesOptions.series -= 1;
                                       }
                                     });
@@ -199,7 +225,12 @@ class EditExerciceState extends State<EditExercice> {
                                   while (buttonPressed) {
                                     // do your thing
                                     setState(() {
-                                      db.updateSeries(exercicesOptions.series + 1, id);
+                                      if(mode == "only"){
+                                        db.updateSeries(exercicesOptions.series + 1, id);
+                                      } else if(mode == "all"){
+                                        print("test");
+                                        db.updateMultipleSeries(exercicesOptions.series + 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                      }
                                       exercicesOptions.series += 1;
                                     });
                                     // wait a bit
@@ -252,7 +283,11 @@ class EditExerciceState extends State<EditExercice> {
                                     // do your thing
                                     setState(() {
                                       if(exercicesOptions.repetitions > 1) {
-                                        db.updateRepetitions(exercicesOptions.repetitions - 1, id);
+                                        if(mode == "only"){
+                                          db.updateRepetitions(exercicesOptions.repetitions - 1, id);
+                                        } else if(mode == "all"){
+                                          db.updateMultipleRepetitions(exercicesOptions.repetitions - 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                        }
                                         exercicesOptions.repetitions -= 1;
                                       }
                                     });
@@ -298,7 +333,12 @@ class EditExerciceState extends State<EditExercice> {
                                   while (buttonPressed) {
                                     // do your thing
                                     setState(() {
-                                      db.updateRepetitions(exercicesOptions.repetitions + 1, id);
+                                      if(mode == "only"){
+                                        db.updateRepetitions(exercicesOptions.repetitions + 1, id);
+                                      } else if(mode == "all"){
+                                        print("test");
+                                        db.updateMultipleRepetitions(exercicesOptions.repetitions + 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                      }
                                       exercicesOptions.repetitions += 1;
                                     });
                                     // wait a bit
@@ -351,7 +391,12 @@ class EditExerciceState extends State<EditExercice> {
                                     // do your thing
                                     setState(() {
                                       if(exercicesOptions.weight > 0) {
-                                        db.updateWeight(exercicesOptions.weight - 1, id);
+                                        if(mode == "only"){
+                                          db.updateWeight(exercicesOptions.weight - 1, id);
+                                        } else if(mode == "all"){
+                                          print("test");
+                                          db.updateMultipleWeight(exercicesOptions.weight - 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                        }
                                         exercicesOptions.weight -= 1;
                                       }
                                     });
@@ -396,7 +441,12 @@ class EditExerciceState extends State<EditExercice> {
                                   while (buttonPressed) {
                                     // do your thing
                                     setState(() {
-                                      db.updateWeight(exercicesOptions.weight + 1, id);
+                                      if(mode == "only"){
+                                        db.updateWeight(exercicesOptions.weight + 1, id);
+                                      } else if(mode == "all"){
+                                        print("test");
+                                        db.updateMultipleWeight(exercicesOptions.weight + 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                      }
                                       exercicesOptions.weight += 1;
                                     });
                                     // wait a bit
@@ -449,7 +499,12 @@ class EditExerciceState extends State<EditExercice> {
                                     // do your thing
                                     setState(() {
                                       if(exercicesOptions.rest > 0) {
-                                        db.updateRest(exercicesOptions.rest - 10, id);
+                                        if(mode == "only"){
+                                          db.updateRest(exercicesOptions.rest - 10, id);
+                                        } else if(mode == "all"){
+                                          print("test");
+                                          db.updateMultipleRest(exercicesOptions.rest - 10, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                        }
                                         exercicesOptions.rest -= 10;
                                       }
                                     });
@@ -494,7 +549,12 @@ class EditExerciceState extends State<EditExercice> {
                                   while (buttonPressed) {
                                     // do your thing
                                     setState(() {
-                                      db.updateRest(exercicesOptions.rest + 10, id);
+                                      if(mode == "only"){
+                                        db.updateRest(exercicesOptions.rest + 10, id);
+                                      } else if(mode == "all"){
+                                        print("test");
+                                        db.updateMultipleRest(exercicesOptions.rest + 10, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                      }
                                       exercicesOptions.rest += 10;
                                     });
                                     // wait a bit

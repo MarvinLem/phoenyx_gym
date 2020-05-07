@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:basic_utils/basic_utils.dart';
 import './database/exercicesDatabase.dart';
+import './database/sessionDatabase.dart';
 
 class EndFeedback extends StatefulWidget {
   int trainingId;
@@ -21,13 +22,23 @@ class EndFeedbackState extends State<EndFeedback> {
   final int sessionId;
   final List exerciceArray;
   List exerciceFeedbackArray = [];
+  int seanceId;
   ExercicesDatabase db = ExercicesDatabase();
+  SessionDatabase sessionDb = SessionDatabase();
 
   EndFeedbackState({this.trainingId, this.sessionId,this.exerciceArray});
 
   @override
   void initState() {
+    getSessionId();
     getExercicesByTrainingIdAndSessionId(trainingId,sessionId);
+  }
+
+  getSessionId() async {
+    var session = await sessionDb.getSessionById(sessionId);
+    setState(() {
+      seanceId = session[0]['seanceId'];
+    });
   }
 
   changeExerciceByFeedback(exercice, feedback) async {
@@ -37,23 +48,23 @@ class EndFeedbackState extends State<EndFeedback> {
         //Si on a plus de 5 reps, on reduit les reps
         if(exercice.repetitions > 5){
           if(exercice.repetitions % 2 == 0){
-            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions - 2,'weight': exercice.weight,'rest': exercice.rest});
+            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions - 2,'weight': exercice.weight,'rest': exercice.rest, 'name': exercice.name, 'exerciceOrder': exercice.exerciceOrder});
           } else if(exercice.repetitions % 2 == 1 || exercice.repetitions == 6) {
-            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions - 1,'weight': exercice.weight,'rest': exercice.rest});
+            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions - 1,'weight': exercice.weight,'rest': exercice.rest, 'name': exercice.name, 'exerciceOrder': exercice.exerciceOrder});
           }
           //Si on a moins de 5 reps, on reduit le poids ou rien
         } else {
           if(exercice.weight >= 5){
-            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions = 10,'weight': exercice.weight - 5,'rest': exercice.rest});
+            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions = 10,'weight': exercice.weight - 5,'rest': exercice.rest, 'name': exercice.name, 'exerciceOrder': exercice.exerciceOrder});
           } else {
-            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions,'weight': exercice.weight,'rest': exercice.rest});
+            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions,'weight': exercice.weight,'rest': exercice.rest, 'name': exercice.name, 'exerciceOrder': exercice.exerciceOrder});
           }
         }
       }
       break;
       case 1: {
         //on garde pareil
-        exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions,'weight': exercice.weight,'rest': exercice.rest});
+        exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions,'weight': exercice.weight,'rest': exercice.rest, 'name': exercice.name, 'exerciceOrder': exercice.exerciceOrder});
       }
       break;
       case 2: {
@@ -61,32 +72,32 @@ class EndFeedbackState extends State<EndFeedback> {
         //Si on a moins de 15 reps, on augmente les reps
         if(exercice.repetitions < 15){
           if(exercice.repetitions % 2 == 0){
-            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions + 2,'weight': exercice.weight,'rest': exercice.rest});
+            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions + 2,'weight': exercice.weight,'rest': exercice.rest, 'name': exercice.name, 'exerciceOrder': exercice.exerciceOrder});
           } else if(exercice.repetitions % 2 == 1 || exercice.repetitions == 14) {
-            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions + 1,'weight': exercice.weight,'rest': exercice.rest});
+            exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions + 1,'weight': exercice.weight,'rest': exercice.rest, 'name': exercice.name, 'exerciceOrder': exercice.exerciceOrder});
           }
           //Si on a 15 reps, on augmente le poids
         } else {
-          exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions = 8,'weight': exercice.weight + 5,'rest': exercice.rest});
+          exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions = 8,'weight': exercice.weight + 5,'rest': exercice.rest, 'name': exercice.name, 'exerciceOrder': exercice.exerciceOrder});
         }
       }
       break;
       case 3: {
         //on augmente beaucoup
         //on augmente le poids
-          exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions,'weight': exercice.weight + 5,'rest': exercice.rest});
+          exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions,'weight': exercice.weight + 5,'rest': exercice.rest, 'name': exercice.name, 'exerciceOrder': exercice.exerciceOrder});
       }
       break;
       default: {
           //on garde pareil
-          exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions,'weight': exercice.weight,'rest': exercice.rest});
+          exerciceFeedbackArray.add({'id': exercice.id,'series': exercice.series,'repetitions': exercice.repetitions,'weight': exercice.weight,'rest': exercice.rest, 'name': exercice.name, 'exerciceOrder': exercice.exerciceOrder});
       }
     }
   }
 
   updateExercices(){
     for(var c=0; c<exerciceFeedbackArray.length; c++){
-      db.updateExercice(exerciceFeedbackArray[c]['series'],exerciceFeedbackArray[c]['repetitions'],exerciceFeedbackArray[c]['weight'],exerciceFeedbackArray[c]['rest'],exerciceFeedbackArray[c]['id']);
+      db.updateMultipleExercice(exerciceFeedbackArray[c]['series'],exerciceFeedbackArray[c]['repetitions'],exerciceFeedbackArray[c]['weight'],exerciceFeedbackArray[c]['rest'], seanceId, exerciceFeedbackArray[c]['name'], exerciceFeedbackArray[c]['exerciceOrder']);
     }
   }
 

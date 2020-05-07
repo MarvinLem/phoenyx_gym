@@ -5,23 +5,26 @@ class SessionModel{
   String name;
   int seance;
   int week;
+  int sessionNumber;
   int date;
   int startAt;
   int endAt;
   int trainingId;
+  int seanceId;
 
-  SessionModel({this.id,this.name,this.seance,this.week,this.date,this.startAt,this.endAt,this.trainingId});
+  SessionModel({this.id,this.name,this.seance,this.week,this.sessionNumber,this.date,this.startAt,this.endAt,this.trainingId,this.seanceId});
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'name': name,
       'seance': seance,
       'week': week,
+      'sessionNumber': sessionNumber,
       'date': date,
       'startAt': startAt,
       'endAt': endAt,
       'trainingId': trainingId,
+      'seanceId': seanceId
     };
   }
 
@@ -30,10 +33,12 @@ class SessionModel{
     name = map['name'];
     seance = map['seance'];
     week = map['week'];
+    sessionNumber = map['sessionNumber'];
     date = map['date'];
     startAt = map['startAt'];
     endAt = map['endAt'];
     trainingId = map['trainingId'];
+    seanceId = map['seanceId'];
   }
 }
 
@@ -46,7 +51,7 @@ class SessionDatabase {
       version: 1,
       onCreate: (db, version) {
         db.execute(
-          "CREATE TABLE session(id INTEGER PRIMARY KEY, seance INTEGER, week INTEGER, date INTEGER, startAt INTEGER, endAt INTEGER, trainingId INTEGER)",
+          "CREATE TABLE session(id INTEGER PRIMARY KEY, seance INTEGER, week INTEGER, sessionNumber INTEGER, date INTEGER, startAt INTEGER, endAt INTEGER, trainingId INTEGER, seanceId INTEGER)",
         );
       },
     );
@@ -111,6 +116,12 @@ class SessionDatabase {
   getSessionByTrainingId(int trainingId) async {
     await initDB();
     var results = await db.query("session", where: "trainingId = ?", orderBy: "date ASC", whereArgs: [trainingId]);
+    return results;
+  }
+
+  getSessionBySeanceId(int seanceId) async {
+    await initDB();
+    var results = await db.query("session", where: "seanceId = ?", orderBy: "date ASC", whereArgs: [seanceId]);
     return results;
   }
 

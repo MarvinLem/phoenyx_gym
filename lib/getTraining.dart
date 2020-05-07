@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:basic_utils/basic_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+
 import './beginTraining.dart';
 import './editTraining.dart';
 
@@ -52,6 +53,14 @@ class GetTrainingState extends State<GetTraining> {
         trainingSession = training[0]['session'];
       });
       getDaysSession();
+  }
+
+  editTraining(mode) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => EditTraining(trainingId: trainingId, sessionId: sessionIdArray[seance], mode: mode)),
+    );
   }
 
   getDaysSession() async {
@@ -179,7 +188,7 @@ class GetTrainingState extends State<GetTraining> {
                           padding: const EdgeInsets.all(15),
                           color: Color(0xFFD34B4B),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50))) : Center())
+                              borderRadius: BorderRadius.circular(50))) : Center(),margin: EdgeInsets.only(top: 5, bottom: 30),)
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
@@ -219,6 +228,7 @@ class GetTrainingState extends State<GetTraining> {
         ),
         body: ListView(children: [
           Row(children: [
+        Column(children:[
             Container(
                 child: (trainingName != null) ? new Text(trainingName.toUpperCase(),
                     style: TextStyle(
@@ -230,7 +240,43 @@ class GetTrainingState extends State<GetTraining> {
                         color: Color(0xFFD34B4B),
                         fontWeight: FontWeight.bold)),
                 margin: new EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
-                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-40)),
+                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-40))]),
+            Column(children:[
+              GestureDetector(
+                  onTap: () {
+                    showMenu(
+                      position: RelativeRect.fromLTRB(100, 100, 100, 100),
+                      items: <PopupMenuEntry>[
+                        PopupMenuItem(
+                          child: GestureDetector(
+                              child: Text("Modifier la séance"),
+                              onTap: () => editTraining('only'),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          child: GestureDetector(
+                              child: Text("Modifier toutes les séances"),
+                              onTap: () => editTraining('all'),
+                          ),
+                        )
+                      ],
+                      context: context,
+                    );
+                  },
+                  child:
+                  Container(
+                    margin:
+                    new EdgeInsets.only(top: 20.0, left: 100),
+                    constraints: new BoxConstraints(
+                        minWidth: 20, minHeight: 20),
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: ExactAssetImage('assets/images/more.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ))])
           ]),
           Row(children: [
             Container(
@@ -301,28 +347,6 @@ class GetTrainingState extends State<GetTraining> {
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           getExercicesByTrainingIdAndSessionId(trainingId,sessionIdArray[seance]),
-          Row(
-            children: [
-              Container(
-                child: RaisedButton(
-                    onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditTraining(trainingId: trainingId, sessionId: sessionIdArray[seance])),
-                        ),
-                    child: Text('Modifier la séance',
-                        style: TextStyle(fontSize: 18)),
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(15),
-                    color: Color(0xFF3F3F3F),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50))),
-                alignment: Alignment.center,
-                margin: new EdgeInsets.only(top: 10.0, bottom: 30),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
-          )
         ]));
   }
 }

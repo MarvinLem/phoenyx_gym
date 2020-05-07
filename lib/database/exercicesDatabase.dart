@@ -65,9 +65,23 @@ class ExercicesDatabase {
     db.rawUpdate(''' UPDATE exercices SET series = ? WHERE id = ? ''',[series, id]);
   }
 
+  updateMultipleSeries(int series, int seanceId, String name, int exerciceOrder) async {
+    await initDB();
+    db.rawUpdate(''' UPDATE exercices SET series = ? WHERE (SELECT seanceId
+                  FROM session
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[series, seanceId, name, exerciceOrder]);
+  }
+
   updateRepetitions(int repetitions, int id) async {
     await initDB();
     db.rawUpdate(''' UPDATE exercices SET repetitions = ? WHERE id = ? ''',[repetitions, id]);
+  }
+
+  updateMultipleRepetitions(int repetitions, int seanceId, String name, int exerciceOrder) async {
+    await initDB();
+    db.rawUpdate(''' UPDATE exercices SET repetitions = ? WHERE (SELECT seanceId
+                  FROM session
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[repetitions, seanceId, name, exerciceOrder]);
   }
 
   updateWeight(int weight, int id) async {
@@ -75,14 +89,35 @@ class ExercicesDatabase {
     db.rawUpdate(''' UPDATE exercices SET weight = ? WHERE id = ? ''',[weight, id]);
   }
 
+  updateMultipleWeight(int weight, int seanceId, String name, int exerciceOrder) async {
+    await initDB();
+    db.rawUpdate(''' UPDATE exercices SET weight = ? WHERE (SELECT seanceId
+                  FROM session
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[weight, seanceId, name, exerciceOrder]);
+  }
+
   updateRest(int rest, int id) async {
     await initDB();
     db.rawUpdate(''' UPDATE exercices SET rest = ? WHERE id = ? ''',[rest, id]);
   }
 
+  updateMultipleRest(int rest, int seanceId, String name, int exerciceOrder) async {
+    await initDB();
+    db.rawUpdate(''' UPDATE exercices SET rest = ? WHERE (SELECT seanceId
+                  FROM session
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[rest, seanceId, name, exerciceOrder]);
+  }
+
   updateExercice(int series, int repetitions, int weight, int rest, int id) async {
     await initDB();
     db.rawUpdate(''' UPDATE exercices SET series = ?, repetitions = ?, weight = ?, rest = ? WHERE id = ? ''',[series, repetitions, weight, rest, id]);
+  }
+
+  updateMultipleExercice(int series, int repetitions, int weight, int rest, int seanceId, String name, int exerciceOrder, int trainingId, int sessionId) async {
+    await initDB();
+    db.execute(''' REPLACE INTO exercices VALUES ( series = ?, repetitions = ?, weight = ?, rest = ? WHERE (SELECT seanceId
+                  FROM session
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId, seanceId]);
   }
 
   delete(int id) async {
@@ -92,6 +127,13 @@ class ExercicesDatabase {
       where: "id = ?",
       whereArgs: [id],
     );
+  }
+
+  deleteMultiple(int seanceId, String name, int exerciceOrder) async {
+    await initDB();
+    db.rawDelete(''' DELETE FROM exercices WHERE (SELECT seanceId
+                  FROM session
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[seanceId, name, exerciceOrder]);
   }
 
   deleteByTrainingId(int trainingId) async {

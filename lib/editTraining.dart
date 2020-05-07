@@ -12,30 +12,42 @@ import './database/sessionDatabase.dart';
 class EditTraining extends StatefulWidget {
   int trainingId;
   int sessionId;
+  String mode;
 
-  EditTraining({this.trainingId, this.sessionId});
+  EditTraining({this.trainingId, this.sessionId, this.mode});
 
   @override
   State<StatefulWidget> createState() {
-    return EditTrainingState(trainingId: trainingId,sessionId: sessionId);
+    return EditTrainingState(trainingId: trainingId,sessionId: sessionId, mode: mode);
   }
 }
 
 class EditTrainingState extends State<EditTraining> {
   int trainingId;
   int sessionId;
+  int seanceId;
+  String mode;
   String trainingName;
   ExercicesDatabase db = ExercicesDatabase();
   TrainingDatabase trainingDb = TrainingDatabase();
   SessionDatabase sessionDb = SessionDatabase();
   List<String> exercices = [];
+  var count = 0;
 
-  EditTrainingState({this.trainingId,this.sessionId});
+  EditTrainingState({this.trainingId,this.sessionId, this.mode});
 
   @override
   void initState() {
     getTrainingName();
+    getSeanceId();
     getExercicesByTrainingIdAndSessionId(trainingId,sessionId);
+  }
+
+  getSeanceId() async {
+    var session = await sessionDb.getSessionById(sessionId);
+    setState(() {
+      seanceId = session[0]['seanceId'];
+    });
   }
 
   getTrainingName() async {
@@ -138,7 +150,7 @@ class EditTrainingState extends State<EditTraining> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                EditExercice(id: exercice.id,trainingId: trainingId))),
+                                                EditExercice(id: exercice.id,trainingId: trainingId, sessionId: sessionId, mode: mode))),
                                     child: Text("Modifier l'exercice",
                                         style: TextStyle(
                                             fontSize: 12,
@@ -210,7 +222,7 @@ class EditTrainingState extends State<EditTraining> {
                             onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => CreateExercice(trainingId: trainingId,sessionId: sessionId))),
+                                    builder: (context) => CreateExercice(trainingId: trainingId,sessionId: sessionId,seanceId: seanceId, mode: mode))),
                             child: Text("Ajouter un nouvel exercice",
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.black87),
@@ -230,7 +242,10 @@ class EditTrainingState extends State<EditTraining> {
             children: [
               Container(
                 child: RaisedButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => {
+                      Navigator.popUntil(context, (route) {
+                      return count++ == 2;
+                    })},
                     child: Text('Enregister la séance',
                         style: TextStyle(fontSize: 18)),
                     textColor: Colors.white,

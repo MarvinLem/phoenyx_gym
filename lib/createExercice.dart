@@ -3,6 +3,7 @@ import 'package:phoenyx_gym/database/trainingDatabase.dart';
 import './exercice.dart';
 
 import './database/exercicesDatabase.dart';
+import './database/sessionDatabase.dart';
 import './database/trainingDatabase.dart';
 
 class ExerciceList {
@@ -16,24 +17,29 @@ class ExerciceList {
 class CreateExercice extends StatefulWidget {
   int trainingId;
   int sessionId;
+  int seanceId;
+  String mode;
 
-  CreateExercice({this.trainingId,this.sessionId});
+  CreateExercice({this.trainingId,this.sessionId, this.seanceId, this.mode});
 
   @override
   State<StatefulWidget> createState() {
-    return CreateExerciceState(trainingId: trainingId, sessionId: sessionId);
+    return CreateExerciceState(trainingId: trainingId, sessionId: sessionId, seanceId: seanceId, mode: mode);
   }
 }
 
 class CreateExerciceState extends State<CreateExercice> {
   int trainingId;
   int sessionId;
+  int seanceId;
+  String mode;
   int exerciceCount = 0;
   String trainingName;
   ExercicesDatabase db = ExercicesDatabase();
   TrainingDatabase trainingDb = TrainingDatabase();
+  SessionDatabase sessionDb = SessionDatabase();
 
-  CreateExerciceState({this.trainingId,this.sessionId});
+  CreateExerciceState({this.trainingId,this.sessionId, this.seanceId, this.mode});
 
   var exerciceList = new ExerciceList();
 
@@ -56,16 +62,33 @@ class CreateExerciceState extends State<CreateExercice> {
   }
 
   exercicesCreated() async{
-    for(var i=0;i<exerciceList.exercicesNames.length;i++) {
-      var exercice = ExercicesModel(name: exerciceList.exercicesNames[i],
-          series: 3,
-          repetitions: 10,
-          weight: 0,
-          rest: 120,
-          exerciceOrder: i+1+exerciceCount,
-          trainingId: trainingId,
-          sessionId: sessionId);
-      db.insert(exercice);
+    var sessions = await sessionDb.getSessionBySeanceId(seanceId);
+    if(mode == "only"){
+      for (var i = 0; i < exerciceList.exercicesNames.length; i++) {
+        var exercice = ExercicesModel(name: exerciceList.exercicesNames[i],
+            series: 3,
+            repetitions: 10,
+            weight: 0,
+            rest: 120,
+            exerciceOrder: i + 1 + exerciceCount,
+            trainingId: trainingId,
+            sessionId: sessionId);
+        db.insert(exercice);
+      }
+    } else if (mode == "all") {
+      for (var d = 0; d < sessions.length; d++) {
+        for (var i = 0; i < exerciceList.exercicesNames.length; i++) {
+          var exercice = ExercicesModel(name: exerciceList.exercicesNames[i],
+              series: 3,
+              repetitions: 10,
+              weight: 0,
+              rest: 120,
+              exerciceOrder: i + 1 + exerciceCount,
+              trainingId: trainingId,
+              sessionId: sessions[d]['id']);
+          db.insert(exercice);
+        }
+      }
     }
     Navigator.pop(context);
   }

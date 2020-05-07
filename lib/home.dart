@@ -102,7 +102,7 @@ class HomeState extends State<Home> {
                                           color: Color(0xFFD34B4B)),
                                       shape: BoxShape.circle),
                                   constraints: BoxConstraints(
-                                      minWidth: 70.0, minHeight: 70.0),
+                                      minWidth: 75.0, minHeight: 75.0),
                                   margin: new EdgeInsets.only(top: 5),
                                   padding: new EdgeInsets.all(15),
                                 ),
@@ -118,14 +118,14 @@ class HomeState extends State<Home> {
                                               maxLines: 2,
                                           overflow: TextOverflow.ellipsis),
                                           margin: new EdgeInsets.only(
-                                              left: 18, top: 5),
+                                              left: 15, top: 5),
                                           constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width-235, maxWidth: MediaQuery.of(context).size.width-235)),
                                     ]),
                                     Row(children: [
                                       (date.startAt != date.date || date.endAt != date.date) ? Container(
                                           child: stringifyDate(date),
                                           margin: new EdgeInsets.only(
-                                              left: 18, top: 10.0)) : Center(),
+                                              left: 15, top: 10.0)) : Center(),
                                     ])
                                   ],
                                   crossAxisAlignment:
