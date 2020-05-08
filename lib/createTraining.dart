@@ -19,6 +19,8 @@ class Program {
   var friday = [];
   var saturday = [];
   var sunday = [];
+  String seanceString = "1 séance différente par jour de la semaine choisi (1ère semaine)";
+  int seanceNumber;
   bool repeat = true;
   int currentSession = 0;
 }
@@ -300,7 +302,7 @@ class CreateTrainingState extends State<CreateTraining> {
   var globalWeekBonus = 0;
   var seancesArray = [];
 
-  resetProgram(){
+  resetProgram() {
     setState(() {
       program.monday = [];
       program.tuesday = [];
@@ -313,7 +315,7 @@ class CreateTrainingState extends State<CreateTraining> {
     });
   }
 
-  insertDate(day, duration, seance, week, trainingId, seanceId) async {
+  insertDate(day, duration, seance, week, trainingId, seanceIdArray) async {
     var weekBonus = 0;
     var now = new DateTime.now();
     var startOfDay = new DateTime(now.year, now.month, now.day);
@@ -332,97 +334,228 @@ class CreateTrainingState extends State<CreateTraining> {
         ? weekBonus = 0
         : weekBonus = 1;
 
-    if(program.repeat == false && globalWeekBonus == 0 && week == 1) {
+    if (program.repeat == false && globalWeekBonus == 0 && week == 1) {
       startOfDay.millisecondsSinceEpoch < startOfMonday.millisecondsSinceEpoch
           ? globalWeekBonus = 0
           : globalWeekBonus = 1;
     }
 
+    var c = 0;
     for (int i = 0; i < duration; i++) {
       var milliSeconds =
           startOfDay.millisecondsSinceEpoch + millisecondsOf7Days * i;
       var session = SessionModel(
           seance: seance,
           week: week != null ? week : i + 1 + weekBonus,
-          sessionNumber: week != null ? week : i+1,
-          date: week != null ? milliSeconds + ((week-1 - weekBonus + globalWeekBonus) * millisecondsOf7Days) : milliSeconds,
-          startAt: week != null ? milliSeconds + ((week-1 - weekBonus + globalWeekBonus) * millisecondsOf7Days) : milliSeconds,
-          endAt: week != null ? milliSeconds + ((week-1 - weekBonus + globalWeekBonus) * millisecondsOf7Days): milliSeconds,
+          sessionNumber: week != null ? week : i + 1,
+          date: week != null
+              ? milliSeconds +
+                  ((week - 1 - weekBonus + globalWeekBonus) *
+                      millisecondsOf7Days)
+              : milliSeconds,
+          startAt: week != null
+              ? milliSeconds +
+                  ((week - 1 - weekBonus + globalWeekBonus) *
+                      millisecondsOf7Days)
+              : milliSeconds,
+          endAt: week != null
+              ? milliSeconds +
+                  ((week - 1 - weekBonus + globalWeekBonus) *
+                      millisecondsOf7Days)
+              : milliSeconds,
           trainingId: trainingId,
-          seanceId: seanceId);
+          seanceId: seanceIdArray[c]);
       sessionDb.insert(session);
+      c < seanceIdArray.length-1 ? c += 1 : c = 0;
     }
   }
 
   trainingCreated(name, session, duration, seance) async {
-    var training = TrainingModel(name: name, session: session, duration: duration);
+    var training =
+        TrainingModel(name: name, session: session, duration: duration);
     db.insert(training);
     var lastTraining = await db.getLastTraining();
     var trainingId = lastTraining[0]["id"];
-    //Creer le nombre de séance adéquat ( pour le moment c'est le nombre de jours selectionnés différents
     var seanceModel = SeanceModel(trainingId: trainingId);
-    for(var i=0;i<program.session;i++){
-      seanceDb.insert(seanceModel);
-    }
-    var lastSeances = await seanceDb.getLastSeances(program.session);
-    for(var i=0;i<lastSeances.length;i++){
-      seancesArray.add(lastSeances[i]['id']);
+
+    switch(program.seanceString) {
+      case '1 séance différente par jour de la semaine choisi (1ère semaine)' :
+        for (var i = 0; i < program.session; i++) {
+          seanceDb.insert(seanceModel);
+        }
+        var lastSeances = await seanceDb.getLastSeances(program.session);
+        for (var i = 0; i < lastSeances.length; i++) {
+          seancesArray.add(lastSeances[i]['id']);
+        }
+        break;
+      case '1 séance' :
+      case '2 séance' :
+      case '3 séance' :
+      case '4 séance' :
+      case '5 séance' :
+      case '6 séance' :
+        for (var i = 0; i < program.seanceNumber; i++) {
+          seanceDb.insert(seanceModel);
+        }
+        var lastSeances = await seanceDb.getLastSeances(program.seanceNumber);
+        for (var i = 0; i < lastSeances.length; i++) {
+          seancesArray.add(lastSeances[i]['id']);
+        }
+        break;
     }
     if (program.monday.isNotEmpty) {
-      if(program.repeat) {
-        insertDate(1, duration, seance, null, trainingId, seancesArray[seance-1]);
+      //Marche pour le moment avec les pairs 4et2 6et3 marchent mais pas 3et2 5et4
+      //Il y a surement quelque chose à faire avec les modulos ( trouver la bonne position si > i remettre à 0 etc
+      if(seancesArray.length > program.session){
+        if(seancesArray.length % program.session == 0 ) {
+          if (program.repeat) {
+            insertDate(
+                1, duration, seance, null, trainingId,
+                [
+                  seancesArray[seance - 1],
+                  seancesArray[seance - 1 + program.session]
+                ]);
+          }
+        }
       } else {
-        program.monday.forEach((week) => insertDate(1, 1, seance, week+1, trainingId,seancesArray[seance-1]));
+        if (program.repeat) {
+          insertDate(
+              1, duration, seance, null, trainingId,
+              [seancesArray[seance - 1]]);
+        } else {
+          program.monday.forEach((week) =>
+              insertDate(
+                  1, 1, seance, week + 1, trainingId,
+                  [seancesArray[seance - 1]]));
+        }
       }
-      seance += 1;
+      seance < seancesArray.length ? seance += 1 : seance = 1;
     }
     if (program.tuesday.isNotEmpty) {
-      if(program.repeat) {
-        insertDate(2, duration, seance, null, trainingId, seancesArray[seance-1]);
+      if(seancesArray.length > program.session){
+        if (program.repeat) {
+          insertDate(
+              2, duration, seance, null, trainingId,
+              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
+        }
       } else {
-        program.tuesday.forEach((week) => insertDate(2, 1, seance, week+1, trainingId, seancesArray[seance-1]));
+        if (program.repeat) {
+          insertDate(
+              2, duration, seance, null, trainingId,
+              [seancesArray[seance - 1]]);
+        } else {
+          program.tuesday.forEach((week) =>
+              insertDate(
+                  2, 1, seance, week + 1, trainingId,
+                  [seancesArray[seance - 1]]));
+        }
       }
-        seance += 1;
+      seance < seancesArray.length ? seance += 1 : seance = 1;
     }
     if (program.wednesday.isNotEmpty) {
-      if(program.repeat) {
-        insertDate(3, duration, seance, null, trainingId, seancesArray[seance-1]);
+      if(seancesArray.length > program.session){
+        if (program.repeat) {
+          insertDate(
+              3, duration, seance, null, trainingId,
+              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
+        }
       } else {
-        program.wednesday.forEach((week) => insertDate(3, 1, seance, week+1, trainingId, seancesArray[seance-1]));
+        if (program.repeat) {
+          insertDate(
+              3, duration, seance, null, trainingId,
+              [seancesArray[seance - 1]]);
+        } else {
+          program.wednesday.forEach((week) =>
+              insertDate(
+                  3, 1, seance, week + 1, trainingId,
+                  [seancesArray[seance - 1]]));
+        }
       }
-      seance += 1;
+      seance < seancesArray.length ? seance += 1 : seance = 1;
     }
     if (program.thursday.isNotEmpty) {
-      if(program.repeat) {
-        insertDate(4, duration, seance, null, trainingId, seancesArray[seance-1]);
+      if(seancesArray.length > program.session){
+        if (program.repeat) {
+          insertDate(
+              4, duration, seance, null, trainingId,
+              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
+        }
       } else {
-        program.thursday.forEach((week) => insertDate(4, 1, seance, week+1, trainingId, seancesArray[seance-1]));
+        if (program.repeat) {
+          insertDate(
+              4, duration, seance, null, trainingId,
+              [seancesArray[seance - 1]]);
+        } else {
+          program.thursday.forEach((week) =>
+              insertDate(
+                  4, 1, seance, week + 1, trainingId,
+                  [seancesArray[seance - 1]]));
+        }
       }
-      seance += 1;
+      seance < seancesArray.length ? seance += 1 : seance = 1;
     }
     if (program.friday.isNotEmpty) {
-      if(program.repeat) {
-        insertDate(5, duration, seance, null, trainingId, seancesArray[seance-1]);
+      if(seancesArray.length > program.session){
+        if (program.repeat) {
+          insertDate(
+              5, duration, seance, null, trainingId,
+              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
+        }
       } else {
-        program.friday.forEach((week) => insertDate(5, 1, seance, week+1, trainingId, seancesArray[seance-1]));
+        if (program.repeat) {
+          insertDate(
+              5, duration, seance, null, trainingId,
+              [seancesArray[seance - 1]]);
+        } else {
+          program.friday.forEach((week) =>
+              insertDate(
+                  5, 1, seance, week + 1, trainingId,
+                  [seancesArray[seance - 1]]));
+        }
       }
-      seance += 1;
+      seance < seancesArray.length ? seance += 1 : seance = 1;
     }
     if (program.saturday.isNotEmpty) {
-      if(program.repeat) {
-        insertDate(6, duration, seance, null, trainingId, seancesArray[seance-1]);
+      if(seancesArray.length > program.session){
+        if (program.repeat) {
+          insertDate(
+              6, duration, seance, null, trainingId,
+              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
+        }
       } else {
-        program.saturday.forEach((week) => insertDate(6, 1, seance, week+1, trainingId, seancesArray[seance-1]));
+        if (program.repeat) {
+          insertDate(
+              6, duration, seance, null, trainingId,
+              [seancesArray[seance - 1]]);
+        } else {
+          program.saturday.forEach((week) =>
+              insertDate(
+                  6, 1, seance, week + 1, trainingId,
+                  [seancesArray[seance - 1]]));
+        }
       }
-      seance += 1;
+      seance < seancesArray.length ? seance += 1 : seance = 1;
     }
     if (program.sunday.isNotEmpty) {
-      if(program.repeat) {
-        insertDate(7, duration, seance, null, trainingId, seancesArray[seance-1]);
+      if(seancesArray.length > program.session){
+        if (program.repeat) {
+          insertDate(
+              7, duration, seance, null, trainingId,
+              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
+        }
       } else {
-        program.sunday.forEach((week) => insertDate(7, 1, seance, week+1, trainingId, seancesArray[seance-1]));
+        if (program.repeat) {
+          insertDate(
+              7, duration, seance, null, trainingId,
+              [seancesArray[seance - 1]]);
+        } else {
+          program.sunday.forEach((week) =>
+              insertDate(
+                  7, 1, seance, week + 1, trainingId,
+                  [seancesArray[seance - 1]]));
+        }
       }
-      seance += 1;
+      seance < seancesArray.length ? seance += 1 : seance = 1;
     }
     globalWeekBonus = 0;
     Navigator.pop(context);
@@ -619,10 +752,74 @@ class CreateTrainingState extends State<CreateTraining> {
               mainAxisAlignment: MainAxisAlignment.center),
           Row(
             children: [
+              Container(
+                child: Text('Nombres de séances différentes',
+                    style: TextStyle(
+                        fontSize: 18, color: Colors.black87),
+                    textAlign: TextAlign.left),
+                margin: EdgeInsets.only(top: 40)
+              ),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+          Row(
+              children: [
+                Container(
+                    child: new DropdownButton<String>(
+                  value: program.seanceString,
+                  items: <String>[
+                    '1 séance différente par jour de la semaine choisi (1ère semaine)',
+                    '1 séance',
+                    '2 séance',
+                    '3 séance',
+                    '4 séance',
+                    '5 séance',
+                    '6 séance',
+                    "unique pour chaque session d'entrainement"
+                  ].map((String value) {
+                    return new DropdownMenuItem<String>(
+                      value: value,
+                      child: new Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (value) => setState(() {
+                    switch(value){
+                      case "1 séance":
+                        program.seanceNumber = 1;
+                        break;
+                      case "2 séance":
+                        program.seanceNumber = 2;
+                        break;
+                      case "3 séance":
+                        program.seanceNumber = 3;
+                        break;
+                      case "4 séance":
+                        program.seanceNumber = 4;
+                        break;
+                      case "5 séance":
+                        program.seanceNumber = 5;
+                        break;
+                      case "6 séance":
+                        program.seanceNumber = 6;
+                        break;
+                      default:
+                        program.seanceNumber = null;
+                        break;
+                    }
+                    program.seanceString = value;
+                  }),
+                  style: TextStyle(fontSize: 12, color: Colors.black),
+                ), margin: EdgeInsets.only(top: 10, bottom: 25))
+              ],
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center),
+          Row(
+            children: [
               Column(children: [
                 Container(
                     child: new Text(
-                      "Votre programme est répeté chaque semaine ?",
+                      "Votre programme se déroule aux mêmes jours chaque semaine ?",
                       style: TextStyle(fontSize: 18, color: Colors.black87),
                       textAlign: TextAlign.start,
                     ),
@@ -649,7 +846,7 @@ class CreateTrainingState extends State<CreateTraining> {
                               : new Icon(Icons.check_box_outline_blank,
                                   color: Color(0xFFD34B4B))),
                       margin: new EdgeInsets.only(
-                          left: 10, right: 10, top: 40, bottom: 30)),
+                          left: 10, right: 10, top: 50, bottom: 30)),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,

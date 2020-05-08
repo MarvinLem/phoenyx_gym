@@ -101,6 +101,12 @@ class SessionDatabase {
     return results.map((map) => SessionModel.fromMap(map));
   }
 
+  getNextSession(trainingId, seanceId, sessionNumber) async {
+    await initDB();
+    var results = await db.query("session", where: "trainingId = ? AND seanceId = ? AND sessionNumber = ?",  whereArgs: [trainingId, seanceId, sessionNumber]);
+    return results;
+  }
+
   getLastSession() async {
     await initDB();
     var results = await db.query("session", orderBy: "id DESC", limit: 1);

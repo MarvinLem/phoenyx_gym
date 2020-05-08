@@ -113,11 +113,11 @@ class ExercicesDatabase {
     db.rawUpdate(''' UPDATE exercices SET series = ?, repetitions = ?, weight = ?, rest = ? WHERE id = ? ''',[series, repetitions, weight, rest, id]);
   }
 
-  updateMultipleExercice(int series, int repetitions, int weight, int rest, int seanceId, String name, int exerciceOrder, int trainingId, int sessionId) async {
+  updateMultipleExercice(int series, int repetitions, int weight, int rest, int seanceId, String name, int exerciceOrder) async {
     await initDB();
-    db.execute(''' REPLACE INTO exercices VALUES ( series = ?, repetitions = ?, weight = ?, rest = ? WHERE (SELECT seanceId
+    db.rawUpdate(''' UPDATE exercices SET series = ?, repetitions = ?, weight = ?, rest = ? WHERE (SELECT seanceId
                   FROM session
-                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId, seanceId]);
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[series, repetitions, weight, rest, seanceId, name, exerciceOrder]);
   }
 
   delete(int id) async {
@@ -184,6 +184,12 @@ class ExercicesDatabase {
   getExercicesByTrainingIdAndSessionIdAndOrder(int trainingId, int sessionId, int order) async {
     await initDB();
     var results = await db.query("exercices", where: "exerciceOrder = ? AND trainingId = ? AND sessionId = ?", whereArgs: [order,trainingId,sessionId]);
+    return results;
+  }
+
+  getExercicesByTrainingIdAndSessionIdAndOrderAndName(int trainingId, int sessionId, int order, String name) async {
+    await initDB();
+    var results = await db.query("exercices", where: "exerciceOrder = ? AND trainingId = ? AND sessionId = ? AND name = ?", whereArgs: [order,trainingId,sessionId, name]);
     return results;
   }
 }
