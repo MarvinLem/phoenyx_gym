@@ -67,7 +67,7 @@ class GetTrainingState extends State<GetTraining> {
     //Avoir les (session du training) prochaines séances
     var actualSession;
     if(sessionId != null) actualSession = await sessionDb.getSessionById(sessionId);
-    if(actualSession != null) week = actualSession[0]['week'];
+    actualSession != null ? week = actualSession[0]['week'] : week = 1;
     var session = await sessionDb.getSessionByTrainingIdAndWeek(trainingId, week);
     sessionIdArray = [];
     for(int i=0;i<session.length;i++){

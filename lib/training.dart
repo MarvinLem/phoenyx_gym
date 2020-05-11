@@ -3,6 +3,7 @@ import './createTraining.dart';
 import './getTraining.dart';
 
 import './database/trainingDatabase.dart';
+import './database/seanceDatabase.dart';
 import './database/sessionDatabase.dart';
 import './database/exercicesDatabase.dart';
 
@@ -31,6 +32,7 @@ class ItemMenuState extends State<ItemMenu> {
   int trainingId;
   Function callback;
   TrainingDatabase db = TrainingDatabase();
+  SeanceDatabase seanceDb = SeanceDatabase();
   SessionDatabase sessionDb = SessionDatabase();
   ExercicesDatabase exercicesDb = ExercicesDatabase();
 
@@ -38,6 +40,7 @@ class ItemMenuState extends State<ItemMenu> {
 
   deleteTraining(trainingId) {
     db.delete(trainingId);
+    seanceDb.deleteByTrainingId(trainingId);
     sessionDb.deleteByTrainingId(trainingId);
     exercicesDb.deleteByTrainingId(trainingId);
     setState(() {

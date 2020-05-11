@@ -19,7 +19,8 @@ class Program {
   var friday = [];
   var saturday = [];
   var sunday = [];
-  String seanceString = "1 séance différente par jour de la semaine choisi (1ère semaine)";
+  String seanceString =
+      "1 séance différente par jour de la semaine choisi (1ère semaine)";
   int seanceNumber;
   bool repeat = true;
   int currentSession = 0;
@@ -48,7 +49,7 @@ class DaysState extends State<Days> {
             ? Column(children: [
                 Container(
                   child: Center(
-                      child: new Text((widget.index + 1).toString(),
+                      child: new Text((widget.index).toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Color(0xFFD34B4B), fontSize: 16))),
@@ -62,222 +63,499 @@ class DaysState extends State<Days> {
         Column(children: [
           GestureDetector(
               onTap: () => widget.parent.setState(() {
-                    if (widget.program.monday.contains(widget.index)) {
-                      widget.program.monday.remove(widget.index);
-                      widget.program.currentSession -= 1;
+                    if (widget.program.monday.contains(widget.index.toString() + ' AMonday') ||
+                        widget.program.repeat == true &&
+                            widget.program.monday.isNotEmpty) {
+                      if (widget.program.repeat) {
+                        widget.program.monday = [];
+                        widget.program.currentSession -=
+                            widget.program.duration;
+                      } else {
+                        widget.program.monday.remove(widget.index.toString() + ' AMonday');
+                        widget.program.currentSession -= 1;
+                      }
                     } else {
                       if (widget.program.currentSession < widget.maxSeance) {
-                        widget.program.monday.add(widget.index);
-                        widget.program.currentSession += 1;
+                        if (widget.program.repeat) {
+                          widget.program.monday = [];
+                          for (var i = 0; i < widget.program.duration; i++) {
+                            widget.program.monday.add((i + 1).toString() + ' AMonday');
+                          }
+                          widget.program.currentSession +=
+                              widget.program.duration;
+                        } else {
+                          widget.program.monday.add(widget.index.toString() + ' AMonday');
+                          widget.program.currentSession += 1;
+                        }
                       }
                     }
                   }),
-              child: Container(
-                child: Center(
-                    child: new Text("L",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: widget.program.monday.contains(widget.index)
-                                ? Colors.white
-                                : Color(0xFFD34B4B)))),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFD34B4B)),
-                    color: widget.program.monday.contains(widget.index)
-                        ? Color(0xFFD34B4B)
-                        : Colors.transparent,
-                    shape: BoxShape.circle),
-                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              )),
+              child: widget.program.repeat
+                  ? Container(
+                      child: Center(
+                          child: new Text("L",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.monday.isNotEmpty
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.monday.isNotEmpty
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    )
+                  : Container(
+                      child: Center(
+                          child: new Text("L",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.monday
+                                          .contains(widget.index.toString() + ' AMonday')
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.monday.contains(widget.index.toString() + ' AMonday')
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    )),
         ]),
         Column(children: [
           GestureDetector(
               onTap: () => widget.parent.setState(() {
-                    if (widget.program.tuesday.contains(widget.index)) {
-                      widget.program.tuesday.remove(widget.index);
-                      widget.program.currentSession -= 1;
+                    if (widget.program.tuesday.contains(widget.index.toString() + ' BTuesday') ||
+                        widget.program.repeat == true &&
+                            widget.program.tuesday.isNotEmpty) {
+                      if (widget.program.repeat) {
+                        widget.program.tuesday = [];
+                        widget.program.currentSession -=
+                            widget.program.duration;
+                      } else {
+                        widget.program.tuesday.remove(widget.index.toString() + ' BTuesday');
+                        widget.program.currentSession -= 1;
+                      }
                     } else {
                       if (widget.program.currentSession < widget.maxSeance) {
-                        widget.program.tuesday.add(widget.index);
-                        widget.program.currentSession += 1;
+                        if (widget.program.repeat) {
+                          widget.program.tuesday = [];
+                          for (var i = 0; i < widget.program.duration; i++) {
+                            widget.program.tuesday.add((i + 1).toString() + ' BTuesday');
+                          }
+                          widget.program.currentSession +=
+                              widget.program.duration;
+                        } else {
+                          widget.program.tuesday.add(widget.index.toString() + ' BTuesday');
+                          widget.program.currentSession += 1;
+                        }
                       }
                     }
                   }),
-              child: Container(
-                child: Center(
-                    child: new Text("M",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: widget.program.tuesday.contains(widget.index)
-                                ? Colors.white
-                                : Color(0xFFD34B4B)))),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFD34B4B)),
-                    color: widget.program.tuesday.contains(widget.index)
-                        ? Color(0xFFD34B4B)
-                        : Colors.transparent,
-                    shape: BoxShape.circle),
-                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              )),
+              child: widget.program.repeat
+                  ? Container(
+                      child: Center(
+                          child: new Text("M",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.tuesday.isNotEmpty
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.tuesday.isNotEmpty
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    )
+                  : Container(
+                      child: Center(
+                          child: new Text("M",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.tuesday
+                                          .contains(widget.index.toString() + ' BTuesday')
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.tuesday.contains(widget.index.toString() + ' BTuesday')
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    )),
         ]),
         Column(children: [
           GestureDetector(
               onTap: () => widget.parent.setState(() {
-                    if (widget.program.wednesday.contains(widget.index)) {
-                      widget.program.wednesday.remove(widget.index);
-                      widget.program.currentSession -= 1;
+                    if (widget.program.wednesday.contains(widget.index.toString() + ' CWednesday') ||
+                        widget.program.repeat == true &&
+                            widget.program.wednesday.isNotEmpty) {
+                      if (widget.program.repeat) {
+                        widget.program.wednesday = [];
+                        widget.program.currentSession -=
+                            widget.program.duration;
+                      } else {
+                        widget.program.wednesday.remove(widget.index.toString() + ' CWednesday');
+                        widget.program.currentSession -= 1;
+                      }
                     } else {
                       if (widget.program.currentSession < widget.maxSeance) {
-                        widget.program.wednesday.add(widget.index);
-                        widget.program.currentSession += 1;
+                        if (widget.program.repeat) {
+                          widget.program.wednesday = [];
+                          for (var i = 0; i < widget.program.duration; i++) {
+                            widget.program.wednesday.add((i + 1).toString() + ' CWednesday');
+                          }
+                          widget.program.currentSession +=
+                              widget.program.duration;
+                        } else {
+                          widget.program.wednesday.add(widget.index.toString() + ' CWednesday');
+                          widget.program.currentSession += 1;
+                        }
                       }
                     }
                   }),
-              child: Container(
-                child: Center(
-                    child: new Text("M",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color:
-                                widget.program.wednesday.contains(widget.index)
-                                    ? Colors.white
-                                    : Color(0xFFD34B4B)))),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFD34B4B)),
-                    color: widget.program.wednesday.contains(widget.index)
-                        ? Color(0xFFD34B4B)
-                        : Colors.transparent,
-                    shape: BoxShape.circle),
-                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              )),
+              child: widget.program.repeat
+                  ? Container(
+                      child: Center(
+                          child: new Text("M",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.wednesday.isNotEmpty
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.wednesday.isNotEmpty
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    )
+                  : Container(
+                      child: Center(
+                          child: new Text("M",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.wednesday
+                                          .contains(widget.index.toString() + ' CWednesday')
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.wednesday.contains(widget.index.toString() + ' CWednesday')
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    )),
         ]),
         Column(children: [
           GestureDetector(
               onTap: () => widget.parent.setState(() {
-                    if (widget.program.thursday.contains(widget.index)) {
-                      widget.program.thursday.remove(widget.index);
-                      widget.program.currentSession -= 1;
+                    if (widget.program.thursday.contains(widget.index.toString() + ' DThursday') ||
+                        widget.program.repeat == true &&
+                            widget.program.thursday.isNotEmpty) {
+                      if (widget.program.repeat) {
+                        widget.program.thursday = [];
+                        widget.program.currentSession -=
+                            widget.program.duration;
+                      } else {
+                        widget.program.thursday.remove(widget.index.toString() + ' DThursday');
+                        widget.program.currentSession -= 1;
+                      }
                     } else {
                       if (widget.program.currentSession < widget.maxSeance) {
-                        widget.program.thursday.add(widget.index);
-                        widget.program.currentSession += 1;
+                        if (widget.program.repeat) {
+                          widget.program.thursday = [];
+                          for (var i = 0; i < widget.program.duration; i++) {
+                            widget.program.thursday.add((i + 1).toString() + ' DThursday');
+                          }
+                          widget.program.currentSession +=
+                              widget.program.duration;
+                        } else {
+                          widget.program.thursday.add(widget.index.toString() + ' DThursday');
+                          widget.program.currentSession += 1;
+                        }
                       }
                     }
                   }),
-              child: Container(
-                child: Center(
-                    child: new Text("J",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color:
-                                widget.program.thursday.contains(widget.index)
-                                    ? Colors.white
-                                    : Color(0xFFD34B4B)))),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFD34B4B)),
-                    color: widget.program.thursday.contains(widget.index)
-                        ? Color(0xFFD34B4B)
-                        : Colors.transparent,
-                    shape: BoxShape.circle),
-                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              )),
+              child: widget.program.repeat
+                  ? Container(
+                      child: Center(
+                          child: new Text("J",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.thursday.isNotEmpty
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.thursday.isNotEmpty
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    )
+                  : Container(
+                      child: Center(
+                          child: new Text("J",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.thursday
+                                          .contains(widget.index.toString() + ' DThursday')
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.thursday.contains(widget.index.toString() + ' DThursday')
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    )),
         ]),
         Column(children: [
           GestureDetector(
               onTap: () => widget.parent.setState(() {
-                    if (widget.program.friday.contains(widget.index)) {
-                      widget.program.friday.remove(widget.index);
-                      widget.program.currentSession -= 1;
+                    if (widget.program.friday.contains(widget.index.toString() + ' EFriday') ||
+                        widget.program.repeat == true &&
+                            widget.program.friday.isNotEmpty) {
+                      if (widget.program.repeat) {
+                        widget.program.friday = [];
+                        widget.program.currentSession -=
+                            widget.program.duration;
+                      } else {
+                        widget.program.friday.remove(widget.index.toString() + ' EFriday');
+                        widget.program.currentSession -= 1;
+                      }
                     } else {
                       if (widget.program.currentSession < widget.maxSeance) {
-                        widget.program.friday.add(widget.index);
-                        widget.program.currentSession += 1;
+                        if (widget.program.repeat) {
+                          widget.program.friday = [];
+                          for (var i = 0; i < widget.program.duration; i++) {
+                            widget.program.friday.add((i + 1).toString() + ' EFriday');
+                          }
+                          widget.program.currentSession +=
+                              widget.program.duration;
+                        } else {
+                          widget.program.friday.add(widget.index.toString() + ' EFriday');
+                          widget.program.currentSession += 1;
+                        }
                       }
                     }
                   }),
-              child: Container(
-                child: Center(
-                    child: new Text("V",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: widget.program.friday.contains(widget.index)
-                                ? Colors.white
-                                : Color(0xFFD34B4B)))),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFD34B4B)),
-                    color: widget.program.friday.contains(widget.index)
-                        ? Color(0xFFD34B4B)
-                        : Colors.transparent,
-                    shape: BoxShape.circle),
-                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              )),
+              child: widget.program.repeat
+                  ? Container(
+                      child: Center(
+                          child: new Text("V",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.friday.isNotEmpty
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.friday.isNotEmpty
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    )
+                  : Container(
+                      child: Center(
+                          child: new Text("V",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.friday
+                                          .contains(widget.index.toString() + ' EFriday')
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.friday.contains(widget.index.toString() + ' EFriday')
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    )),
         ]),
         Column(children: [
           GestureDetector(
               onTap: () => widget.parent.setState(() {
-                    if (widget.program.saturday.contains(widget.index)) {
-                      widget.program.saturday.remove(widget.index);
-                      widget.program.currentSession -= 1;
+                    if (widget.program.saturday.contains(widget.index.toString() + ' FSaturday') ||
+                        widget.program.repeat == true &&
+                            widget.program.saturday.isNotEmpty) {
+                      if (widget.program.repeat) {
+                        widget.program.saturday = [];
+                        widget.program.currentSession -=
+                            widget.program.duration;
+                      } else {
+                        widget.program.saturday.remove(widget.index.toString() + ' FSaturday');
+                        widget.program.currentSession -= 1;
+                      }
                     } else {
                       if (widget.program.currentSession < widget.maxSeance) {
-                        widget.program.saturday.add(widget.index);
-                        widget.program.currentSession += 1;
+                        if (widget.program.repeat) {
+                          widget.program.saturday = [];
+                          for (var i = 0; i < widget.program.duration; i++) {
+                            widget.program.saturday.add((i + 1).toString() + ' FSaturday');
+                          }
+                          widget.program.currentSession +=
+                              widget.program.duration;
+                        } else {
+                          widget.program.saturday.add(widget.index.toString() + ' FSaturday');
+                          widget.program.currentSession += 1;
+                        }
                       }
                     }
                   }),
-              child: Container(
-                child: Center(
-                    child: new Text("S",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color:
-                                widget.program.saturday.contains(widget.index)
-                                    ? Colors.white
-                                    : Color(0xFFD34B4B)))),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFD34B4B)),
-                    color: widget.program.saturday.contains(widget.index)
-                        ? Color(0xFFD34B4B)
-                        : Colors.transparent,
-                    shape: BoxShape.circle),
-                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-              )),
+              child: widget.program.repeat
+                  ? Container(
+                      child: Center(
+                          child: new Text("S",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.saturday.isNotEmpty
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.saturday.isNotEmpty
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    )
+                  : Container(
+                      child: Center(
+                          child: new Text("S",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.saturday
+                                          .contains(widget.index.toString() + ' FSaturday')
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.saturday.contains(widget.index.toString() + ' FSaturday')
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    )),
         ]),
         Column(children: [
           GestureDetector(
               onTap: () => widget.parent.setState(() {
-                    if (widget.program.sunday.contains(widget.index)) {
-                      widget.program.sunday.remove(widget.index);
-                      widget.program.currentSession -= 1;
+                    if (widget.program.sunday.contains(widget.index.toString() + ' GSunday') ||
+                        widget.program.repeat == true &&
+                            widget.program.sunday.isNotEmpty) {
+                      if (widget.program.repeat) {
+                        widget.program.sunday = [];
+                        widget.program.currentSession -=
+                            widget.program.duration;
+                      } else {
+                        widget.program.sunday.remove(widget.index.toString() + ' GSunday');
+                        widget.program.currentSession -= 1;
+                      }
                     } else {
                       if (widget.program.currentSession < widget.maxSeance) {
-                        widget.program.sunday.add(widget.index);
-                        widget.program.currentSession += 1;
+                        if (widget.program.repeat) {
+                          widget.program.sunday = [];
+                          for (var i = 0; i < widget.program.duration; i++) {
+                            widget.program.sunday.add((i + 1).toString() + ' GSunday');
+                          }
+                          widget.program.currentSession +=
+                              widget.program.duration;
+                        } else {
+                          widget.program.sunday.add(widget.index.toString() + ' GSunday');
+                          widget.program.currentSession += 1;
+                        }
                       }
                     }
                   }),
-              child: Container(
-                child: Center(
-                    child: new Text("D",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: widget.program.sunday.contains(widget.index)
-                                ? Colors.white
-                                : Color(0xFFD34B4B)))),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFD34B4B)),
-                    color: widget.program.sunday.contains(widget.index)
-                        ? Color(0xFFD34B4B)
-                        : Colors.transparent,
-                    shape: BoxShape.circle),
-                constraints: BoxConstraints(minWidth: 33.0, minHeight: 33.0),
-                margin: new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-              )),
+              child: widget.program.repeat
+                  ? Container(
+                      child: Center(
+                          child: new Text("D",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.sunday.isNotEmpty
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.sunday.isNotEmpty
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    )
+                  : Container(
+                      child: Center(
+                          child: new Text("D",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.program.sunday
+                                          .contains(widget.index.toString() + ' GSunday')
+                                      ? Colors.white
+                                      : Color(0xFFD34B4B)))),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Color(0xFFD34B4B)),
+                          color: widget.program.sunday.contains(widget.index.toString() + ' GSunday')
+                              ? Color(0xFFD34B4B)
+                              : Colors.transparent,
+                          shape: BoxShape.circle),
+                      constraints:
+                          BoxConstraints(minWidth: 33.0, minHeight: 33.0),
+                      margin:
+                          new EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    )),
         ]),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
@@ -330,15 +608,18 @@ class CreateTrainingState extends State<CreateTraining> {
       startOfMonday = startOfMonday.add(new Duration(days: 1));
     }
 
+    /*
     startOfDay.millisecondsSinceEpoch < startOfMonday.millisecondsSinceEpoch
         ? weekBonus = 0
         : weekBonus = 1;
-
+    */
+    /*
     if (program.repeat == false && globalWeekBonus == 0 && week == 1) {
       startOfDay.millisecondsSinceEpoch < startOfMonday.millisecondsSinceEpoch
           ? globalWeekBonus = 0
           : globalWeekBonus = 1;
     }
+    */
 
     var c = 0;
     for (int i = 0; i < duration; i++) {
@@ -346,27 +627,18 @@ class CreateTrainingState extends State<CreateTraining> {
           startOfDay.millisecondsSinceEpoch + millisecondsOf7Days * i;
       var session = SessionModel(
           seance: seance,
-          week: week != null ? week : i + 1 + weekBonus,
-          sessionNumber: week != null ? week : i + 1,
-          date: week != null
-              ? milliSeconds +
-                  ((week - 1 - weekBonus + globalWeekBonus) *
-                      millisecondsOf7Days)
-              : milliSeconds,
-          startAt: week != null
-              ? milliSeconds +
-                  ((week - 1 - weekBonus + globalWeekBonus) *
-                      millisecondsOf7Days)
-              : milliSeconds,
-          endAt: week != null
-              ? milliSeconds +
-                  ((week - 1 - weekBonus + globalWeekBonus) *
-                      millisecondsOf7Days)
-              : milliSeconds,
+          week: week,
+          sessionNumber: week,
+          date: milliSeconds +
+              ((week - 1 - weekBonus + globalWeekBonus) * millisecondsOf7Days),
+          startAt: milliSeconds +
+              ((week - 1 - weekBonus + globalWeekBonus) * millisecondsOf7Days),
+          endAt: milliSeconds +
+              ((week - 1 - weekBonus + globalWeekBonus) * millisecondsOf7Days),
           trainingId: trainingId,
           seanceId: seanceIdArray[c]);
       sessionDb.insert(session);
-      c < seanceIdArray.length-1 ? c += 1 : c = 0;
+      c < seanceIdArray.length - 1 ? c += 1 : c = 0;
     }
   }
 
@@ -378,8 +650,8 @@ class CreateTrainingState extends State<CreateTraining> {
     var trainingId = lastTraining[0]["id"];
     var seanceModel = SeanceModel(trainingId: trainingId);
 
-    switch(program.seanceString) {
-      case '1 séance différente par jour de la semaine choisi (1ère semaine)' :
+    switch (program.seanceString) {
+      case '1 séance différente par jour de la semaine choisi (1ère semaine)':
         for (var i = 0; i < program.session; i++) {
           seanceDb.insert(seanceModel);
         }
@@ -388,12 +660,12 @@ class CreateTrainingState extends State<CreateTraining> {
           seancesArray.add(lastSeances[i]['id']);
         }
         break;
-      case '1 séance' :
-      case '2 séance' :
-      case '3 séance' :
-      case '4 séance' :
-      case '5 séance' :
-      case '6 séance' :
+      case '1 séance':
+      case '2 séance':
+      case '3 séance':
+      case '4 séance':
+      case '5 séance':
+      case '6 séance':
         for (var i = 0; i < program.seanceNumber; i++) {
           seanceDb.insert(seanceModel);
         }
@@ -402,168 +674,60 @@ class CreateTrainingState extends State<CreateTraining> {
           seancesArray.add(lastSeances[i]['id']);
         }
         break;
+      case "unique pour chaque session d'entrainement":
+        for (var i = 0; i < program.session * program.duration; i++) {
+          seanceDb.insert(seanceModel);
+        }
+        var lastSeances =
+            await seanceDb.getLastSeances(program.session * program.duration);
+        for (var i = 0; i < lastSeances.length; i++) {
+          seancesArray.add(lastSeances[i]['id']);
+        }
+        break;
     }
-    if (program.monday.isNotEmpty) {
-      //Marche pour le moment avec les pairs 4et2 6et3 marchent mais pas 3et2 5et4
-      //Il y a surement quelque chose à faire avec les modulos ( trouver la bonne position si > i remettre à 0 etc
-      if(seancesArray.length > program.session){
-        if(seancesArray.length % program.session == 0 ) {
-          if (program.repeat) {
-            insertDate(
-                1, duration, seance, null, trainingId,
-                [
-                  seancesArray[seance - 1],
-                  seancesArray[seance - 1 + program.session]
-                ]);
-          }
-        }
-      } else {
-        if (program.repeat) {
-          insertDate(
-              1, duration, seance, null, trainingId,
-              [seancesArray[seance - 1]]);
-        } else {
-          program.monday.forEach((week) =>
-              insertDate(
-                  1, 1, seance, week + 1, trainingId,
-                  [seancesArray[seance - 1]]));
-        }
+
+    var days = [...program.monday, ...program.tuesday, ...program.wednesday, ...program.thursday, ...program.friday, ...program.saturday, ...program.sunday];
+    days = days..sort();
+    for(var i=0;i<days.length;i++){
+      var weekString = days[i].split(" ")[0];
+      var week = int.parse(weekString);
+      var dayString = days[i].split(" ")[1];
+      var day;
+      switch (dayString){
+        case 'AMonday':
+          day = 1;
+          break;
+        case 'BTuesday':
+          day = 2;
+          break;
+        case 'CWednesday':
+          day = 3;
+          break;
+        case 'DThursday':
+          day = 4;
+          break;
+        case 'EFriday':
+          day = 5;
+          break;
+        case 'FSaturday':
+          day = 6;
+          break;
+        case 'GSunday':
+          day = 7;
+          break;
       }
+        insertDate(
+            day, 1, seance, week, trainingId,
+            [seancesArray[seance - 1]]);
       seance < seancesArray.length ? seance += 1 : seance = 1;
     }
-    if (program.tuesday.isNotEmpty) {
-      if(seancesArray.length > program.session){
-        if (program.repeat) {
-          insertDate(
-              2, duration, seance, null, trainingId,
-              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
-        }
-      } else {
-        if (program.repeat) {
-          insertDate(
-              2, duration, seance, null, trainingId,
-              [seancesArray[seance - 1]]);
-        } else {
-          program.tuesday.forEach((week) =>
-              insertDate(
-                  2, 1, seance, week + 1, trainingId,
-                  [seancesArray[seance - 1]]));
-        }
-      }
-      seance < seancesArray.length ? seance += 1 : seance = 1;
-    }
-    if (program.wednesday.isNotEmpty) {
-      if(seancesArray.length > program.session){
-        if (program.repeat) {
-          insertDate(
-              3, duration, seance, null, trainingId,
-              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
-        }
-      } else {
-        if (program.repeat) {
-          insertDate(
-              3, duration, seance, null, trainingId,
-              [seancesArray[seance - 1]]);
-        } else {
-          program.wednesday.forEach((week) =>
-              insertDate(
-                  3, 1, seance, week + 1, trainingId,
-                  [seancesArray[seance - 1]]));
-        }
-      }
-      seance < seancesArray.length ? seance += 1 : seance = 1;
-    }
-    if (program.thursday.isNotEmpty) {
-      if(seancesArray.length > program.session){
-        if (program.repeat) {
-          insertDate(
-              4, duration, seance, null, trainingId,
-              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
-        }
-      } else {
-        if (program.repeat) {
-          insertDate(
-              4, duration, seance, null, trainingId,
-              [seancesArray[seance - 1]]);
-        } else {
-          program.thursday.forEach((week) =>
-              insertDate(
-                  4, 1, seance, week + 1, trainingId,
-                  [seancesArray[seance - 1]]));
-        }
-      }
-      seance < seancesArray.length ? seance += 1 : seance = 1;
-    }
-    if (program.friday.isNotEmpty) {
-      if(seancesArray.length > program.session){
-        if (program.repeat) {
-          insertDate(
-              5, duration, seance, null, trainingId,
-              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
-        }
-      } else {
-        if (program.repeat) {
-          insertDate(
-              5, duration, seance, null, trainingId,
-              [seancesArray[seance - 1]]);
-        } else {
-          program.friday.forEach((week) =>
-              insertDate(
-                  5, 1, seance, week + 1, trainingId,
-                  [seancesArray[seance - 1]]));
-        }
-      }
-      seance < seancesArray.length ? seance += 1 : seance = 1;
-    }
-    if (program.saturday.isNotEmpty) {
-      if(seancesArray.length > program.session){
-        if (program.repeat) {
-          insertDate(
-              6, duration, seance, null, trainingId,
-              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
-        }
-      } else {
-        if (program.repeat) {
-          insertDate(
-              6, duration, seance, null, trainingId,
-              [seancesArray[seance - 1]]);
-        } else {
-          program.saturday.forEach((week) =>
-              insertDate(
-                  6, 1, seance, week + 1, trainingId,
-                  [seancesArray[seance - 1]]));
-        }
-      }
-      seance < seancesArray.length ? seance += 1 : seance = 1;
-    }
-    if (program.sunday.isNotEmpty) {
-      if(seancesArray.length > program.session){
-        if (program.repeat) {
-          insertDate(
-              7, duration, seance, null, trainingId,
-              [seancesArray[seance - 1],seancesArray[seance - 1 + program.session]]);
-        }
-      } else {
-        if (program.repeat) {
-          insertDate(
-              7, duration, seance, null, trainingId,
-              [seancesArray[seance - 1]]);
-        } else {
-          program.sunday.forEach((week) =>
-              insertDate(
-                  7, 1, seance, week + 1, trainingId,
-                  [seancesArray[seance - 1]]));
-        }
-      }
-      seance < seancesArray.length ? seance += 1 : seance = 1;
-    }
+
     globalWeekBonus = 0;
     Navigator.pop(context);
   }
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     formController.dispose();
     super.dispose();
   }
@@ -753,12 +917,10 @@ class CreateTrainingState extends State<CreateTraining> {
           Row(
             children: [
               Container(
-                child: Text('Nombres de séances différentes',
-                    style: TextStyle(
-                        fontSize: 18, color: Colors.black87),
-                    textAlign: TextAlign.left),
-                margin: EdgeInsets.only(top: 40)
-              ),
+                  child: Text('Nombres de séances différentes',
+                      style: TextStyle(fontSize: 18, color: Colors.black87),
+                      textAlign: TextAlign.left),
+                  margin: EdgeInsets.only(top: 40)),
             ],
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -767,50 +929,51 @@ class CreateTrainingState extends State<CreateTraining> {
               children: [
                 Container(
                     child: new DropdownButton<String>(
-                  value: program.seanceString,
-                  items: <String>[
-                    '1 séance différente par jour de la semaine choisi (1ère semaine)',
-                    '1 séance',
-                    '2 séance',
-                    '3 séance',
-                    '4 séance',
-                    '5 séance',
-                    '6 séance',
-                    "unique pour chaque session d'entrainement"
-                  ].map((String value) {
-                    return new DropdownMenuItem<String>(
-                      value: value,
-                      child: new Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (value) => setState(() {
-                    switch(value){
-                      case "1 séance":
-                        program.seanceNumber = 1;
-                        break;
-                      case "2 séance":
-                        program.seanceNumber = 2;
-                        break;
-                      case "3 séance":
-                        program.seanceNumber = 3;
-                        break;
-                      case "4 séance":
-                        program.seanceNumber = 4;
-                        break;
-                      case "5 séance":
-                        program.seanceNumber = 5;
-                        break;
-                      case "6 séance":
-                        program.seanceNumber = 6;
-                        break;
-                      default:
-                        program.seanceNumber = null;
-                        break;
-                    }
-                    program.seanceString = value;
-                  }),
-                  style: TextStyle(fontSize: 12, color: Colors.black),
-                ), margin: EdgeInsets.only(top: 10, bottom: 25))
+                      value: program.seanceString,
+                      items: <String>[
+                        '1 séance différente par jour de la semaine choisi (1ère semaine)',
+                        '1 séance',
+                        '2 séance',
+                        '3 séance',
+                        '4 séance',
+                        '5 séance',
+                        '6 séance',
+                        "unique pour chaque session d'entrainement"
+                      ].map((String value) {
+                        return new DropdownMenuItem<String>(
+                          value: value,
+                          child: new Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (value) => setState(() {
+                        switch (value) {
+                          case "1 séance":
+                            program.seanceNumber = 1;
+                            break;
+                          case "2 séance":
+                            program.seanceNumber = 2;
+                            break;
+                          case "3 séance":
+                            program.seanceNumber = 3;
+                            break;
+                          case "4 séance":
+                            program.seanceNumber = 4;
+                            break;
+                          case "5 séance":
+                            program.seanceNumber = 5;
+                            break;
+                          case "6 séance":
+                            program.seanceNumber = 6;
+                            break;
+                          default:
+                            program.seanceNumber = null;
+                            break;
+                        }
+                        program.seanceString = value;
+                      }),
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    ),
+                    margin: EdgeInsets.only(top: 10, bottom: 25))
               ],
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center),
@@ -872,40 +1035,17 @@ class CreateTrainingState extends State<CreateTraining> {
             mainAxisAlignment: MainAxisAlignment.center,
           ),
           program.repeat
-              ? Days(this, null, program.session, program)
+              ? Days(this, null, program.session * program.duration, program)
               : new Column(
                   children: new List.generate(
                       program.duration,
-                      (index) => new Days(this, index,
+                      (index) => new Days(this, index + 1,
                           program.session * program.duration, program))),
           Row(
             children: [
               Container(
-                child: program.repeat
-                    ? program.session == program.currentSession
-                        ? RaisedButton(
-                            onPressed: () => trainingCreated(
-                                formController.text,
-                                program.session,
-                                program.duration,
-                                program.seance),
-                            child: Text('Créer le programme',
-                                style: TextStyle(fontSize: 18)),
-                            textColor: Colors.white,
-                            padding: const EdgeInsets.all(15),
-                            color: Color(0xFFD34B4B),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50)))
-                        : RaisedButton(
-                            child: Text("Selectionner d'abord les séances",
-                                style: TextStyle(fontSize: 18)),
-                            textColor: Colors.white,
-                            padding: const EdgeInsets.all(15),
-                            color: Color(0xFFD34B4B),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50)))
-                    : program.session * program.duration ==
-                            program.currentSession
+                child:
+                    program.session * program.duration == program.currentSession
                         ? RaisedButton(
                             onPressed: () => trainingCreated(
                                 formController.text,
