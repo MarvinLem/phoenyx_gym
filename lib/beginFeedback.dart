@@ -42,7 +42,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             for (ExercicesModel exercice in snapshot.data) {
-              if(snapshot.data.length > feedback.exerciceArray.length) {
+              if (snapshot.data.length > feedback.exerciceArray.length) {
                 feedback.exerciceArray.add(null);
               }
             }
@@ -68,7 +68,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
                               constraints: BoxConstraints(
                                   minWidth: 80.0, minHeight: 80.0),
                               margin: new EdgeInsets.only(
-                                  right: 20, top: 20, bottom: 20),
+                                  right: 20, top: 20, bottom: 25),
                             )
                           ],
                         ),
@@ -122,19 +122,33 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                         exercice.exerciceOrder - 1] = 0;
                                   });
                                 },
-                                child: Container(
-                                  margin:
-                                      new EdgeInsets.symmetric(horizontal: 22),
+                                child: feedback.exerciceArray[
+                                exercice.exerciceOrder - 1] ==
+                                    0
+                                    ? Container(
+                                  margin: new EdgeInsets.symmetric(
+                                      horizontal: 12),
                                   constraints: new BoxConstraints(
-                                      minWidth: 40, minHeight: 40),
+                                      minWidth: 55, minHeight: 55),
                                   decoration: new BoxDecoration(
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
-                                      image: ExactAssetImage(feedback.exerciceArray[
-                                      exercice.exerciceOrder - 1] ==
-                                          0
-                                          ?
-                                          'assets/images/sad-red.png' : 'assets/images/sad.png'),
+                                      image: ExactAssetImage(
+                                          'assets/images/sad-color.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                                    : Container(
+                                  margin: new EdgeInsets.symmetric(
+                                      horizontal: 22),
+                                  constraints: new BoxConstraints(
+                                      minWidth: 45, minHeight: 45),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: ExactAssetImage(
+                                          'assets/images/sad-color.png'),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -146,19 +160,33 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                         exercice.exerciceOrder - 1] = 1;
                                   });
                                 },
-                                child: Container(
-                                  margin:
-                                      new EdgeInsets.symmetric(horizontal: 22),
+                                child: feedback.exerciceArray[
+                                exercice.exerciceOrder - 1] ==
+                                    1
+                                    ? Container(
+                                  margin: new EdgeInsets.symmetric(
+                                      horizontal: 17),
                                   constraints: new BoxConstraints(
-                                      minWidth: 40, minHeight: 40),
+                                      minWidth: 55, minHeight: 55),
                                   decoration: new BoxDecoration(
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
-                                      image: ExactAssetImage(feedback.exerciceArray[
-                                      exercice.exerciceOrder - 1] ==
-                                          1
-                                          ?
-                                      'assets/images/meh-red.png' : 'assets/images/meh.png'),
+                                      image: ExactAssetImage(
+                                          'assets/images/meh-color.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                                    : Container(
+                                  margin: new EdgeInsets.symmetric(
+                                      horizontal: 22),
+                                  constraints: new BoxConstraints(
+                                      minWidth: 45, minHeight: 45),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: ExactAssetImage(
+                                          'assets/images/meh-color.png'),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -170,19 +198,33 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                         exercice.exerciceOrder - 1] = 2;
                                   });
                                 },
-                                child: Container(
-                                  margin:
-                                      new EdgeInsets.symmetric(horizontal: 22),
+                                child: feedback.exerciceArray[
+                                exercice.exerciceOrder - 1] ==
+                                    2
+                                    ? Container(
+                                  margin: new EdgeInsets.symmetric(
+                                      horizontal: 17),
                                   constraints: new BoxConstraints(
-                                      minWidth: 40, minHeight: 40),
+                                      minWidth: 55, minHeight: 55),
                                   decoration: new BoxDecoration(
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
-                                      image: ExactAssetImage(feedback.exerciceArray[
-                                      exercice.exerciceOrder - 1] ==
-                                          2
-                                          ?
-                                      'assets/images/happy-red.png' : 'assets/images/happy.png'),
+                                      image: ExactAssetImage(
+                                          'assets/images/happy-color.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                                    : Container(
+                                  margin: new EdgeInsets.symmetric(
+                                      horizontal: 22),
+                                  constraints: new BoxConstraints(
+                                      minWidth: 45, minHeight: 45),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: ExactAssetImage(
+                                          'assets/images/happy-color.png'),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -194,23 +236,37 @@ class BeginFeedbackState extends State<BeginFeedback> {
                                         exercice.exerciceOrder - 1] = 3;
                                   });
                                 },
-                                child: Container(
-                                  margin:
-                                      new EdgeInsets.symmetric(horizontal: 22),
-                                  constraints: new BoxConstraints(
-                                      minWidth: 40, minHeight: 40),
-                                  decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: ExactAssetImage(feedback.exerciceArray[
-                                      exercice.exerciceOrder - 1] ==
-                                          3
-                                          ?
-                                      'assets/images/smile-red.png' : 'assets/images/smile.png'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                )),
+                                child: feedback.exerciceArray[
+                                            exercice.exerciceOrder - 1] ==
+                                        3
+                                    ? Container(
+                                        margin: new EdgeInsets.symmetric(
+                                            horizontal: 17),
+                                        constraints: new BoxConstraints(
+                                            minWidth: 55, minHeight: 55),
+                                        decoration: new BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image: ExactAssetImage(
+                                                'assets/images/smile-color.png'),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        margin: new EdgeInsets.symmetric(
+                                            horizontal: 22),
+                                        constraints: new BoxConstraints(
+                                            minWidth: 45, minHeight: 45),
+                                        decoration: new BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            image: ExactAssetImage(
+                                                'assets/images/smile-color.png'),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      )),
                           ]),
                           constraints: BoxConstraints(
                               minWidth: MediaQuery.of(context).size.width - 40),
@@ -236,86 +292,129 @@ class BeginFeedbackState extends State<BeginFeedback> {
         body: ListView(children: [
           Row(
             children: [
-              Column(children:[
-                Container(constraints: new BoxConstraints(
-                    minWidth: 25, minHeight: 25))
+              Column(children: [
+                Container(
+                    constraints:
+                        new BoxConstraints(minWidth: 25, minHeight: 25))
               ]),
-              Column(children:[
-              Container(
-                  child: new Text(
-                    "Fin de la séance".toUpperCase(),
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Color(0xFFD34B4B),
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  margin: new EdgeInsets.only(top: 20.0),
-                  constraints: new BoxConstraints(
-                      minWidth: 260))]),
-              Column(children:[
+              Column(children: [
+                Container(
+                    child: new Text(
+                      "Fin de la séance".toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color(0xFFD34B4B),
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    margin: new EdgeInsets.only(top: 20.0),
+                    constraints: new BoxConstraints(minWidth: 260))
+              ]),
+              Column(children: [
                 InkWell(
-                      onTap: () {
-                        showMenu(
-                          position: RelativeRect.fromLTRB(10, 100, 0, 0),
-                          items: <PopupMenuEntry>[
-                            PopupMenuItem(
-                              child:Column(children:[
-                                Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
-                        maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: ExactAssetImage('assets/images/sad.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                              Text("Vous n'avez pas reussi à réaliser l'exercice demandé et vous n'étiez pas pret d'y arriver."),
-                                Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
-                                    maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: ExactAssetImage('assets/images/meh.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                                Text("Vous n'avez pas reussi à réaliser l'exercice demandé mais vous y étiez presque."),
-                                Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
-                                    maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: ExactAssetImage('assets/images/happy.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                                Text("Vous avez reussi à réaliser l'exercice normalement."),
-                                Container(margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),constraints: BoxConstraints(
-                                    maxWidth: 40, maxHeight: 40),decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    image: ExactAssetImage('assets/images/smile.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                                Text("Vous avez reussi à réaliser l'exercice et c'était meme très facile.")]),
-                            )
-                          ],
-                          context: context,
-                        );
-                      },
-                    child:
-              Container(
-                margin:
-                new EdgeInsets.only(top: 20.0),
-                constraints: new BoxConstraints(
-                    minWidth: 25, minHeight: 25),
-                decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: ExactAssetImage('assets/images/tooltip.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ))])
+                    onTap: () {
+                      showMenu(
+                        position: RelativeRect.fromLTRB(10, 100, 0, 0),
+                        items: <PopupMenuEntry>[
+                          PopupMenuItem(
+                            child: Column(children: [
+                              Container(
+                                  margin: EdgeInsets.only(
+                                      left: 236,top: 5),
+                                  constraints: BoxConstraints(
+                                      maxWidth: 20, maxHeight: 20),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: ExactAssetImage(
+                                          'assets/images/cross.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                              ),
+                              Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  constraints: BoxConstraints(
+                                      maxWidth: 40, maxHeight: 40),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: ExactAssetImage(
+                                          'assets/images/sad-color.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )),
+                              Text(
+                                  "Vous n'avez pas reussi à réaliser l'exercice demandé et vous n'étiez pas pret d'y arriver.", textAlign: TextAlign.center, style: TextStyle(
+                      fontSize: 14)),
+                              Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  constraints: BoxConstraints(
+                                      maxWidth: 40, maxHeight: 40),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: ExactAssetImage(
+                                          'assets/images/meh-color.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )),
+                              Text(
+                                  "Vous n'avez pas reussi à réaliser l'exercice demandé mais vous y étiez presque.", textAlign: TextAlign.center,style: TextStyle(
+                                  fontSize: 14)),
+                              Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  constraints: BoxConstraints(
+                                      maxWidth: 40, maxHeight: 40),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: ExactAssetImage(
+                                          'assets/images/happy-color.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )),
+                              Text(
+                                  "Vous avez reussi à réaliser l'exercice normalement.", textAlign: TextAlign.center,style: TextStyle(
+                                  fontSize: 14)),
+                              Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  constraints: BoxConstraints(
+                                      maxWidth: 40, maxHeight: 40),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: ExactAssetImage(
+                                          'assets/images/smile-color.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )),
+                              Text(
+                                  "Vous avez reussi à réaliser l'exercice et c'était meme très facile.", textAlign: TextAlign.center,style: TextStyle(
+                                  fontSize: 14))
+                            ]),
+                          )
+                        ],
+                        context: context,
+                      );
+                    },
+                    child: Container(
+                      margin: new EdgeInsets.only(top: 20.0),
+                      constraints:
+                          new BoxConstraints(minWidth: 25, minHeight: 25),
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: ExactAssetImage('assets/images/tooltip.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ))
+              ])
             ],
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
