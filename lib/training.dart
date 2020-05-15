@@ -76,7 +76,8 @@ class TrainingState extends State<Training> {
 
   @override
   void initState() {
-    getAllTraining();
+    getAllTrainingNotDone();
+    getAllTrainingDone();
     modal = false;
   }
 
@@ -86,9 +87,9 @@ class TrainingState extends State<Training> {
     });
   }
 
-  getAllTraining() {
+  getAllTrainingNotDone() {
     return FutureBuilder(
-        future: db.getAllTraining(),
+        future: db.getAllTrainingNotDone(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             return Column(children: [
@@ -164,6 +165,97 @@ class TrainingState extends State<Training> {
         });
   }
 
+  getAllTrainingDone() {
+    return FutureBuilder(
+        future: db.getAllTrainingDone(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            var trainingLength = snapshot.data.length;
+            if (trainingLength > 0) {
+            return Column(children: [
+              Row(children: [
+                Container(
+                    child: new Text("Vos programmes terminées".toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xFFD34B4B),
+                            fontWeight: FontWeight.bold)),
+                    margin: new EdgeInsets.only(left: 20.0, top: 20.0))
+              ]),
+              for (TrainingModel training in snapshot.data)
+                Row(
+                  children: [
+                    GestureDetector(
+                      child: Container(
+                        decoration: new BoxDecoration(
+                          borderRadius: new BorderRadius.circular(20.0),
+                          color: Colors.black87,
+                          image: DecorationImage(
+                            image: ExactAssetImage(
+                                'assets/images/chest_training.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Column(children: [
+                          new Text(training.name.toUpperCase(),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  letterSpacing: 1,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.left),
+                        ], crossAxisAlignment: CrossAxisAlignment.start),
+                        margin: new EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          top: 20,
+                        ),
+                        padding: new EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        alignment: Alignment.bottomLeft,
+                        constraints: BoxConstraints(
+                            minWidth: MediaQuery.of(context).size.width - 40,
+                            minHeight: 120.0,
+                            maxWidth: MediaQuery.of(context).size.width - 40),
+                      ),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  GetTraining(trainingId: training.id))),
+                      onLongPress: () {
+                        showMenu(
+                          position: RelativeRect.fromLTRB(10, 100, 0, 0),
+                          items: <PopupMenuEntry>[
+                            PopupMenuItem(
+                              value: modal,
+                              child: StatefulBuilder(builder:
+                                  (BuildContext context,
+                                  StateSetter setState) {
+                                return ItemMenu(modal: modal, trainingId: training.id, callback: callback);
+                              }),
+                            )
+                          ],
+                          context: context,
+                        );
+                      },
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+            ]);} else {
+              return Center();
+            }
+          } else {
+            return Center();
+          }
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(children: [
@@ -176,7 +268,7 @@ class TrainingState extends State<Training> {
                     fontWeight: FontWeight.bold)),
             margin: new EdgeInsets.only(left: 20.0, top: 20.0))
       ]),
-      getAllTraining(),
+      getAllTrainingNotDone(),
       Row(
         children: [
           Container(
@@ -314,6 +406,8 @@ class TrainingState extends State<Training> {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
+      getAllTrainingDone(),
+      Container(margin: new EdgeInsets.only(bottom: 20))
     ]);
   }
 }

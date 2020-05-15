@@ -113,11 +113,9 @@ class ExercicesDatabase {
     db.rawUpdate(''' UPDATE exercices SET series = ?, repetitions = ?, weight = ?, rest = ? WHERE id = ? ''',[series, repetitions, weight, rest, id]);
   }
 
-  updateMultipleExercice(int series, int repetitions, int weight, int rest, int seanceId, String name, int exerciceOrder) async {
+  updateMultipleExercice(int series, int repetitions, int weight, int rest, int sessionId, String name, int exerciceOrder) async {
     await initDB();
-    db.rawUpdate(''' UPDATE exercices SET series = ?, repetitions = ?, weight = ?, rest = ? WHERE (SELECT seanceId
-                  FROM session
-                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[series, repetitions, weight, rest, seanceId, name, exerciceOrder]);
+    db.rawUpdate(''' UPDATE exercices SET series = ?, repetitions = ?, weight = ?, rest = ? WHERE sessionId = ? AND name = ? AND exerciceOrder = ? ''',[series, repetitions, weight, rest, sessionId, name, exerciceOrder]);
   }
 
   delete(int id) async {

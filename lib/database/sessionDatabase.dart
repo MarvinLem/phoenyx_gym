@@ -11,8 +11,9 @@ class SessionModel{
   int endAt;
   int trainingId;
   int seanceId;
+  int done;
 
-  SessionModel({this.id,this.name,this.seance,this.week,this.sessionNumber,this.date,this.startAt,this.endAt,this.trainingId,this.seanceId});
+  SessionModel({this.id,this.name,this.seance,this.week,this.sessionNumber,this.date,this.startAt,this.endAt,this.trainingId,this.seanceId, this.done});
 
   Map<String, dynamic> toMap() {
     return {
@@ -24,7 +25,8 @@ class SessionModel{
       'startAt': startAt,
       'endAt': endAt,
       'trainingId': trainingId,
-      'seanceId': seanceId
+      'seanceId': seanceId,
+      'done': done
     };
   }
 
@@ -39,6 +41,7 @@ class SessionModel{
     endAt = map['endAt'];
     trainingId = map['trainingId'];
     seanceId = map['seanceId'];
+    done = map['done'];
   }
 }
 
@@ -51,7 +54,7 @@ class SessionDatabase {
       version: 1,
       onCreate: (db, version) {
         db.execute(
-          "CREATE TABLE session(id INTEGER PRIMARY KEY, seance INTEGER, week INTEGER, sessionNumber INTEGER, date INTEGER, startAt INTEGER, endAt INTEGER, trainingId INTEGER, seanceId INTEGER)",
+          "CREATE TABLE session(id INTEGER PRIMARY KEY, seance INTEGER, week INTEGER, sessionNumber INTEGER, date INTEGER, startAt INTEGER, endAt INTEGER, trainingId INTEGER, seanceId INTEGER, done BOOLEAN)",
         );
       },
     );
@@ -75,6 +78,11 @@ class SessionDatabase {
   updateDate(int date, int id) async {
     await initDB();
     db.rawUpdate(''' UPDATE session SET date = ? WHERE id = ? ''',[date, id]);
+  }
+
+  updateDone(int done, int id) async {
+    await initDB();
+    db.rawUpdate(''' UPDATE session SET done = ? WHERE id = ? ''',[done, id]);
   }
 
   delete(int id) async {
@@ -104,6 +112,12 @@ class SessionDatabase {
   getNextSession(trainingId, seanceId, sessionNumber) async {
     await initDB();
     var results = await db.query("session", where: "trainingId = ? AND seanceId = ? AND sessionNumber = ?",  whereArgs: [trainingId, seanceId, sessionNumber]);
+    return results;
+  }
+
+  getNextSessions(trainingId, seanceId, date) async {
+    await initDB();
+    var results = await db.query("session", where: "trainingId = ? AND seanceId = ? AND date > ?",  whereArgs: [trainingId, seanceId, date]);
     return results;
   }
 

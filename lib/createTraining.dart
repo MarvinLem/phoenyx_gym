@@ -636,7 +636,8 @@ class CreateTrainingState extends State<CreateTraining> {
           endAt: milliSeconds +
               ((week - 1 - weekBonus + globalWeekBonus) * millisecondsOf7Days),
           trainingId: trainingId,
-          seanceId: seanceIdArray[c]);
+          seanceId: seanceIdArray[c],
+          done: 0);
       sessionDb.insert(session);
       c < seanceIdArray.length - 1 ? c += 1 : c = 0;
     }
@@ -644,7 +645,7 @@ class CreateTrainingState extends State<CreateTraining> {
 
   trainingCreated(name, session, duration, seance) async {
     var training =
-        TrainingModel(name: name, session: session, duration: duration);
+        TrainingModel(name: name, session: session, duration: duration, done: 0);
     db.insert(training);
     var lastTraining = await db.getLastTraining();
     var trainingId = lastTraining[0]["id"];

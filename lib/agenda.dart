@@ -152,7 +152,7 @@ class AgendaState extends State<Agenda> {
                     : training.putIfAbsent(
                         datetime,
                         () => [
-                              [date.trainingId, date.id]
+                              [date.trainingId, date.id, date.done]
                             ]);
               }
               return TableCalendar(
@@ -168,7 +168,6 @@ class AgendaState extends State<Agenda> {
                     weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
                     selectedColor: Color(0xFF9E3838),
                     todayColor: Colors.transparent,
-                    markersColor: Color(0xFFD34B4B),
                     highlightSelected: true,
                       todayStyle: TextStyle(color: Colors.black)
                   ),
@@ -177,6 +176,20 @@ class AgendaState extends State<Agenda> {
                   ),
                   headerStyle: HeaderStyle(
                     centerHeaderTitle: true,
+                  ),
+                  builders: CalendarBuilders(
+                    singleMarkerBuilder: (context, date, event) {
+                      return Container(
+                        height: 8.0,
+                        width: 8.0,
+                        margin: const EdgeInsets.all(0.5),
+                        decoration: BoxDecoration(
+                          // provide your own condition here
+                          color: event[2] == 0 ? Color(0xFFD34B4B) : Color(0xFF228B22),
+                          shape: BoxShape.circle,
+                        ),
+                      );
+                    },
                   ),
                   onDaySelected: onDaySelected);
             } else {
@@ -192,7 +205,6 @@ class AgendaState extends State<Agenda> {
                     weekendStyle: TextStyle(color: Color(0xFFD34B4B)),
                     selectedColor: Color(0xFF9E3838),
                       todayColor: Colors.transparent,
-                    markersColor: Color(0xFFD34B4B),
                     highlightSelected: true,
                       todayStyle: TextStyle(color: Colors.black)
                   ),
@@ -201,6 +213,20 @@ class AgendaState extends State<Agenda> {
                   ),
                   headerStyle: HeaderStyle(
                     centerHeaderTitle: true,
+                  ),
+                  builders: CalendarBuilders(
+                    singleMarkerBuilder: (context, date, event) {
+                      return Container(
+                        height: 8.0,
+                        width: 8.0,
+                        margin: const EdgeInsets.all(0.5),
+                        decoration: BoxDecoration(
+                          // provide your own condition here
+                          color: event[2] == 0 ? Color(0xFFD34B4B) : Color(0xFF228B22),
+                          shape: BoxShape.circle,
+                        ),
+                      );
+                    },
                   ),
                   onDaySelected: onDaySelected);
             }

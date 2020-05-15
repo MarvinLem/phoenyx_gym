@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:basic_utils/basic_utils.dart';
 import './endFeedback.dart';
 
+import './database/trainingDatabase.dart';
+import './database/sessionDatabase.dart';
 import './database/exercicesDatabase.dart';
 
 class Feedback {
@@ -25,6 +27,8 @@ class BeginFeedbackState extends State<BeginFeedback> {
   int trainingId;
   int sessionId;
   ExercicesDatabase db = ExercicesDatabase();
+  SessionDatabase sessionDb = SessionDatabase();
+  TrainingDatabase trainingDb = TrainingDatabase();
 
   BeginFeedbackState({this.trainingId, this.sessionId});
 
@@ -33,7 +37,19 @@ class BeginFeedbackState extends State<BeginFeedback> {
   @override
   void initState() {
     feedback.exerciceArray = [];
+    sessionDb.updateDone(1, sessionId);
+    updateTrainingDone();
     getExercicesByTrainingId(trainingId, sessionId);
+  }
+
+  updateTrainingDone() async {
+    var sessions = await sessionDb.getSessionByTrainingId(trainingId);
+    for(var i=0;i<sessions.length;i++){
+      if(sessions[i]['done'] == 0){
+        return;
+      }
+    }
+    trainingDb.updateDone(1, trainingId);
   }
 
   getExercicesByTrainingId(trainingId, sessionId) {

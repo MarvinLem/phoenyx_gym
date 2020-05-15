@@ -217,7 +217,7 @@ class GetTrainingState extends State<GetTraining> {
                                             sessionId: sessionIdArray[seance],
                                             maxOrder: exercices)),
                                   ),
-                              child: Text('Commencer la séance',
+                              child: Text(actualSession[0]['done'] == 0 ? 'Commencer la séance' : 'Recommencer la séance' ,
                                   style: TextStyle(fontSize: 18)),
                               textColor: Colors.white,
                               padding: const EdgeInsets.all(15),
@@ -286,7 +286,8 @@ class GetTrainingState extends State<GetTraining> {
                   margin:
                       new EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
                   constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width - 40))
+                      minWidth: MediaQuery.of(context).size.width - 100,
+                      maxWidth: MediaQuery.of(context).size.width - 100))
             ]),
             Column(children: [
               GestureDetector(
@@ -311,7 +312,7 @@ class GetTrainingState extends State<GetTraining> {
                     );
                   },
                   child: Container(
-                    margin: new EdgeInsets.only(top: 20.0, left: 100),
+                    margin: new EdgeInsets.only(top: 20.0, left: 20),
                     constraints:
                         new BoxConstraints(minWidth: 20, minHeight: 20),
                     decoration: new BoxDecoration(
