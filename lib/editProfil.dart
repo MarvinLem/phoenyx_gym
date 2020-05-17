@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import './profil.dart';
 import './custom_icons_icons.dart';
+import './database/userDatabase.dart';
+
 
 class EditProfil extends StatefulWidget {
   @override
@@ -14,6 +16,24 @@ class EditProfil extends StatefulWidget {
 class EditProfilState extends State<EditProfil> {
   var user = User();
   final _formKey = GlobalKey<FormState>();
+  UserDatabase db = UserDatabase();
+
+  @override
+  void initState() {
+    getUser();
+  }
+
+  getUser() async {
+    var userData = await db.getLastUser();
+    if(userData != null || userData.isNotEmpty){
+      setState(() {
+        user.size = userData[0]['size'];
+        user.weight = userData[0]['weight'];
+        user.birthday = userData[0]['birthday'];
+        user.gender = userData[0]['gender'];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +82,28 @@ class EditProfilState extends State<EditProfil> {
                           final date = await showDatePicker(
                               context: context,
                               firstDate: DateTime(1900),
-                              initialDate: currentValue ?? DateTime.now(),
+                              initialDate: user.birthday != null ? DateTime.fromMillisecondsSinceEpoch(user.birthday) : DateTime.now(),
                               lastDate: DateTime(2100));
-                            return date;
+                          setState(() {
+                            user.birthday = date.millisecondsSinceEpoch;
+                          });
+                          return date;
                         },
+                        controller: TextEditingController()..text = user.birthday != null ? new DateTime.fromMillisecondsSinceEpoch(
+                            user.birthday)
+                            .day
+                            .toString() +
+                            "/" +
+                            new DateTime.fromMillisecondsSinceEpoch(
+                                user.birthday)
+                                .month
+                                .toString() +
+                            "/" +
+                            new DateTime.fromMillisecondsSinceEpoch(
+                                user.birthday)
+                                .year
+                                .toString() : '',
+                        onChanged: (text) => {},
                         decoration: InputDecoration(
                           icon: Icon(Icons.cake),
                           hintText: 'Entrez votre date de naissance',
@@ -76,10 +114,16 @@ class EditProfilState extends State<EditProfil> {
                   child: TextFormField(
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Ce champ doit être rempli';
+                        } else {
+                          setState(() {
+                            user.size = int.parse(value);
+                          });
                         }
                         return null;
                       },
+                      controller: TextEditingController()..text = user.size != null ? user.size.toString() : '',
+                      onChanged: (text) => {},
                       decoration: InputDecoration(
                         icon: Icon(Icons.straighten),
                         hintText: 'Entrez votre taille (en cm)',
@@ -92,10 +136,16 @@ class EditProfilState extends State<EditProfil> {
                   child: TextFormField(
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Ce champ doit être rempli';
+                        } else {
+                          setState(() {
+                            user.weight = int.parse(value);
+                          });
                         }
                         return null;
                       },
+                      controller: TextEditingController()..text = user.weight != null ? user.weight.toString() : '',
+                      onChanged: (text) => {},
                       decoration: InputDecoration(
                         icon: Icon(CustomIcons.balance_scale),
                         hintText: 'Entrez votre poids (en kg)',
@@ -113,9 +163,8 @@ class EditProfilState extends State<EditProfil> {
                 child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text('Les données ont été changées')));
-                        Navigator.pop(context);
+                        db.updateUser(user.birthday, user.size, user.weight, user.gender);
+                        Navigator.of(context).pop(true);
                       }
                     },
                     child: Text('Sauvegarder les modifications',
