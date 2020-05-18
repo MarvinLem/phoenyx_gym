@@ -31,6 +31,7 @@ class EditProfilState extends State<EditProfil> {
         user.weight = userData[0]['weight'];
         user.birthday = userData[0]['birthday'];
         user.gender = userData[0]['gender'];
+        user.sessions = userData[0]['sessions'];
       });
     }
   }
@@ -154,6 +155,47 @@ class EditProfilState extends State<EditProfil> {
                       keyboardType: TextInputType.number),
                   margin: EdgeInsets.only(right: 30, left: 30),
                 ),
+                      Container(
+                          child: new DropdownButtonHideUnderline(
+                            child: InputDecorator(
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.person),
+                                hintText: 'Entrez votre genre',
+                                labelText: 'Sexe',
+                              ),
+                              child: new DropdownButton(
+                                value: user.gender,
+                                items: <String>[
+                                  'Homme',
+                                  'Femme',
+                                  'Autre',
+                                ].map((String value) {
+                                  return new DropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (value) => setState(() {
+                                  switch (value) {
+                                    case "Homme":
+                                      user.gender = "Homme";
+                                      break;
+                                    case "Femme":
+                                      user.gender = "Femme";
+                                      break;
+                                    case "Autre":
+                                      user.gender = "Autre";
+                                      break;
+                                    default:
+                                      user.gender = null;
+                                      break;
+                                  }
+                                }),
+                                style: TextStyle(fontSize: 12, color: Colors.black),
+                              )
+                            )
+                          ),
+                          margin: EdgeInsets.only(right: 30, left: 30))
               ],
             ),
           ),
@@ -163,7 +205,7 @@ class EditProfilState extends State<EditProfil> {
                 child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        db.updateUser(user.birthday, user.size, user.weight, user.gender);
+                        db.updateUser(user.birthday, user.size, user.weight, user.gender, user.sessions);
                         Navigator.of(context).pop(true);
                       }
                     },

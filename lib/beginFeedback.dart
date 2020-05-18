@@ -5,6 +5,7 @@ import './endFeedback.dart';
 import './database/trainingDatabase.dart';
 import './database/sessionDatabase.dart';
 import './database/exercicesDatabase.dart';
+import './database/userDatabase.dart';
 
 class Feedback {
   //Rajouter un push
@@ -29,6 +30,7 @@ class BeginFeedbackState extends State<BeginFeedback> {
   ExercicesDatabase db = ExercicesDatabase();
   SessionDatabase sessionDb = SessionDatabase();
   TrainingDatabase trainingDb = TrainingDatabase();
+  UserDatabase userDb = UserDatabase();
 
   BeginFeedbackState({this.trainingId, this.sessionId});
 
@@ -37,9 +39,19 @@ class BeginFeedbackState extends State<BeginFeedback> {
   @override
   void initState() {
     feedback.exerciceArray = [];
+    updateSessionCount();
     sessionDb.updateDone(1, sessionId);
     updateTrainingDone();
     getExercicesByTrainingId(trainingId, sessionId);
+  }
+
+  updateSessionCount() async {
+    var session = await sessionDb.getSessionById(sessionId);
+    if(session[0]['done'] == 0){
+      var user = await userDb.getLastUser();
+      var sessionNumber = user[0]['sessions'] != null ? user[0]['sessions'] : 0;
+      await userDb.updateUser(user[0]['birthday'], user[0]['size'], user[0]['weight'], user[0]['gender'], sessionNumber + 1);
+    }
   }
 
   updateTrainingDone() async {

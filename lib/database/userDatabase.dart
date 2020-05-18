@@ -6,8 +6,9 @@ class UserModel{
   int size;
   int weight;
   String gender;
+  int sessions;
 
-  UserModel({this.id,this.birthday,this.size,this.weight, this.gender});
+  UserModel({this.id,this.birthday,this.size,this.weight, this.gender, this.sessions});
 
   Map<String, dynamic> toMap() {
     return {
@@ -16,6 +17,7 @@ class UserModel{
       'size': size,
       'weight': weight,
       'gender': gender,
+      'sessions': sessions,
     };
   }
 
@@ -25,6 +27,7 @@ class UserModel{
     size = map['size'];
     weight = map['weight'];
     gender = map['gender'];
+    sessions = map['sessions'];
   }
 }
 
@@ -37,7 +40,7 @@ class UserDatabase {
       version: 1,
       onCreate: (db, version) {
         db.execute(
-          "CREATE TABLE user(id INTEGER PRIMARY KEY, birthday INTEGER, size INTEGER, weight INTEGER, gender TEXT)",
+          "CREATE TABLE user(id INTEGER PRIMARY KEY, birthday INTEGER, size INTEGER, weight INTEGER, gender TEXT, sessions INTEGER)",
         );
       },
     );
@@ -48,9 +51,9 @@ class UserDatabase {
     db.insert("user", user.toMap());
   }
 
-  updateUser(int birthday, int size, int weight, String gender) async {
+  updateUser(int birthday, int size, int weight, String gender, int sessions) async {
     await initDB();
-    db.execute(''' INSERT OR REPLACE INTO user (id, birthday, size, weight, gender) VALUES (1,?,?,?,?) ''',[birthday, size, weight, gender]);
+    db.execute(''' INSERT OR REPLACE INTO user (id, birthday, size, weight, gender, sessions) VALUES (1,?,?,?,?,?) ''',[birthday, size, weight, gender, sessions]);
   }
 
   delete(int id) async {

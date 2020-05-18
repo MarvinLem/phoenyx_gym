@@ -767,7 +767,7 @@ class CreateTrainingState extends State<CreateTraining> {
               child: TextFormField(
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Please enter some text';
+                      return 'Ce champ doit être rempli';
                     }
                     return null;
                   },
