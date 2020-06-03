@@ -362,7 +362,7 @@ class ProfilState extends State<Profil> {
       ),
       Row(
         children: [
-          (user == null || user.isEmpty)
+          (user == null || user.isEmpty || user[0]['sessions'] == null)
               ? Container(
                   child: Column(children: [
                     Container(

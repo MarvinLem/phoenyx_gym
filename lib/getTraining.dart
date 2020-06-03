@@ -297,13 +297,16 @@ class GetTrainingState extends State<GetTraining> {
                       items: <PopupMenuEntry>[
                         PopupMenuItem(
                           child: GestureDetector(
-                            child: Text("Modifier la séance"),
-                            onTap: () => editTraining('only'),
-                          ),
+                        child: Container(
+                        padding: EdgeInsets.all(10),
+                            child: Text("Modifier la séance")),
+                            onTap: () => editTraining('only')),
                         ),
                         PopupMenuItem(
                           child: GestureDetector(
-                            child: Text("Modifier toutes les séances"),
+                    child: Container(
+                        padding: EdgeInsets.all(10),
+                            child: Text("Modifier toutes les séances")),
                             onTap: () => editTraining('all'),
                           ),
                         )

@@ -51,19 +51,22 @@ class ItemMenuState extends State<ItemMenu> {
 
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         modal == false ?
         setState(() {
           modal = true;
         }) : deleteTraining(trainingId);
       },
-      child: Row(
-        children: <Widget>[
-          Icon(Icons.delete),
-          Text(modal == false ? 'Supprimer' : 'Etes vous sûr ?'),
-        ],
-      ),
-    );
+      child: Container(
+        padding: EdgeInsets.all(10),
+    child: Row(
+      children: <Widget>[
+        Icon(Icons.delete),
+        Text(modal == false ? 'Supprimer' : 'Etes vous sûr ?'),
+      ],
+    ),
+    ));
   }
 }
 
