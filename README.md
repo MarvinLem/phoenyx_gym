@@ -47,8 +47,8 @@ Attendez quelques instants et normalement l'application devrait se lancer.
 Il faut d'abord activer sur votre téléphone le mode Déboguage USB et permettre à votre ordinateur d'effectuer des modifications sur votre téléphone.
 Pour l'activer cela dépend de votre appareil mobile. 
 Une recherche rapide sur google du mode Deboguage USB et de votre appareil et c'est vite trouvé.
-Pas besoin d'installer un émulateur dans ce cas la
-Meme étape que dans la section précédente à quelques choses pret
+Pas besoin d'installer un émulateur dans ce cas la.
+Meme étape que dans la section précédente à quelques choses pret.
 
 Aller dans:
 File -> Open -> Choissisez le dossier phoenyx_gym que vous avez téléchargés
