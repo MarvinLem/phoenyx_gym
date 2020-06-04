@@ -45,7 +45,8 @@ Attendez quelques instants et normalement l'application devrait se lancer.
 ## Lancer l'application sur son téléphone Android
 
 Il faut d'abord activer sur votre téléphone le mode Déboguage USB et permettre à votre ordinateur d'effectuer des modifications sur votre téléphone.
-Pour l'activer cela dépend de votre appareil mobile. Une recherche rapide sur google du mode Deboguage USB et de votre appareil et c'est vite trouvé.
+Pour l'activer cela dépend de votre appareil mobile. 
+Une recherche rapide sur google du mode Deboguage USB et de votre appareil et c'est vite trouvé.
 Pas besoin d'installer un émulateur dans ce cas la
 Meme étape que dans la section précédente à quelques choses pret
 
