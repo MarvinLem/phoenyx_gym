@@ -29,6 +29,10 @@ Après la création, vous êtes renvoyées sur la page AVD Manager:
 
 Cliquer sur la flèche verte dans le menu des actions -> Attendez un moment l'émulateur va se lancer et s'installer
 
+## Installation des plugins
+
+Aller dans Files -> Settings -> Plugins et Installer les plugins "Flutter" et "Dart"
+
 ## Lancer l'application sur l'émulateur
 
 Une fois l'installation de l'émulateur terminée,
