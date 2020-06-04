@@ -108,6 +108,18 @@ class ExercicesDatabase {
                   WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[rest, seanceId, name, exerciceOrder]);
   }
 
+  updateOrder(int exerciceOrder, int id) async {
+    await initDB();
+    db.rawUpdate(''' UPDATE exercices SET exerciceOrder = ? WHERE id = ? ''',[exerciceOrder, id]);
+  }
+
+  updateMultipleOrder(int exerciceOrder, int seanceId, String name) async {
+    await initDB();
+    db.rawUpdate(''' UPDATE exercices SET exerciceOrder = ? WHERE (SELECT seanceId
+                  FROM session
+                  WHERE seanceId = ?) AND name = ? ''',[exerciceOrder, seanceId, name]);
+  }
+
   updateExercice(int series, int repetitions, int weight, int rest, int id) async {
     await initDB();
     db.rawUpdate(''' UPDATE exercices SET series = ?, repetitions = ?, weight = ?, rest = ? WHERE id = ? ''',[series, repetitions, weight, rest, id]);

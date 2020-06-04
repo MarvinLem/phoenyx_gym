@@ -42,6 +42,7 @@ class EditExerciceState extends State<EditExercice> {
   SessionDatabase sessionDb = SessionDatabase();
   List<String> exercices = [];
   var exercicesOptions;
+  var exercicesList;
 
   EditExerciceState({this.id, this.trainingId, this.sessionId, this.mode});
 
@@ -53,6 +54,11 @@ class EditExerciceState extends State<EditExercice> {
     getTrainingName();
     getSessionId();
     getExercicesById(id);
+    getExercicesList();
+  }
+
+  getExercicesList() async {
+    exercicesList = await db.getExercicesByTrainingIdAndSessionId(trainingId, sessionId);
   }
 
   getSessionId() async {
@@ -76,6 +82,26 @@ class EditExerciceState extends State<EditExercice> {
       db.deleteMultiple(seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
     }
     Navigator.pop(context);
+  }
+
+  changePreviousExercice() async {
+    var previousExercice = await db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, exercicesOptions.exerciceOrder - 1);
+    db.updateOrder(exercicesOptions.exerciceOrder + 1, previousExercice[0]['id']);
+  }
+
+  changeMultiplePreviousExercice() async {
+    var previousExercice = await db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, exercicesOptions.exerciceOrder - 1);
+    db.updateMultipleOrder(exercicesOptions.exerciceOrder + 1, seanceId, previousExercice[0]['name']);
+  }
+
+  changeNextExercice() async {
+    var nextExercice = await db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, exercicesOptions.exerciceOrder + 1);
+    db.updateOrder(exercicesOptions.exerciceOrder - 1, nextExercice[0]['id']);
+  }
+
+  changeMultipleNextExercice() async {
+    var nextExercice = await db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, exercicesOptions.exerciceOrder + 1);
+    db.updateMultipleOrder(exercicesOptions.exerciceOrder - 1, seanceId, nextExercice[0]['name']);
   }
 
   getExercicesById(id) {
@@ -178,7 +204,6 @@ class EditExerciceState extends State<EditExercice> {
                                         if(mode == "only"){
                                           db.updateSeries(exercicesOptions.series - 1, id);
                                         } else if(mode == "all"){
-                                          print("test");
                                           db.updateMultipleSeries(exercicesOptions.series - 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
                                         }
                                         exercicesOptions.series -= 1;
@@ -228,7 +253,6 @@ class EditExerciceState extends State<EditExercice> {
                                       if(mode == "only"){
                                         db.updateSeries(exercicesOptions.series + 1, id);
                                       } else if(mode == "all"){
-                                        print("test");
                                         db.updateMultipleSeries(exercicesOptions.series + 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
                                       }
                                       exercicesOptions.series += 1;
@@ -336,7 +360,6 @@ class EditExerciceState extends State<EditExercice> {
                                       if(mode == "only"){
                                         db.updateRepetitions(exercicesOptions.repetitions + 1, id);
                                       } else if(mode == "all"){
-                                        print("test");
                                         db.updateMultipleRepetitions(exercicesOptions.repetitions + 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
                                       }
                                       exercicesOptions.repetitions += 1;
@@ -394,7 +417,6 @@ class EditExerciceState extends State<EditExercice> {
                                         if(mode == "only"){
                                           db.updateWeight(exercicesOptions.weight - 1, id);
                                         } else if(mode == "all"){
-                                          print("test");
                                           db.updateMultipleWeight(exercicesOptions.weight - 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
                                         }
                                         exercicesOptions.weight -= 1;
@@ -444,7 +466,6 @@ class EditExerciceState extends State<EditExercice> {
                                       if(mode == "only"){
                                         db.updateWeight(exercicesOptions.weight + 1, id);
                                       } else if(mode == "all"){
-                                        print("test");
                                         db.updateMultipleWeight(exercicesOptions.weight + 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
                                       }
                                       exercicesOptions.weight += 1;
@@ -502,7 +523,6 @@ class EditExerciceState extends State<EditExercice> {
                                         if(mode == "only"){
                                           db.updateRest(exercicesOptions.rest - 10, id);
                                         } else if(mode == "all"){
-                                          print("test");
                                           db.updateMultipleRest(exercicesOptions.rest - 10, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
                                         }
                                         exercicesOptions.rest -= 10;
@@ -552,7 +572,6 @@ class EditExerciceState extends State<EditExercice> {
                                       if(mode == "only"){
                                         db.updateRest(exercicesOptions.rest + 10, id);
                                       } else if(mode == "all"){
-                                        print("test");
                                         db.updateMultipleRest(exercicesOptions.rest + 10, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
                                       }
                                       exercicesOptions.rest += 10;
@@ -568,6 +587,118 @@ class EditExerciceState extends State<EditExercice> {
                             child: new Icon(Icons.chevron_right,
                                 size: 30, color: Color(0xFFD34B4B)),
                           )),
+                        ],
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                    ],
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center),
+                Row(
+                    children: [
+                      Column(
+                          children: [
+                            Row(
+                                children: [
+                                  Container(
+                                      child: Text("Ordre de l'exercice:",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black87),
+                                          textAlign: TextAlign.left))
+                                ],
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center)
+                          ],
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center),
+                      Column(
+                        children: [
+                          Container(
+                              child: Listener(
+                                onPointerDown: (details) async {
+                                  buttonPressed = true;
+                                  if (loopActive) return;
+
+                                  loopActive = true;
+
+                                  while (buttonPressed) {
+                                    // do your thing
+                                    setState(() {
+                                      if(exercicesOptions.exerciceOrder > 1) {
+                                        if(mode == "only"){
+                                          changePreviousExercice();
+                                          db.updateOrder(exercicesOptions.exerciceOrder - 1, id);
+                                        } else if(mode == "all"){
+                                          changeMultiplePreviousExercice();
+                                          db.updateMultipleOrder(exercicesOptions.exerciceOrder - 1, seanceId, exercicesOptions.name);
+                                        }
+                                        exercicesOptions.exerciceOrder -= 1;
+                                      }
+                                    });
+                                    // wait a bit
+                                    await Future.delayed(Duration(milliseconds: 100));
+                                  }
+                                  loopActive = false;
+                                },
+                                onPointerUp: (details) {
+                                  buttonPressed = false;
+                                },
+                                child: new Icon(Icons.chevron_left,
+                                    size: 30, color: Color(0xFFD34B4B)),
+                              )),
+                        ],
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            child: Text(
+                                exercicesOptions.exerciceOrder.toString(),
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black87),
+                                textAlign: TextAlign.left),
+                          ),
+                        ],
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                              child: Listener(
+                                onPointerDown: (details) async {
+                                  buttonPressed = true;
+                                  if (loopActive) return;
+
+                                  loopActive = true;
+
+                                  while (buttonPressed) {
+                                    // do your thing
+                                    setState(() {
+                                      if(exercicesOptions.exerciceOrder < exercicesList.length) {
+                                          if(mode == "only"){
+                                            changeNextExercice();
+                                            db.updateOrder(exercicesOptions.exerciceOrder + 1, id);
+                                          } else if(mode == "all"){
+                                            changeMultipleNextExercice();
+                                            db.updateMultipleOrder(exercicesOptions.exerciceOrder + 1, seanceId, exercicesOptions.name);
+                                          }
+                                          exercicesOptions.exerciceOrder += 1;
+                                        }
+                                      });
+                                    // wait a bit
+                                    await Future.delayed(Duration(milliseconds: 100));
+                                  }
+                                  loopActive = false;
+                                },
+                                onPointerUp: (details) {
+                                  buttonPressed = false;
+                                },
+                                child: new Icon(Icons.chevron_right,
+                                    size: 30, color: Color(0xFFD34B4B)),
+                              )),
                         ],
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
