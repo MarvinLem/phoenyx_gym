@@ -313,7 +313,6 @@ class TrainingState extends State<Training> {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-      /*
       Row(children: [
         Container(
             child: new Text("Programme prédéfini".toUpperCase(),
@@ -410,7 +409,6 @@ class TrainingState extends State<Training> {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-       */
       getAllTrainingDone(),
       Container(margin: new EdgeInsets.only(bottom: 20))
     ]);
