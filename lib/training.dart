@@ -174,6 +174,15 @@ class TrainingState extends State<Training> {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             return Column(children: [
+              Row(children: [
+                Container(
+                    child: new Text("Programme prédéfini".toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xFFD34B4B),
+                            fontWeight: FontWeight.bold)),
+                    margin: new EdgeInsets.only(left: 20.0, top: 20.0))
+              ]),
               for (TrainingModel training in snapshot.data)
                 Row(
                   children: [
@@ -393,15 +402,6 @@ class TrainingState extends State<Training> {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
-      Row(children: [
-        Container(
-            child: new Text("Programme prédéfini".toUpperCase(),
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFFD34B4B),
-                    fontWeight: FontWeight.bold)),
-            margin: new EdgeInsets.only(left: 20.0, top: 20.0))
-      ]),
       getAllTrainingPredefined(),
       /*
       Row(

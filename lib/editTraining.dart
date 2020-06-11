@@ -195,7 +195,11 @@ class EditTrainingState extends State<EditTraining> {
                 constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-40)),
           ]),
           getExercicesByTrainingIdAndSessionId(trainingId,sessionId),
-          Row(children: [
+          InkWell(onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CreateExercice(trainingId: trainingId,sessionId: sessionId,seanceId: seanceId, mode: mode))),
+              child: Row(children: [
             Column(
               children: [
                 Container(
@@ -219,10 +223,6 @@ class EditTrainingState extends State<EditTraining> {
                     children: [
                       Container(
                         child: InkWell(
-                            onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CreateExercice(trainingId: trainingId,sessionId: sessionId,seanceId: seanceId, mode: mode))),
                             child: Text("Ajouter un nouvel exercice",
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.black87),
@@ -237,7 +237,7 @@ class EditTrainingState extends State<EditTraining> {
                 ],
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start)
-          ]),
+          ])),
           Row(
             children: [
               Container(

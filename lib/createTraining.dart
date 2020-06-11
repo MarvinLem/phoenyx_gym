@@ -800,8 +800,10 @@ class CreateTrainingState extends State<CreateTraining> {
                           Container(
                               child: GestureDetector(
                             onTap: () => setState(() {
-                              program.session += 1;
-                              resetProgram();
+                                if (program.session < 7) {
+                                  program.session += 1;
+                                  resetProgram();
+                                }
                             }),
                             child: new Icon(Icons.arrow_drop_up,
                                 size: 50, color: Color(0xFFD34B4B)),
@@ -930,6 +932,7 @@ class CreateTrainingState extends State<CreateTraining> {
               children: [
                 Container(
                     child: new DropdownButton<String>(
+                      isExpanded: true,
                       value: program.seanceString,
                       items: <String>[
                         '1 séance différente par jour de la semaine choisi (1ère semaine)',
@@ -974,7 +977,8 @@ class CreateTrainingState extends State<CreateTraining> {
                       }),
                       style: TextStyle(fontSize: 12, color: Colors.black),
                     ),
-                    margin: EdgeInsets.only(top: 10, bottom: 25))
+                    margin: EdgeInsets.only(top: 10, bottom: 25),
+                    constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width - 40, maxWidth: MediaQuery.of(context).size.width - 40))
               ],
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center),
