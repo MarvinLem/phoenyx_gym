@@ -23,15 +23,7 @@ class SeanceDatabase {
   Database db;
 
   initDB() async {
-    db = await openDatabase(
-      'phoenix_database.db',
-      version: 1,
-      onCreate: (db, version) {
-        db.execute(
-          "CREATE TABLE seance(id INTEGER PRIMARY KEY, trainingId INTEGER)",
-        );
-      },
-    );
+    db = await openDatabase('phoenix_database.db');
   }
 
   insert(SeanceModel seance) async {

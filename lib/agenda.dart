@@ -145,15 +145,18 @@ class AgendaState extends State<Agenda> {
             if (snapshot.data.length > 0) {
               training = {};
               for (SessionModel date in snapshot.data) {
-                DateTime datetime =
-                    DateTime.fromMillisecondsSinceEpoch(date.date);
-                training[datetime] != null
-                    ? training[datetime].add([date.trainingId, date.id])
-                    : training.putIfAbsent(
-                        datetime,
-                        () => [
-                              [date.trainingId, date.id, date.done]
-                            ]);
+                if(date.date != null) {
+                  DateTime datetime =
+                  DateTime.fromMillisecondsSinceEpoch(date.date);
+                  training[datetime] != null
+                      ? training[datetime].add([date.trainingId, date.id])
+                      : training.putIfAbsent(
+                      datetime,
+                          () =>
+                      [
+                        [date.trainingId, date.id, date.done]
+                      ]);
+                }
               }
               return TableCalendar(
                   availableGestures: AvailableGestures.horizontalSwipe,

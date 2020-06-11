@@ -44,15 +44,7 @@ class ExercicesDatabase {
   Database db;
 
   initDB() async {
-    db = await openDatabase(
-      'phoenix_database.db',
-      version: 1,
-      onCreate: (db, version) {
-        db.execute(
-          "CREATE TABLE exercices(id INTEGER PRIMARY KEY, name TEXT, series INTEGER, repetitions INTEGER, weight INTEGER, rest INTEGER, exerciceOrder INTEGER, trainingId INTEGER, sessionId INTEGER)",
-        );
-      },
-    );
+    db = await openDatabase('phoenix_database.db');
   }
 
   insert(ExercicesModel exercices) async {

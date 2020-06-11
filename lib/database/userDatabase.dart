@@ -35,15 +35,7 @@ class UserDatabase {
   Database db;
 
   initDB() async {
-    db = await openDatabase(
-      'phoenix_database.db',
-      version: 1,
-      onCreate: (db, version) {
-        db.execute(
-          "CREATE TABLE user(id INTEGER PRIMARY KEY, birthday INTEGER, size INTEGER, weight INTEGER, gender TEXT, sessions INTEGER)",
-        );
-      },
-    );
+    db = await openDatabase('phoenix_database.db');
   }
 
   insert(UserModel user) async {

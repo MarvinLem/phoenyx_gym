@@ -168,6 +168,86 @@ class TrainingState extends State<Training> {
         });
   }
 
+  getAllTrainingPredefined() {
+    return FutureBuilder(
+        future: db.getAllTrainingPredefined(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            return Column(children: [
+              for (TrainingModel training in snapshot.data)
+                Row(
+                  children: [
+                    GestureDetector(
+                      child: Container(
+                        decoration: new BoxDecoration(
+                          borderRadius: new BorderRadius.circular(20.0),
+                          color: Colors.black87,
+                          image: DecorationImage(
+                            image: ExactAssetImage(
+                                'assets/images/legs_training.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Column(children: [
+                          new Text("Debutant".toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  letterSpacing: 1,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.left),
+                          new Text(training.name.toUpperCase(),
+                              maxLines: 2,
+                              style: TextStyle(
+                                  fontSize: 16, letterSpacing: 1, color: Colors.white)),
+                        ], crossAxisAlignment: CrossAxisAlignment.start),
+                        margin: new EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          top: 20,
+                        ),
+                        padding: new EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        alignment: Alignment.bottomLeft,
+                        constraints: BoxConstraints(
+                            minWidth: MediaQuery.of(context).size.width - 40,
+                            minHeight: 120.0,
+                            maxWidth: MediaQuery.of(context).size.width - 40),
+                      ),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  GetTraining(trainingId: training.id))),
+                      onLongPress: () {
+                        showMenu(
+                          position: RelativeRect.fromLTRB(10, 100, 0, 0),
+                          items: <PopupMenuEntry>[
+                            PopupMenuItem(
+                              value: modal,
+                              child: StatefulBuilder(builder:
+                                  (BuildContext context,
+                                  StateSetter setState) {
+                                return ItemMenu(modal: modal, trainingId: training.id, callback: callback);
+                              }),
+                            )
+                          ],
+                          context: context,
+                        );
+                      },
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+            ]);
+          } else {
+            return Center();
+          }
+        });
+  }
+
   getAllTrainingDone() {
     return FutureBuilder(
         future: db.getAllTrainingDone(),
@@ -322,6 +402,8 @@ class TrainingState extends State<Training> {
                     fontWeight: FontWeight.bold)),
             margin: new EdgeInsets.only(left: 20.0, top: 20.0))
       ]),
+      getAllTrainingPredefined(),
+      /*
       Row(
         children: [
           InkWell(
@@ -409,6 +491,7 @@ class TrainingState extends State<Training> {
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
+       */
       getAllTrainingDone(),
       Container(margin: new EdgeInsets.only(bottom: 20))
     ]);

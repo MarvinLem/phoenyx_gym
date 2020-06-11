@@ -645,7 +645,7 @@ class CreateTrainingState extends State<CreateTraining> {
 
   trainingCreated(name, session, duration, seance) async {
     var training =
-        TrainingModel(name: name, session: session, duration: duration, done: 0);
+        TrainingModel(name: name, session: session, duration: duration, done: 0, predefined: 0);
     db.insert(training);
     var lastTraining = await db.getLastTraining();
     var trainingId = lastTraining[0]["id"];

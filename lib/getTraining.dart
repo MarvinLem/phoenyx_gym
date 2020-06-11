@@ -393,7 +393,7 @@ class GetTrainingState extends State<GetTraining> {
           ]),
           Row(children: [
             Container(
-                child: (actualSession != null)
+                child: (actualSession != null && actualSession[0]['date'] != null)
                     ? new Text(
                         ("Séance " + actualSessionSeance.toString()).toUpperCase() +
                             " - " +

@@ -49,15 +49,7 @@ class SessionDatabase {
   Database db;
 
   initDB() async {
-    db = await openDatabase(
-      'phoenix_database.db',
-      version: 1,
-      onCreate: (db, version) {
-        db.execute(
-          "CREATE TABLE session(id INTEGER PRIMARY KEY, seance INTEGER, week INTEGER, sessionNumber INTEGER, date INTEGER, startAt INTEGER, endAt INTEGER, trainingId INTEGER, seanceId INTEGER, done BOOLEAN)",
-        );
-      },
-    );
+    db = await openDatabase('phoenix_database.db');
   }
 
   insert(SessionModel session) async {

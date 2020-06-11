@@ -6,8 +6,9 @@ class TrainingModel{
   int session;
   int duration;
   int done;
+  int predefined;
 
-  TrainingModel({this.id,this.name,this.session,this.duration, this.done});
+  TrainingModel({this.id,this.name,this.session,this.duration, this.done, this.predefined});
 
   Map<String, dynamic> toMap() {
     return {
@@ -16,6 +17,7 @@ class TrainingModel{
       'session': session,
       'duration': duration,
       'done': done,
+      'predefined': predefined,
     };
   }
 
@@ -25,6 +27,7 @@ class TrainingModel{
     session = map['session'];
     duration = map['duration'];
     done = map['done'];
+    predefined = map['predefined'];
   }
 }
 
@@ -32,15 +35,7 @@ class TrainingDatabase {
   Database db;
 
   initDB() async {
-    db = await openDatabase(
-      'phoenix_database.db',
-      version: 1,
-      onCreate: (db, version) {
-        db.execute(
-          "CREATE TABLE training(id INTEGER PRIMARY KEY, name TEXT, session INTEGER, duration INTEGER, done BOOLEAN)",
-        );
-      },
-    );
+    db = await openDatabase('phoenix_database.db');
   }
 
   insert(TrainingModel training) async {
@@ -70,7 +65,13 @@ class TrainingDatabase {
 
   getAllTrainingNotDone() async {
     await initDB();
-    List<Map> results = await db.query("training", where: "done = 0");
+    List<Map> results = await db.query("training", where: "done = 0 AND predefined = 0");
+    return results.map((map) => TrainingModel.fromMap(map));
+  }
+
+  getAllTrainingPredefined() async {
+    await initDB();
+    List<Map> results = await db.query("training", where: "predefined = 1");
     return results.map((map) => TrainingModel.fromMap(map));
   }
 
