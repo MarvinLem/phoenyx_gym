@@ -22,6 +22,9 @@ class AllDatabase {
         db.execute(
           "CREATE TABLE session(id INTEGER PRIMARY KEY, seance INTEGER, week INTEGER, sessionNumber INTEGER, date INTEGER, startAt INTEGER, endAt INTEGER, trainingId INTEGER, seanceId INTEGER, done BOOLEAN)",
         );
+        db.execute(
+          "CREATE TABLE exercices_default(id INTEGER PRIMARY KEY, name TEXT, description TEXT, area TEXT, series INTEGER, repetitions INTEGER, weight INTEGER, rest INTEGER)",
+        );
         //add user
         db.execute(''' INSERT INTO user (id, birthday, size, weight, gender, sessions) VALUES (1,null,null,null,null,null) ''');
         //add predefined program
@@ -41,6 +44,11 @@ class AllDatabase {
         db.execute(''' INSERT INTO session (id, seance, week, sessionNumber, date, startAt, endAt, trainingId, seanceId, done) VALUES (7,1,3,3,null,null,null,1,1,0) ''');
         db.execute(''' INSERT INTO session (id, seance, week, sessionNumber, date, startAt, endAt, trainingId, seanceId, done) VALUES (8,2,3,3,null,null,null,1,2,0) ''');
         db.execute(''' INSERT INTO session (id, seance, week, sessionNumber, date, startAt, endAt, trainingId, seanceId, done) VALUES (9,3,3,3,null,null,null,1,3,0) ''');
+
+        //add default exercices
+        db.execute(''' INSERT INTO exercices_default (id, name, description, area, series, repetitions, weight, rest) VALUES (1,?,?,?,3,10,0,120) ''',['pompes',"La pompe est un exercice physique de musculation qui sollicite principalement le grand pectoral, le deltoïde et les triceps. La posture de départ est la suivante : face au sol, le corps repose uniquement sur les deux pieds et les deux mains. Les pieds sont joints, et les mains écartées un peu plus loin que l'envergure des épaules. Le but de l'exercice est d'abaisser tout le corps en restant droit, grâce à l'unique travail des bras. Le corps descend jusqu'à ce que la poitrine (ou le menton) frôle le sol. Un abaissement et une remontée constituent une pompe. Cet exercice physique est fréquemment employé dans la plupart des armées du monde.",'chest']);
+        db.execute(''' INSERT INTO exercices_default (id, name, description, area, series, repetitions, weight, rest) VALUES (2,?,?,?,3,10,0,120) ''',['squat',"Le squat est un mouvement d'accroupi qui constitue un exercice poly-articulaire de force et de musculation ciblant les muscles de la cuisse (principalement quadriceps, adducteurs et ischio-jambiers) et les fessiers. Il sollicite aussi secondairement les mollets, les lombaires et les abdominaux. C'est un des trois mouvements de base de la force athlétique avec le développé couché et le soulevé de terre. La flexion sur jambes, plus connue sous le nom de squat, consiste à effectuer des flexions des membres inférieurs avec une barre chargée reposant sur l'arrière des épaules.",'chest']);
+        db.execute(''' INSERT INTO exercices_default (id, name, description, area, series, repetitions, weight, rest) VALUES (3,?,?,?,3,10,0,120) ''',['crunch',"Le crunch, ou enroulement vertébral, est l'un des exercices de musculation des abdominaux les plus pratiqués. Il fait surtout travailler le muscle droit de l'abdomen. Pour réaliser un crunch, on s'allonge au sol sur le dos avec les genoux pliés. On commence par courber les coudes vers le bassin. Les mains doivent être croisées sur le thorax. Le risque, cependant, est de se blesser au niveau des vertèbres cervicales en tirant la tête ou la nuque avec ses mains, ou au niveau des vertèbres lombaires en essayant de redresser le buste trop haut.",'chest']);
       },
     );
   }

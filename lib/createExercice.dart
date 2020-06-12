@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:basic_utils/basic_utils.dart';
 import 'package:phoenyx_gym/database/trainingDatabase.dart';
 import './exercice.dart';
 
+import './database/exercicesDefaultDatabase.dart';
 import './database/exercicesDatabase.dart';
 import './database/sessionDatabase.dart';
 import './database/trainingDatabase.dart';
 
 class ExerciceList {
   var exercicesNames = [];
-  bool pompes = false;
-  bool squat = false;
-  bool abdos = false;
   int count = 0;
 }
 
@@ -36,6 +35,7 @@ class CreateExerciceState extends State<CreateExercice> {
   int exerciceCount = 0;
   String trainingName;
   ExercicesDatabase db = ExercicesDatabase();
+  ExercicesDefaultDatabase exercicesDefaultDb = ExercicesDefaultDatabase();
   TrainingDatabase trainingDb = TrainingDatabase();
   SessionDatabase sessionDb = SessionDatabase();
 
@@ -65,11 +65,12 @@ class CreateExerciceState extends State<CreateExercice> {
     var sessions = await sessionDb.getSessionBySeanceId(seanceId);
     if(mode == "only"){
       for (var i = 0; i < exerciceList.exercicesNames.length; i++) {
+        var exerciceDefault = await exercicesDefaultDb.getExercicesByName(exerciceList.exercicesNames[i]);
         var exercice = ExercicesModel(name: exerciceList.exercicesNames[i],
-            series: 3,
-            repetitions: 10,
-            weight: 0,
-            rest: 120,
+            series: exerciceDefault[0]['series'],
+            repetitions: exerciceDefault[0]['repetitions'],
+            weight: exerciceDefault[0]['weight'],
+            rest: exerciceDefault[0]['rest'],
             exerciceOrder: i + 1 + exerciceCount,
             trainingId: trainingId,
             sessionId: sessionId);
@@ -91,6 +92,70 @@ class CreateExerciceState extends State<CreateExercice> {
       }
     }
     Navigator.pop(context);
+  }
+
+  getDefaultExercices() {
+    return FutureBuilder(
+        future: exercicesDefaultDb.getAllExercices(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            return Column(children: [
+              for (ExercicesDefaultModel exerciceDefault in snapshot.data)
+            Row(children: [
+              Column(
+                children: [
+                  Container(
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
+                      image: DecorationImage(
+                        image: ExactAssetImage('assets/images/' + exerciceDefault.name + '.png'),
+                        fit: BoxFit.none,
+                      ),
+                    ),
+                    constraints: BoxConstraints(minWidth: 80.0, minHeight: 80.0),
+                    margin: new EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Container(
+                    child: InkWell(
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Exercice(exerciceDefaultId: exerciceDefault.id))),
+                        child: Text(StringUtils.capitalize(exerciceDefault.name),
+                            style: TextStyle(fontSize: 18, color: Colors.black87),
+                            textAlign: TextAlign.center)),
+                    alignment: Alignment.center,
+                  ),
+                ],
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              Column(
+                children: [
+                  Container(
+                      child: GestureDetector(
+                          onTap: () => setState(() {
+                            if (exerciceList.exercicesNames.contains(exerciceDefault.name)) {
+                              exerciceList.count -= 1;
+                              exerciceList.exercicesNames.remove(exerciceDefault.name);
+                            } else {
+                              exerciceList.count += 1;
+                              exerciceList.exercicesNames.add(exerciceDefault.name);
+                            }
+                          }),
+                          child: exerciceList.exercicesNames.contains(exerciceDefault.name) ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
+                      margin: new EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
+                ],
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
+            ], mainAxisAlignment: MainAxisAlignment.spaceAround)]);
+          } else {
+            return Center();
+          }
+        });
   }
 
   @override
@@ -131,163 +196,7 @@ class CreateExerciceState extends State<CreateExercice> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
       ),
-      Row(children: [
-        Column(
-          children: [
-            Container(
-              decoration: new BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
-                image: DecorationImage(
-                  image: ExactAssetImage('assets/images/pompes.png'),
-                  fit: BoxFit.none,
-                ),
-              ),
-              constraints: BoxConstraints(minWidth: 80.0, minHeight: 80.0),
-              margin: new EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            )
-          ],
-        ),
-        Column(
-          children: [
-            Container(
-              child: InkWell(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Exercice())),
-                  child: Text("Pompes",
-                      style: TextStyle(fontSize: 18, color: Colors.black87),
-                      textAlign: TextAlign.center)),
-              alignment: Alignment.center,
-            ),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-        ),
-        Column(
-          children: [
-            Container(
-                child: GestureDetector(
-                    onTap: () => setState(() {
-                      if (exerciceList.pompes) {
-                        exerciceList.pompes = false;
-                        exerciceList.count -= 1;
-                        exerciceList.exercicesNames.remove("pompes");
-                      } else {
-                        exerciceList.pompes = true;
-                        exerciceList.count += 1;
-                        exerciceList.exercicesNames.add("pompes");
-                      }
-                    }),
-                    child: exerciceList.pompes ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
-                margin: new EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-        ),
-      ], mainAxisAlignment: MainAxisAlignment.spaceAround),
-      Row(children: [
-        Column(
-          children: [
-            Container(
-              decoration: new BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
-                image: DecorationImage(
-                  image: ExactAssetImage('assets/images/squat.png'),
-                  fit: BoxFit.none,
-                ),
-              ),
-              constraints: BoxConstraints(minWidth: 80.0, minHeight: 80.0),
-              margin: new EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            )
-          ],
-        ),
-        Column(
-          children: [
-            Container(
-              child: InkWell(
-                  child: Text("Squat",
-                      style: TextStyle(fontSize: 18, color: Colors.black87),
-                      textAlign: TextAlign.center)),
-              alignment: Alignment.center,
-            ),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-        ),
-        Column(
-          children: [
-            Container(
-                child: GestureDetector(
-                    onTap: () => setState(() {
-                      if (exerciceList.squat) {
-                        exerciceList.squat = false;
-                        exerciceList.count -= 1;
-                        exerciceList.exercicesNames.remove("squat");
-                      } else {
-                        exerciceList.squat = true;
-                        exerciceList.count += 1;
-                        exerciceList.exercicesNames.add("squat");
-                      }
-                    }),
-                    child: exerciceList.squat ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
-                margin: new EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-        ),
-      ], mainAxisAlignment: MainAxisAlignment.spaceAround),
-      Row(children: [
-        Column(
-          children: [
-            Container(
-              decoration: new BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
-                image: DecorationImage(
-                  image: ExactAssetImage('assets/images/abdos.png'),
-                  fit: BoxFit.none,
-                ),
-              ),
-              constraints: BoxConstraints(minWidth: 80.0, minHeight: 80.0),
-              margin: new EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            )
-          ],
-        ),
-        Column(
-          children: [
-            Container(
-              child: InkWell(
-                  child: Text("Abdos",
-                      style: TextStyle(fontSize: 18, color: Colors.black87),
-                      textAlign: TextAlign.center)),
-              alignment: Alignment.center,
-            ),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-        ),
-        Column(
-          children: [
-            Container(
-                child: GestureDetector(
-                    onTap: () => setState(() {
-                      if (exerciceList.abdos) {
-                        exerciceList.abdos = false;
-                        exerciceList.count -= 1;
-                        exerciceList.exercicesNames.remove("abdos");
-                      } else {
-                        exerciceList.abdos = true;
-                        exerciceList.count += 1;
-                        exerciceList.exercicesNames.add("abdos");
-                      }
-                    }),
-                    child: exerciceList.abdos ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
-                margin: new EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-        ),
-      ], mainAxisAlignment: MainAxisAlignment.spaceAround),
+      getDefaultExercices(),
       Row(
         children: [
           Container(

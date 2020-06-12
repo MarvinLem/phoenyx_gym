@@ -230,22 +230,6 @@ class TrainingState extends State<Training> {
                           MaterialPageRoute(
                               builder: (context) =>
                                   GetTraining(trainingId: training.id))),
-                      onLongPress: () {
-                        showMenu(
-                          position: RelativeRect.fromLTRB(10, 100, 0, 0),
-                          items: <PopupMenuEntry>[
-                            PopupMenuItem(
-                              value: modal,
-                              child: StatefulBuilder(builder:
-                                  (BuildContext context,
-                                  StateSetter setState) {
-                                return ItemMenu(modal: modal, trainingId: training.id, callback: callback);
-                              }),
-                            )
-                          ],
-                          context: context,
-                        );
-                      },
                     )
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
