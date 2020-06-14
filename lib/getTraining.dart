@@ -32,6 +32,7 @@ class GetTrainingState extends State<GetTraining> {
   String trainingName;
   int trainingSession;
   int trainingDuration;
+  int trainingIsPredefined;
   var sessionArray = [];
   var sessionIdArray = [0];
   int seance = 0;
@@ -55,6 +56,7 @@ class GetTrainingState extends State<GetTraining> {
       trainingName = training[0]['name'];
       trainingSession = training[0]['session'];
       trainingDuration = training[0]['duration'];
+      trainingIsPredefined = training[0]['predefined'];
     });
     getDaysSession();
   }
@@ -289,7 +291,7 @@ class GetTrainingState extends State<GetTraining> {
                       maxWidth: MediaQuery.of(context).size.width - 100))
             ]),
             Column(children: [
-              GestureDetector(
+              trainingIsPredefined != 1 ? GestureDetector(
                   onTap: () {
                     showMenu(
                       position: RelativeRect.fromLTRB(100, 100, 100, 100),
@@ -324,7 +326,7 @@ class GetTrainingState extends State<GetTraining> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                  ))
+                  )) : Center()
             ])
           ]),
           Row(children: [

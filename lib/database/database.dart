@@ -29,7 +29,7 @@ class AllDatabase {
         db.execute(''' INSERT INTO user (id, birthday, size, weight, gender, sessions) VALUES (1,null,null,null,null,null) ''');
         //add predefined program
         //training
-        db.execute(''' INSERT INTO training (id, name, session, duration, done, predefined) VALUES (1,?,3,3,0,1) ''',['Entrainements jambes']);
+        db.execute(''' INSERT INTO training (id, name, session, duration, done, predefined) VALUES (1,?,3,3,0,1) ''',['Entrainements de base']);
         //seances
         db.execute(''' INSERT INTO seance (id, trainingId) VALUES (1,1) ''');
         db.execute(''' INSERT INTO seance (id, trainingId) VALUES (2,1) ''');
@@ -44,6 +44,27 @@ class AllDatabase {
         db.execute(''' INSERT INTO session (id, seance, week, sessionNumber, date, startAt, endAt, trainingId, seanceId, done) VALUES (7,1,3,3,null,null,null,1,1,0) ''');
         db.execute(''' INSERT INTO session (id, seance, week, sessionNumber, date, startAt, endAt, trainingId, seanceId, done) VALUES (8,2,3,3,null,null,null,1,2,0) ''');
         db.execute(''' INSERT INTO session (id, seance, week, sessionNumber, date, startAt, endAt, trainingId, seanceId, done) VALUES (9,3,3,3,null,null,null,1,3,0) ''');
+        //exercices
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (1,?,3,10,0,120,1,1,1) ''', ['pompes']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (2,?,3,10,0,120,2,1,1) ''', ['squat']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (3,?,3,10,0,120,1,1,2) ''', ['crunch']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (4,?,3,10,0,120,2,1,2) ''', ['developpe couche']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (5,?,3,10,0,120,1,1,3) ''', ['elevation laterale']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (6,?,3,10,0,120,2,1,3) ''', ['developpe militaire']);
+
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (7,?,3,15,0,120,1,1,4) ''', ['pompes']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (8,?,3,10,10,120,2,1,4) ''', ['squat']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (9,?,3,15,0,120,1,1,5) ''', ['crunch']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (10,?,3,10,20,120,2,1,5) ''', ['developpe couche']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (11,?,3,10,2,120,1,1,6) ''', ['elevation laterale']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (12,?,3,10,5,120,2,1,6) ''', ['developpe militaire']);
+
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (13,?,3,20,0,120,1,1,7) ''', ['pompes']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (14,?,3,10,20,120,2,1,7) ''', ['squat']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (15,?,3,20,0,120,1,1,8) ''', ['crunch']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (16,?,3,10,30,120,2,1,8) ''', ['developpe couche']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (17,?,3,10,4,120,1,1,9) ''', ['elevation laterale']);
+        db.execute(''' INSERT INTO exercices (id, name, series, repetitions, weight, rest, exerciceOrder, trainingId, sessionId) VALUES (18,?,3,10,10,120,2,1,9) ''', ['developpe militaire']);
 
         //add default exercices
         db.execute(''' INSERT INTO exercices_default (id, name, description, area, series, repetitions, weight, rest) VALUES (1,?,?,?,3,10,0,120) ''',['pompes',"La pompe est un exercice physique de musculation qui sollicite principalement le grand pectoral, le deltoïde et les triceps. La posture de départ est la suivante : face au sol, le corps repose uniquement sur les deux pieds et les deux mains. Les pieds sont joints, et les mains écartées un peu plus loin que l'envergure des épaules. Le but de l'exercice est d'abaisser tout le corps en restant droit, grâce à l'unique travail des bras. Le corps descend jusqu'à ce que la poitrine (ou le menton) frôle le sol. Un abaissement et une remontée constituent une pompe. Cet exercice physique est fréquemment employé dans la plupart des armées du monde.",'chest']);

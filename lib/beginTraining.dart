@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './beginFeedback.dart';
 
+import './database/trainingDatabase.dart';
 import './database/exercicesDatabase.dart';
 
 class BeginTraining extends StatefulWidget {
@@ -29,17 +30,28 @@ class BeginTrainingState extends State<BeginTraining> {
   int remainingReps;
   int remainingWeight;
   int timer;
+  int trainingIsPredefined;
   bool restPhase = false;
   ExercicesDatabase db = ExercicesDatabase();
+  TrainingDatabase trainingDb = TrainingDatabase();
   List<String> exercices = [];
 
   BeginTrainingState({this.trainingId, this.sessionId, this.maxOrder});
 
   @override
   void initState() {
+    getTraining();
     getRemaingVariables(trainingId, sessionId, order);
     getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, order);
     startCountdownTimer();
+  }
+
+  getTraining() async {
+    var training = await trainingDb.getTraining(trainingId);
+    setState(() {
+      trainingIsPredefined = training[0]['predefined'];
+    });
+    print(trainingIsPredefined);
   }
 
   startCountdownTimer() async {
@@ -386,12 +398,12 @@ class BeginTrainingState extends State<BeginTraining> {
                   children: [
                     Container(
                       child: RaisedButton(
-                          onPressed: () => Navigator.push(
+                          onPressed: () => trainingIsPredefined != 1 ? Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => BeginFeedback(
                                       trainingId: trainingId,
-                                      sessionId: sessionId))),
+                                      sessionId: sessionId))) : Navigator.of(context).popUntil((route) => route.isFirst),
                           child: Text('Mettre fin à la séance',
                               style: TextStyle(fontSize: 12)),
                           textColor: Colors.white,
