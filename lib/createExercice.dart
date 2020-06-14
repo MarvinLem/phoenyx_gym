@@ -42,6 +42,8 @@ class CreateExerciceState extends State<CreateExercice> {
   CreateExerciceState({this.trainingId,this.sessionId, this.seanceId, this.mode});
 
   var exerciceList = new ExerciceList();
+  var exercicesChosen = [];
+  var exercices;
 
   @override
   void initState() {
@@ -57,7 +59,12 @@ class CreateExerciceState extends State<CreateExercice> {
   }
 
   getExercicesByTrainingIdAndSessionId(trainingId,sessionId) async {
-    var exercices = await db.getExercicesByTrainingIdAndSessionId(trainingId, sessionId);
+    await getExercicesChosen();
+    exercices.forEach((exercice) => exercicesChosen.add(exercice.name));
+  }
+
+  getExercicesChosen() async {
+    exercices = await db.getExercicesByTrainingIdAndSessionId(trainingId, sessionId);
     exerciceCount = exercices.length;
   }
 
@@ -98,10 +105,10 @@ class CreateExerciceState extends State<CreateExercice> {
     return FutureBuilder(
         future: exercicesDefaultDb.getAllExercices(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && exercicesChosen != null) {
             return Column(children: [
               for (ExercicesDefaultModel exerciceDefault in snapshot.data)
-            Row(children: [
+            !exercicesChosen.contains(exerciceDefault.name) ? Row(children: [
               Column(
                 children: [
                   Container(
@@ -109,7 +116,7 @@ class CreateExerciceState extends State<CreateExercice> {
                       shape: BoxShape.circle,
                       border: Border.all(width: 2.0,color: Color(0xFFD34B4B)),
                       image: DecorationImage(
-                        image: ExactAssetImage('assets/images/' + exerciceDefault.name + '.png'),
+                        image: ExactAssetImage(('assets/images/' + exerciceDefault.name + '.png').replaceAll(' ', '_')),
                         fit: BoxFit.none,
                       ),
                     ),
@@ -151,7 +158,7 @@ class CreateExerciceState extends State<CreateExercice> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
-            ], mainAxisAlignment: MainAxisAlignment.spaceAround)]);
+            ], mainAxisAlignment: MainAxisAlignment.spaceAround) : Row()]);
           } else {
             return Center();
           }

@@ -150,9 +150,7 @@ class EditExerciceState extends State<EditExercice> {
                             border: Border.all(
                                 width: 2.0, color: Color(0xFFD34B4B)),
                             image: DecorationImage(
-                              image: ExactAssetImage('assets/images/' +
-                                  exercicesOptions.name +
-                                  '.png'),
+                              image: ExactAssetImage(('assets/images/' + exercicesOptions.name + '.png').replaceAll(' ', '_')),
                               fit: BoxFit.none,
                             ),
                           ),

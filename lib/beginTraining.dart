@@ -102,9 +102,7 @@ class BeginTrainingState extends State<BeginTraining> {
                           border:
                               Border.all(width: 2.0, color: Color(0xFFD34B4B)),
                           image: DecorationImage(
-                            image: ExactAssetImage('assets/images/' +
-                                snapshot.data[0]['name'] +
-                                '.png'),
+                            image: ExactAssetImage(('assets/images/' + snapshot.data[0]['name'] + '.png').replaceAll(' ', '_')),
                             fit: BoxFit.scaleDown,
                           ),
                         ),

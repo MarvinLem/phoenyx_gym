@@ -124,7 +124,6 @@ class EditProfilState extends State<EditProfil> {
                         return null;
                       },
                       controller: TextEditingController()..text = user.size != null ? user.size.toString() : '',
-                      onChanged: (text) => {},
                       decoration: InputDecoration(
                         icon: Icon(Icons.straighten),
                         hintText: 'Entrez votre taille (en cm)',
@@ -146,7 +145,6 @@ class EditProfilState extends State<EditProfil> {
                         return null;
                       },
                       controller: TextEditingController()..text = user.weight != null ? user.weight.toString() : '',
-                      onChanged: (text) => {},
                       decoration: InputDecoration(
                         icon: Icon(CustomIcons.balance_scale),
                         hintText: 'Entrez votre poids (en kg)',
