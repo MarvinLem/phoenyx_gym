@@ -57,11 +57,11 @@ class ExercicesDatabase {
     db.rawUpdate(''' UPDATE exercices SET series = ? WHERE id = ? ''',[series, id]);
   }
 
-  updateMultipleSeries(int series, int seanceId, String name, int exerciceOrder) async {
+  updateMultipleSeries(int series, int seanceId, String name, int trainingId, int exerciceOrder) async {
     await initDB();
     db.rawUpdate(''' UPDATE exercices SET series = ? WHERE (SELECT seanceId
                   FROM session
-                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[series, seanceId, name, exerciceOrder]);
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? AND trainingId = ? ''',[series, seanceId, name, exerciceOrder, trainingId]);
   }
 
   updateRepetitions(int repetitions, int id) async {
@@ -69,11 +69,11 @@ class ExercicesDatabase {
     db.rawUpdate(''' UPDATE exercices SET repetitions = ? WHERE id = ? ''',[repetitions, id]);
   }
 
-  updateMultipleRepetitions(int repetitions, int seanceId, String name, int exerciceOrder) async {
+  updateMultipleRepetitions(int repetitions, int seanceId, String name, int trainingId, int exerciceOrder) async {
     await initDB();
     db.rawUpdate(''' UPDATE exercices SET repetitions = ? WHERE (SELECT seanceId
                   FROM session
-                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[repetitions, seanceId, name, exerciceOrder]);
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? AND trainingId = ?''',[repetitions, seanceId, name, exerciceOrder, trainingId]);
   }
 
   updateWeight(int weight, int id) async {
@@ -81,11 +81,11 @@ class ExercicesDatabase {
     db.rawUpdate(''' UPDATE exercices SET weight = ? WHERE id = ? ''',[weight, id]);
   }
 
-  updateMultipleWeight(int weight, int seanceId, String name, int exerciceOrder) async {
+  updateMultipleWeight(int weight, int seanceId, String name, int trainingId, int exerciceOrder) async {
     await initDB();
     db.rawUpdate(''' UPDATE exercices SET weight = ? WHERE (SELECT seanceId
                   FROM session
-                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[weight, seanceId, name, exerciceOrder]);
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? AND trainingId = ? ''',[weight, seanceId, name, exerciceOrder, trainingId]);
   }
 
   updateRest(int rest, int id) async {
@@ -93,11 +93,11 @@ class ExercicesDatabase {
     db.rawUpdate(''' UPDATE exercices SET rest = ? WHERE id = ? ''',[rest, id]);
   }
 
-  updateMultipleRest(int rest, int seanceId, String name, int exerciceOrder) async {
+  updateMultipleRest(int rest, int seanceId, String name, int trainingId, int exerciceOrder) async {
     await initDB();
     db.rawUpdate(''' UPDATE exercices SET rest = ? WHERE (SELECT seanceId
                   FROM session
-                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? ''',[rest, seanceId, name, exerciceOrder]);
+                  WHERE seanceId = ?) AND name = ? AND exerciceOrder = ? AND trainingId = ? ''',[rest, seanceId, name, exerciceOrder, trainingId]);
   }
 
   updateOrder(int exerciceOrder, int id) async {

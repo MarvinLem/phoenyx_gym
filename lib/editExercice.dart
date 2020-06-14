@@ -202,7 +202,7 @@ class EditExerciceState extends State<EditExercice> {
                                         if(mode == "only"){
                                           db.updateSeries(exercicesOptions.series - 1, id);
                                         } else if(mode == "all"){
-                                          db.updateMultipleSeries(exercicesOptions.series - 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                          db.updateMultipleSeries(exercicesOptions.series - 1, seanceId, exercicesOptions.name, trainingId, exercicesOptions.exerciceOrder);
                                         }
                                         exercicesOptions.series -= 1;
                                       }
@@ -251,7 +251,7 @@ class EditExerciceState extends State<EditExercice> {
                                       if(mode == "only"){
                                         db.updateSeries(exercicesOptions.series + 1, id);
                                       } else if(mode == "all"){
-                                        db.updateMultipleSeries(exercicesOptions.series + 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                        db.updateMultipleSeries(exercicesOptions.series + 1, seanceId, exercicesOptions.name, trainingId, exercicesOptions.exerciceOrder);
                                       }
                                       exercicesOptions.series += 1;
                                     });
@@ -308,7 +308,7 @@ class EditExerciceState extends State<EditExercice> {
                                         if(mode == "only"){
                                           db.updateRepetitions(exercicesOptions.repetitions - 1, id);
                                         } else if(mode == "all"){
-                                          db.updateMultipleRepetitions(exercicesOptions.repetitions - 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                          db.updateMultipleRepetitions(exercicesOptions.repetitions - 1, seanceId, exercicesOptions.name, trainingId, exercicesOptions.exerciceOrder);
                                         }
                                         exercicesOptions.repetitions -= 1;
                                       }
@@ -358,7 +358,7 @@ class EditExerciceState extends State<EditExercice> {
                                       if(mode == "only"){
                                         db.updateRepetitions(exercicesOptions.repetitions + 1, id);
                                       } else if(mode == "all"){
-                                        db.updateMultipleRepetitions(exercicesOptions.repetitions + 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                        db.updateMultipleRepetitions(exercicesOptions.repetitions + 1, seanceId, exercicesOptions.name, trainingId, exercicesOptions.exerciceOrder);
                                       }
                                       exercicesOptions.repetitions += 1;
                                     });
@@ -415,7 +415,7 @@ class EditExerciceState extends State<EditExercice> {
                                         if(mode == "only"){
                                           db.updateWeight(exercicesOptions.weight - 1, id);
                                         } else if(mode == "all"){
-                                          db.updateMultipleWeight(exercicesOptions.weight - 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                          db.updateMultipleWeight(exercicesOptions.weight - 1, seanceId, exercicesOptions.name, trainingId, exercicesOptions.exerciceOrder);
                                         }
                                         exercicesOptions.weight -= 1;
                                       }
@@ -464,7 +464,7 @@ class EditExerciceState extends State<EditExercice> {
                                       if(mode == "only"){
                                         db.updateWeight(exercicesOptions.weight + 1, id);
                                       } else if(mode == "all"){
-                                        db.updateMultipleWeight(exercicesOptions.weight + 1, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                        db.updateMultipleWeight(exercicesOptions.weight + 1, seanceId, exercicesOptions.name, trainingId, exercicesOptions.exerciceOrder);
                                       }
                                       exercicesOptions.weight += 1;
                                     });
@@ -521,7 +521,7 @@ class EditExerciceState extends State<EditExercice> {
                                         if(mode == "only"){
                                           db.updateRest(exercicesOptions.rest - 10, id);
                                         } else if(mode == "all"){
-                                          db.updateMultipleRest(exercicesOptions.rest - 10, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                          db.updateMultipleRest(exercicesOptions.rest - 10, seanceId, exercicesOptions.name, trainingId, exercicesOptions.exerciceOrder);
                                         }
                                         exercicesOptions.rest -= 10;
                                       }
@@ -570,7 +570,7 @@ class EditExerciceState extends State<EditExercice> {
                                       if(mode == "only"){
                                         db.updateRest(exercicesOptions.rest + 10, id);
                                       } else if(mode == "all"){
-                                        db.updateMultipleRest(exercicesOptions.rest + 10, seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+                                        db.updateMultipleRest(exercicesOptions.rest + 10, seanceId, exercicesOptions.name, trainingId, exercicesOptions.exerciceOrder);
                                       }
                                       exercicesOptions.rest += 10;
                                     });
