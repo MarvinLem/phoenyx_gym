@@ -91,7 +91,7 @@ class EditExerciceState extends State<EditExercice> {
 
   changeMultiplePreviousExercice() async {
     var previousExercice = await db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, exercicesOptions.exerciceOrder - 1);
-    db.updateMultipleOrder(exercicesOptions.exerciceOrder + 1, seanceId, previousExercice[0]['name']);
+    db.updateMultipleOrder(exercicesOptions.exerciceOrder + 1, seanceId, trainingId, previousExercice[0]['name']);
   }
 
   changeNextExercice() async {
@@ -101,7 +101,7 @@ class EditExerciceState extends State<EditExercice> {
 
   changeMultipleNextExercice() async {
     var nextExercice = await db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, exercicesOptions.exerciceOrder + 1);
-    db.updateMultipleOrder(exercicesOptions.exerciceOrder - 1, seanceId, nextExercice[0]['name']);
+    db.updateMultipleOrder(exercicesOptions.exerciceOrder - 1, seanceId, trainingId, nextExercice[0]['name']);
   }
 
   getExercicesById(id) {
@@ -629,7 +629,7 @@ class EditExerciceState extends State<EditExercice> {
                                           db.updateOrder(exercicesOptions.exerciceOrder - 1, id);
                                         } else if(mode == "all"){
                                           changeMultiplePreviousExercice();
-                                          db.updateMultipleOrder(exercicesOptions.exerciceOrder - 1, seanceId, exercicesOptions.name);
+                                          db.updateMultipleOrder(exercicesOptions.exerciceOrder - 1, seanceId, trainingId, exercicesOptions.name);
                                         }
                                         exercicesOptions.exerciceOrder -= 1;
                                       }
@@ -681,7 +681,7 @@ class EditExerciceState extends State<EditExercice> {
                                             db.updateOrder(exercicesOptions.exerciceOrder + 1, id);
                                           } else if(mode == "all"){
                                             changeMultipleNextExercice();
-                                            db.updateMultipleOrder(exercicesOptions.exerciceOrder + 1, seanceId, exercicesOptions.name);
+                                            db.updateMultipleOrder(exercicesOptions.exerciceOrder + 1, seanceId, trainingId, exercicesOptions.name);
                                           }
                                           exercicesOptions.exerciceOrder += 1;
                                         }
