@@ -592,7 +592,7 @@ class EditExerciceState extends State<EditExercice> {
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center),
-                Row(
+                mode == "all" ? Row(
                     children: [
                       Column(
                           children: [
@@ -703,7 +703,7 @@ class EditExerciceState extends State<EditExercice> {
                       ),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center),
+                    mainAxisAlignment: MainAxisAlignment.center) : Center(),
                 Row(
                   children: [
                     Container(
@@ -722,6 +722,7 @@ class EditExerciceState extends State<EditExercice> {
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
+                /*
                 Row(
                   children: [
                     Container(
@@ -740,6 +741,7 @@ class EditExerciceState extends State<EditExercice> {
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                 )
+                */
               ]),
             ]);
           } else {

@@ -121,7 +121,7 @@ class CreateExerciceState extends State<CreateExercice> {
                       ),
                     ),
                     constraints: BoxConstraints(minWidth: 80.0, minHeight: 80.0),
-                    margin: new EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    margin: new EdgeInsets.only(left: 20, right: 10, top: 20, bottom: 20),
                   )
                 ],
               ),
@@ -134,6 +134,7 @@ class CreateExerciceState extends State<CreateExercice> {
                             style: TextStyle(fontSize: 18, color: Colors.black87),
                             textAlign: TextAlign.center)),
                     alignment: Alignment.center,
+                    constraints: BoxConstraints(minWidth: 120.0, minHeight: 120.0),
                   ),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,7 +154,7 @@ class CreateExerciceState extends State<CreateExercice> {
                             }
                           }),
                           child: exerciceList.exercicesNames.contains(exerciceDefault.name) ? new Icon(Icons.check_box, color: Color(0xFFD34B4B)) : new Icon(Icons.check_box_outline_blank, color: Color(0xFFD34B4B))),
-                      margin: new EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
+                      margin: new EdgeInsets.symmetric(horizontal: 20, vertical: 20)),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,

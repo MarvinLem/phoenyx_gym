@@ -324,12 +324,12 @@ class BeginTrainingState extends State<BeginTraining> {
                                 } else {
                                   if (order == maxOrder &&
                                       remainingSeries == 1) {
-                                    Navigator.push(
+                                    trainingIsPredefined != 1 ? Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => BeginFeedback(
                                                 trainingId: trainingId,
-                                                sessionId: sessionId)));
+                                                sessionId: sessionId))) : Navigator.of(context).popUntil((route) => route.isFirst);
                                   } else {
                                     if (remainingSeries > 1) {
                                       remainingSeries -= 1;
@@ -369,12 +369,12 @@ class BeginTrainingState extends State<BeginTraining> {
                       child: RaisedButton(
                           onPressed: () => setState(() {
                                 if (order == maxOrder) {
-                                  Navigator.push(
+                                  trainingIsPredefined != 1 ? Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => BeginFeedback(
                                               trainingId: trainingId,
-                                              sessionId: sessionId)));
+                                              sessionId: sessionId))) : Navigator.of(context).popUntil((route) => route.isFirst);
                                 } else {
                                   order += 1;
                                   getRemaingVariables(
