@@ -77,6 +77,47 @@ class EditProfilState extends State<EditProfil> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                    child: new DropdownButtonHideUnderline(
+                        child: InputDecorator(
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.person),
+                              hintText: 'Entrez votre genre',
+                              labelText: 'Sexe',
+                            ),
+                            child: new DropdownButton(
+                              value: user.gender,
+                              items: <String>[
+                                'Homme',
+                                'Femme',
+                                'Autre',
+                              ].map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: new Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (value) => setState(() {
+                                switch (value) {
+                                  case "Homme":
+                                    user.gender = "Homme";
+                                    break;
+                                  case "Femme":
+                                    user.gender = "Femme";
+                                    break;
+                                  case "Autre":
+                                    user.gender = "Autre";
+                                    break;
+                                  default:
+                                    user.gender = null;
+                                    break;
+                                }
+                              }),
+                              style: TextStyle(fontSize: 12, color: Colors.black),
+                            )
+                        )
+                    ),
+                    margin: EdgeInsets.only(right: 30, left: 30)),
+                Container(
                     child: DateTimeField(
                         format: DateFormat("yyyy-MM-dd"),
                         onShowPicker: (context, currentValue) async {
@@ -153,47 +194,6 @@ class EditProfilState extends State<EditProfil> {
                       keyboardType: TextInputType.number),
                   margin: EdgeInsets.only(right: 30, left: 30),
                 ),
-                      Container(
-                          child: new DropdownButtonHideUnderline(
-                            child: InputDecorator(
-                              decoration: InputDecoration(
-                                icon: Icon(Icons.person),
-                                hintText: 'Entrez votre genre',
-                                labelText: 'Sexe',
-                              ),
-                              child: new DropdownButton(
-                                value: user.gender,
-                                items: <String>[
-                                  'Homme',
-                                  'Femme',
-                                  'Autre',
-                                ].map((String value) {
-                                  return new DropdownMenuItem<String>(
-                                    value: value,
-                                    child: new Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (value) => setState(() {
-                                  switch (value) {
-                                    case "Homme":
-                                      user.gender = "Homme";
-                                      break;
-                                    case "Femme":
-                                      user.gender = "Femme";
-                                      break;
-                                    case "Autre":
-                                      user.gender = "Autre";
-                                      break;
-                                    default:
-                                      user.gender = null;
-                                      break;
-                                  }
-                                }),
-                                style: TextStyle(fontSize: 12, color: Colors.black),
-                              )
-                            )
-                          ),
-                          margin: EdgeInsets.only(right: 30, left: 30))
               ],
             ),
           ),
