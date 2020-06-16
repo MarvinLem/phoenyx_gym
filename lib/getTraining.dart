@@ -290,7 +290,7 @@ class GetTrainingState extends State<GetTraining> {
                       minWidth: MediaQuery.of(context).size.width - 100,
                       maxWidth: MediaQuery.of(context).size.width - 100))
             ]),
-            Column(children: [
+            actualSession != null && actualSession[0]['done'] == 0 ? Column(children: [
               trainingIsPredefined != 1 ? GestureDetector(
                   onTap: () {
                     showMenu(
@@ -327,7 +327,7 @@ class GetTrainingState extends State<GetTraining> {
                       ),
                     ),
                   )) : Center()
-            ])
+            ]) : Center()
           ]),
           Row(children: [
             Column(

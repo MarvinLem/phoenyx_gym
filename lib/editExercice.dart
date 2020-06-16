@@ -78,10 +78,52 @@ class EditExerciceState extends State<EditExercice> {
   exerciceDeleted(id) async {
     if(mode == "only"){
       db.delete(id);
+      checkExerciceOrderOfOtherExercices();
     } else if(mode == "all"){
-      db.deleteMultiple(seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder);
+      db.deleteMultiple(seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder, trainingId);
+      checkMultipleExerciceOrderOfOtherExercices();
     }
     Navigator.pop(context);
+  }
+
+  checkExerciceOrderOfOtherExercices() async {
+    var exercices = await db.getExercicesByTrainingIdAndSessionId(trainingId,sessionId);
+    var order = 1;
+    exercices.forEach((exercice) {
+        db.updateOrder(order, exercice.id);
+        order++;
+      }
+    );
+  }
+
+  checkMultipleExerciceOrderOfOtherExercices() async {
+    var exercices = await db.getExercicesByTrainingIdAndSessionId(trainingId,sessionId);
+    var order = 1;
+    exercices.forEach((exercice) {
+        db.updateMultipleOrder(order, seanceId, trainingId, exercice.name);
+        order++;
+      }
+    );
+  }
+
+  checkAllExercicesFromSeance() async {
+    var exercices = await db.getExercicesByTrainingIdAndSeanceId(trainingId, seanceId);
+    var exercicesArray = [];
+    exercices.forEach((exercice) {
+        exercicesArray.add(exercice.id.toString() + '/' + exercice.name + '/' + exercice.sessionId.toString());
+      }
+    );
+    var sessionId = exercicesArray[0].split('/')[2];
+    var order = 1;
+    for(var i=0;i<exercicesArray.length;i++){
+      if(exercicesArray[i].split('/')[2] == sessionId){
+        order++;
+      } else {
+        order = 1;
+        sessionId = exercicesArray[i].split('/')[2];
+      }
+      db.updateOrder(order, int.parse(exercicesArray[i].split('/')[0]));
+    }
   }
 
   changePreviousExercice() async {
@@ -92,6 +134,7 @@ class EditExerciceState extends State<EditExercice> {
   changeMultiplePreviousExercice() async {
     var previousExercice = await db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, exercicesOptions.exerciceOrder - 1);
     db.updateMultipleOrder(exercicesOptions.exerciceOrder + 1, seanceId, trainingId, previousExercice[0]['name']);
+    checkAllExercicesFromSeance();
   }
 
   changeNextExercice() async {
@@ -102,6 +145,7 @@ class EditExerciceState extends State<EditExercice> {
   changeMultipleNextExercice() async {
     var nextExercice = await db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, exercicesOptions.exerciceOrder + 1);
     db.updateMultipleOrder(exercicesOptions.exerciceOrder - 1, seanceId, trainingId, nextExercice[0]['name']);
+    checkAllExercicesFromSeance();
   }
 
   getExercicesById(id) {
@@ -592,7 +636,7 @@ class EditExerciceState extends State<EditExercice> {
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center),
-                mode == "all" ? Row(
+                Row(
                     children: [
                       Column(
                           children: [
@@ -703,7 +747,7 @@ class EditExerciceState extends State<EditExercice> {
                       ),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center) : Center(),
+                    mainAxisAlignment: MainAxisAlignment.center),
                 Row(
                   children: [
                     Container(
@@ -722,7 +766,6 @@ class EditExerciceState extends State<EditExercice> {
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                 ),
-                /*
                 Row(
                   children: [
                     Container(
@@ -741,7 +784,6 @@ class EditExerciceState extends State<EditExercice> {
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                 )
-                */
               ]),
             ]);
           } else {
