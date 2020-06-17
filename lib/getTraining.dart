@@ -233,12 +233,32 @@ class GetTrainingState extends State<GetTraining> {
                 ),
               ]);
             } else {
-              return Row(
+              return Column(
                 children: [
+                  Row(children: [
                   Container(
                     child: Text("Cette séance ne contient aucun exercice",
                         style: TextStyle(fontSize: 16, color: Colors.black87)),
                     margin: new EdgeInsets.only(bottom: 20, top: 20),
+                  )],
+                    mainAxisAlignment: MainAxisAlignment.center),
+                  Row(
+                    children: [
+                      Container(
+                        child: RaisedButton(
+                            onPressed: () => editTraining('all'),
+                            child: Text('Modifier toutes les séances',
+                                style: TextStyle(fontSize: 15)),
+                            textColor: Colors.white,
+                            padding: const EdgeInsets.all(15),
+                            color: Color(0xFF3F3F3F),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50))),
+                        alignment: Alignment.center,
+                        margin: new EdgeInsets.only(top: 10.0, bottom: 30),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
                   )
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,

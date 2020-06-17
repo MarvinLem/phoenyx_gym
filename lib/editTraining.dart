@@ -258,7 +258,8 @@ class EditTrainingState extends State<EditTraining> {
               ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
-          ),
+          )
+          /*
           Row(
             children: [
               Container(
@@ -276,7 +277,7 @@ class EditTrainingState extends State<EditTraining> {
               ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
-          )
+          )*/
         ]));
   }
 }
