@@ -131,11 +131,11 @@ class ExercicesDatabase {
     );
   }
 
-  deleteMultiple(int seanceId, String name, int exerciceOrder, int trainingId) async {
+  deleteMultiple(int seanceId, String name, int trainingId) async {
     await initDB();
     db.rawDelete(''' DELETE FROM exercices WHERE sessionId IN (SELECT id
                   FROM session
-                  WHERE seanceId = ? AND done = 0) AND name = ? AND exerciceOrder = ? AND trainingId = ?''',[seanceId, name, exerciceOrder, trainingId]);
+                  WHERE seanceId = ? AND done = 0) AND name = ? AND trainingId = ?''',[seanceId, name, trainingId]);
   }
 
   deleteByTrainingId(int trainingId) async {

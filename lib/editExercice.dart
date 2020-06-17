@@ -80,7 +80,7 @@ class EditExerciceState extends State<EditExercice> {
       db.delete(id);
       checkExerciceOrderOfOtherExercices();
     } else if(mode == "all"){
-      db.deleteMultiple(seanceId, exercicesOptions.name, exercicesOptions.exerciceOrder, trainingId);
+      db.deleteMultiple(seanceId, exercicesOptions.name, trainingId);
       checkMultipleExerciceOrderOfOtherExercices();
     }
     Navigator.pop(context);

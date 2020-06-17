@@ -151,7 +151,7 @@ class SessionDatabase {
 
   getAllInformationsForHome(datetime) async {
     await initDB();
-    List<Map> results = await db.rawQuery("SELECT training.name AS name,session.trainingId,session.date,session.startAt,session.endAt,session.id FROM training INNER JOIN session ON session.trainingId = training.id WHERE session.startAt > ? ORDER BY session.startAt ASC LIMIT 2", [datetime]);
+    List<Map> results = await db.rawQuery("SELECT training.name AS name,session.trainingId,session.date,session.startAt,session.endAt,session.id FROM training INNER JOIN session ON session.trainingId = training.id WHERE session.startAt > ? AND session.done = 0 ORDER BY session.startAt ASC LIMIT 2", [datetime]);
     return results.map((map) => SessionModel.fromMap(map));
   }
 }
