@@ -273,9 +273,9 @@ class EndFeedbackState extends State<EndFeedback> {
                                     child: Text(
                                         StringUtils.capitalize(exercice.name),
                                         style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 16,
                                             color: Colors.black87),
-                                        textAlign: TextAlign.left),
+                                        textAlign: TextAlign.center),
                                     margin: new EdgeInsets.only(bottom: 40),
                                   ),
                                 ],
@@ -509,7 +509,7 @@ class EndFeedbackState extends State<EndFeedback> {
                     Container(
                         child: Text("Exercices",
                             style: TextStyle(
-                                fontSize: 18, color: Color(0xFF3F3F3F)),
+                                fontSize: 17, color: Color(0xFF3F3F3F)),
                             textAlign: TextAlign.center),
                         margin: new EdgeInsets.symmetric(vertical: 20,horizontal: 20),
                         constraints: BoxConstraints(
@@ -525,7 +525,7 @@ class EndFeedbackState extends State<EndFeedback> {
                     Container(
                         child: Text("Avant",
                             style: TextStyle(
-                                fontSize: 18, color: Color(0xFF3F3F3F)),
+                                fontSize: 17, color: Color(0xFF3F3F3F)),
                             textAlign: TextAlign.center),
                         margin: new EdgeInsets.symmetric(vertical: 20,horizontal: 20),
                         constraints: BoxConstraints(
@@ -541,7 +541,7 @@ class EndFeedbackState extends State<EndFeedback> {
                     Container(
                         child: Text("Apres",
                             style: TextStyle(
-                                fontSize: 18, color: Color(0xFF3F3F3F)),
+                                fontSize: 17, color: Color(0xFF3F3F3F)),
                             textAlign: TextAlign.center),
                         margin: new EdgeInsets.symmetric(vertical: 20,horizontal: 20),
                         constraints: BoxConstraints(
