@@ -202,10 +202,9 @@ class EndFeedbackState extends State<EndFeedback> {
       var nextSession = await sessionDb.getNextSession(session[0]['trainingId'],
           session[0]['seanceId'], session[0]['sessionNumber'] + 1);
       var exerciceOfNextSession =
-          await db.getExercicesByTrainingIdAndSessionIdAndOrderAndName(
+          await db.getExercicesByTrainingIdAndSessionIdAndName(
               nextSession[0]['trainingId'],
               nextSession[0]['id'],
-              exerciceFeedbackArray[c]['exerciceOrder'],
               exerciceFeedbackArray[c]['name']);
       if (exerciceOfNextSession.length == 0) {
         var exercice = ExercicesModel(

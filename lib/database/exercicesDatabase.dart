@@ -197,6 +197,12 @@ class ExercicesDatabase {
     return results;
   }
 
+  getExercicesByTrainingIdAndSessionIdAndName(int trainingId, int sessionId, String name) async {
+    await initDB();
+    var results = await db.query("exercices", where: "trainingId = ? AND sessionId = ? AND name = ?", whereArgs: [trainingId,sessionId, name]);
+    return results;
+  }
+
   getExercicesByTrainingIdAndSessionIdAndOrderAndName(int trainingId, int sessionId, int order, String name) async {
     await initDB();
     var results = await db.query("exercices", where: "exerciceOrder = ? AND trainingId = ? AND sessionId = ? AND name = ?", whereArgs: [order,trainingId,sessionId, name]);
