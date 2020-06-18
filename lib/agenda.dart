@@ -149,7 +149,7 @@ class AgendaState extends State<Agenda> {
                   DateTime datetime =
                   DateTime.fromMillisecondsSinceEpoch(date.date);
                   training[datetime] != null
-                      ? training[datetime].add([date.trainingId, date.id])
+                      ? training[datetime].add([date.trainingId, date.id, date.done])
                       : training.putIfAbsent(
                       datetime,
                           () =>
