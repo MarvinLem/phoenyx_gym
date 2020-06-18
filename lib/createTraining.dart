@@ -755,7 +755,7 @@ class CreateTrainingState extends State<CreateTraining> {
                 child: new Text("Nom du programme",
                     style: TextStyle(fontSize: 18, color: Colors.black87)),
                 margin:
-                    new EdgeInsets.only(left: 20.0, top: 30.0, bottom: 10.0),
+                    new EdgeInsets.only(left: 20.0, top: 40.0, bottom: 10.0),
               )
             ],
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -785,7 +785,7 @@ class CreateTrainingState extends State<CreateTraining> {
                 child: new Text("Nombre de séance par semaine",
                     style: TextStyle(fontSize: 18, color: Colors.black87)),
                 margin:
-                    new EdgeInsets.only(left: 20.0, top: 30.0, bottom: 10.0),
+                    new EdgeInsets.only(left: 20.0, top: 70.0, bottom: 10.0),
               )
             ],
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -856,7 +856,7 @@ class CreateTrainingState extends State<CreateTraining> {
                     textAlign: TextAlign.center,
                   ),
                   margin:
-                      new EdgeInsets.only(left: 20.0, top: 30.0, bottom: 10.0),
+                      new EdgeInsets.only(left: 20.0, top: 40.0, bottom: 10.0),
                   constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width - 40))
             ],
@@ -920,10 +920,10 @@ class CreateTrainingState extends State<CreateTraining> {
           Row(
             children: [
               Container(
-                  child: Text('Nombres de séances différentes',
+                  child: Text('Nombre de séances différentes',
                       style: TextStyle(fontSize: 18, color: Colors.black87),
                       textAlign: TextAlign.left),
-                  margin: EdgeInsets.only(top: 40)),
+                  margin: EdgeInsets.only(top: 50)),
             ],
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -992,7 +992,7 @@ class CreateTrainingState extends State<CreateTraining> {
                       textAlign: TextAlign.start,
                     ),
                     margin: new EdgeInsets.only(
-                        left: 40.0, top: 30.0, bottom: 10.0),
+                        left: 40.0, top: 40.0, bottom: 10.0),
                     constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width - 150))
               ]),
@@ -1014,7 +1014,7 @@ class CreateTrainingState extends State<CreateTraining> {
                               : new Icon(Icons.check_box_outline_blank,
                                   color: Color(0xFFD34B4B))),
                       margin: new EdgeInsets.only(
-                          left: 10, right: 10, top: 50, bottom: 30)),
+                          left: 10, right: 10, top: 60, bottom: 30)),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -1032,7 +1032,7 @@ class CreateTrainingState extends State<CreateTraining> {
                     textAlign: TextAlign.center,
                   ),
                   margin:
-                      new EdgeInsets.only(left: 20.0, top: 30.0, bottom: 10.0),
+                      new EdgeInsets.only(left: 20.0, top: 50.0, bottom: 10.0),
                   constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width - 40))
             ],
@@ -1065,7 +1065,7 @@ class CreateTrainingState extends State<CreateTraining> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50)))
                         : RaisedButton(
-                            child: Text("Selectionner d'abord les séances",
+                            child: Text("Sélectionner d'abord les séances",
                                 style: TextStyle(fontSize: 18)),
                             textColor: Colors.white,
                             padding: const EdgeInsets.all(15),
@@ -1073,7 +1073,7 @@ class CreateTrainingState extends State<CreateTraining> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50))),
                 alignment: Alignment.center,
-                margin: new EdgeInsets.only(top: 20, bottom: 30),
+                margin: new EdgeInsets.only(top: 30, bottom: 30),
               ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,

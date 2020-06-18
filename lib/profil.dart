@@ -56,7 +56,7 @@ class ProfilState extends State<Profil> {
             margin: EdgeInsets.only(top: 20)),
         Container(
             child: new Text(
-              'Completer 1 séance',
+              'Compléter 1 séance',
               textAlign: TextAlign.center,
             ),
             margin: EdgeInsets.only(top: 10),
@@ -94,7 +94,7 @@ class ProfilState extends State<Profil> {
             margin: EdgeInsets.only(top: 20)),
         Container(
             child: new Text(
-              'Completer 3 séances',
+              'Compléter 3 séances',
               textAlign: TextAlign.center,
             ),
             margin: EdgeInsets.only(top: 10),
@@ -129,7 +129,7 @@ class ProfilState extends State<Profil> {
             margin: EdgeInsets.only(top: 20)),
         Container(
             child: new Text(
-              'Completer 5 séances',
+              'Compléter 5 séances',
               textAlign: TextAlign.center,
             ),
             margin: EdgeInsets.only(top: 10),
@@ -164,7 +164,7 @@ class ProfilState extends State<Profil> {
             margin: EdgeInsets.only(top: 20)),
         Container(
             child: new Text(
-              'Completer 5 séances',
+              'Compléter 5 séances',
               textAlign: TextAlign.center,
             ),
             margin: EdgeInsets.only(top: 10),
@@ -378,7 +378,7 @@ class ProfilState extends State<Profil> {
                         margin: EdgeInsets.only(top: 20)),
                     Container(
                         child: new Text(
-                          'Completer 1 séance',
+                          'Compléter 1 séance',
                           textAlign: TextAlign.center,
                         ),
                         margin: EdgeInsets.only(top: 10),

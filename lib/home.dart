@@ -167,7 +167,7 @@ class HomeState extends State<Home> {
             } else {
               return Column(children: [
                 Container(
-                  child: Text("Vous ne posseder encore aucune séance",
+                  child: Text("Vous ne possédez encore aucune séance",
                       style: TextStyle(fontSize: 16, color: Colors.black87)),
                   margin: new EdgeInsets.only(bottom: 20, top: 20),
                 ),

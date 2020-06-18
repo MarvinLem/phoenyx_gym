@@ -176,7 +176,7 @@ class TrainingState extends State<Training> {
             return Column(children: [
               Row(children: [
                 Container(
-                    child: new Text("Programme prédéfini".toUpperCase(),
+                    child: new Text("Programmes prédéfinis".toUpperCase(),
                         style: TextStyle(
                             fontSize: 20,
                             color: Color(0xFFD34B4B),
@@ -251,7 +251,7 @@ class TrainingState extends State<Training> {
             return Column(children: [
               Row(children: [
                 Container(
-                    child: new Text("Vos programmes terminées".toUpperCase(),
+                    child: new Text("Vos programmes terminés".toUpperCase(),
                         style: TextStyle(
                             fontSize: 20,
                             color: Color(0xFFD34B4B),
@@ -364,7 +364,7 @@ class TrainingState extends State<Training> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => CreateTraining())),
-                    child: new Text("Creer un nouveau programme".toUpperCase(),
+                    child: new Text("Créer un nouveau programme".toUpperCase(),
                         style: TextStyle(
                             fontSize: 16,
                             color: Colors.white,

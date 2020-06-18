@@ -25,6 +25,15 @@ class GetTraining extends StatefulWidget {
 class GetTrainingState extends State<GetTraining> {
   int trainingId;
   int sessionId;
+  var dayArray = [
+    "Lundi",
+    "Mardi",
+    "Mercredi",
+    "Jeudi",
+    "Vendredi",
+    "Samedi",
+    "Dimanche"
+  ];
   ExercicesDatabase db = ExercicesDatabase();
   SessionDatabase sessionDb = SessionDatabase();
   TrainingDatabase trainingDb = TrainingDatabase();
@@ -417,7 +426,8 @@ class GetTrainingState extends State<GetTraining> {
                 child: (actualSession != null && actualSession[0]['date'] != null)
                     ? new Text(
                         ("Séance " + actualSessionSeance.toString()).toUpperCase() +
-                            " - " +
+                            " - " + dayArray[new DateTime.fromMillisecondsSinceEpoch(actualSession[0]['date']).weekday -
+    1] + " " +
                             new DateTime.fromMillisecondsSinceEpoch(
                                     actualSession[0]['date'])
                                 .day
@@ -480,13 +490,13 @@ class GetTrainingState extends State<GetTraining> {
                             ("Votre " +
                                     (seance + 1).toString() +
                                     " séance de la semaine")
-                                .replaceAll("1", "1ère")
-                                .replaceAll("2", "2ème")
-                                .replaceAll("3", "3ème")
-                                .replaceAll("4", "4ème")
-                                .replaceAll("5", "5ème")
-                                .replaceAll("6", "6ème")
-                                .replaceAll("7", "7ème"),
+                                .replaceAll("1", "1re")
+                                .replaceAll("2", "2e")
+                                .replaceAll("3", "3e")
+                                .replaceAll("4", "4e")
+                                .replaceAll("5", "5e")
+                                .replaceAll("6", "6e")
+                                .replaceAll("7", "7e"),
                             style: TextStyle(
                                 fontSize: 18,
                                 color: Color(0xFFD34B4B),
