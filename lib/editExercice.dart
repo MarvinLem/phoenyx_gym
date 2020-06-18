@@ -114,7 +114,7 @@ class EditExerciceState extends State<EditExercice> {
       }
     );
     var sessionId = exercicesArray[0].split('/')[2];
-    var order = 1;
+    var order = 0;
     for(var i=0;i<exercicesArray.length;i++){
       if(exercicesArray[i].split('/')[2] == sessionId){
         order++;
@@ -133,7 +133,7 @@ class EditExerciceState extends State<EditExercice> {
 
   changeMultiplePreviousExercice() async {
     var previousExercice = await db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, exercicesOptions.exerciceOrder - 1);
-    db.updateMultipleOrder(exercicesOptions.exerciceOrder + 1, seanceId, trainingId, previousExercice[0]['name']);
+    await db.updateMultipleOrder(exercicesOptions.exerciceOrder + 1, seanceId, trainingId, previousExercice[0]['name']);
     checkAllExercicesFromSeance();
   }
 
@@ -144,7 +144,7 @@ class EditExerciceState extends State<EditExercice> {
 
   changeMultipleNextExercice() async {
     var nextExercice = await db.getExercicesByTrainingIdAndSessionIdAndOrder(trainingId, sessionId, exercicesOptions.exerciceOrder + 1);
-    db.updateMultipleOrder(exercicesOptions.exerciceOrder - 1, seanceId, trainingId, nextExercice[0]['name']);
+    await db.updateMultipleOrder(exercicesOptions.exerciceOrder - 1, seanceId, trainingId, nextExercice[0]['name']);
     checkAllExercicesFromSeance();
   }
 
